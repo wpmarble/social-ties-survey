@@ -1,0 +1,22 @@
+industry_survey,naics2022,industry_code
+"Agriculture, farming, forestry, or fishing",11,
+"Mining, quarrying, or oil and gas extraction",21,110099
+"Utilities (electric, gas, water)",22,
+Construction,23,230000
+"Manufacturing (factories, production of goods)","31, 32, 33",300000
+Wholesale trade or distribution,42,420000
+"Retail trade (stores, e-commerce)","44, 45",440000
+"Transportation, delivery, or warehousing","48, 492, 493",480099
+"Information, media, publishing, telecommunications, or software",51,510000
+"Finance, banking, or insurance",52,520000
+"Real estate, rental, or leasing",53,530000
+"Professional, scientific, or technical services (law, consulting, accounting, IT services)",54,540099
+Corporate management or company headquarters,55,
+"Administrative and support services (temp staffing, office support, janitorial, waste management)",56,
+"Education (K–12, higher ed, training)",61,610000
+"Healthcare, hospitals, or social assistance",62,620000
+"Arts, entertainment, or recreation",71,710000
+"Hotels, restaurants, or food service",72,720000
+"Other services (repair shops, personal services, religious or civic organizations)",81,810000
+Government or public administration,,900000
+Other (please describe),,

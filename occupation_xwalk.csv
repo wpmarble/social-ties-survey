@@ -1,0 +1,24 @@
+occ_survey,occ_code
+"Manager, executive, or administrator",11-0000
+"Business, finance, or HR professional",13-0000
+"Computer, software, math, or data professional",15-0000
+Engineer or architect,17-0000
+"Scientist (life, physical, or social sciences)",19-0000
+"Counselor, social worker, or religious or community worker",21-0000
+"Legal professional (lawyer, paralegal)",23-0000
+"Teacher, instructor, or librarian",25-0000
+"Arts, design, entertainment, sports, or media",27-0000
+"Doctor, nurse, therapist, or other healthcare practitioner or technician",29-0000
+"Healthcare support (aide, orderly, assistant)",31-0000
+"Protective service (police, security guard, firefighter)",33-0000
+"Food preparation or serving (cook, server, bartender)",35-0000
+"Building cleaning, janitorial, or groundskeeping",37-0000
+"Personal care or service (childcare, hairstylist, fitness)",39-0000
+"Sales (retail, insurance, real estate, sales rep)",41-0000
+"Office, administrative, or clerical (including customer service)",43-0000
+"Farming, fishing, or forestry",45-0000
+"Construction, mining, or extraction",47-0000
+"Installation, maintenance, or repair (mechanic, HVAC, technician)",49-0000
+Production or factory work,51-0000
+"Transportation, delivery, or material moving",53-0000
+Other (please describe),
