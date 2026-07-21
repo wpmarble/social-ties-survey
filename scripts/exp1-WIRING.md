@@ -12,11 +12,21 @@ Add an Embedded Data element near the top of the survey flow with these fields
 - `candidate_name`  — "Mark Anderson" (set by JS; declared so it exports)
 - `candidate_last`  — "Anderson"
 
-**Dependency:** the ads use the respondent's state via `${e://Field/resp_state}`.
-Confirm the field that holds respondent state upstream is named **`resp_state`**
-— if it's named something else, update the two `resp_state` references in
-`exp1-randomizer.js` and `exp1-renderer.js`. If the field is empty/missing, the
-JS falls back to the generic phrase "your state" (so it degrades gracefully).
+**Dependency / KNOWN TODO:** the ads use the respondent's state via
+`${e://Field/resp_state}`. **This does not work yet.** State/county is currently
+collected with a Qualtrics *drill-down* question, and drill downs with >2,000
+answer permutations cannot be used in piped text, display logic, or carry
+forward — so `resp_state` is not pipeable as-is. Until this is fixed, [STATE]
+falls back to the generic "your state" (graceful, but reads slightly awkwardly
+in the control, e.g. "right here in your state").
+
+Fix options (later):
+  1. Replace the drill-down with a plain state dropdown (51 options incl. DC),
+     then get county via 51 branching conditions or a follow-up — piping works.
+  2. Ask ZIP first, then a ZIP→county lookup, only asking directly when the ZIP
+     is ambiguous. Fewer permutations, pipeable.
+Once fixed, set the field name to `resp_state` (or update the two `resp_state`
+references in `exp1-randomizer.js` and `exp1-renderer.js`).
 
 ## 2. Two questions, in this order, inside the Exp 1 block
 
