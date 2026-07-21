@@ -1,20 +1,16 @@
 Qualtrics.SurveyEngine.addOnload(function() {
 
   /*
-    EXPERIMENT 1 — single-script version (place on the TREATMENT/ad question).
-
-    Does everything in ONE addOnload, so the assigned arm never has to be
-    round-tripped through piped embedded data (which returns empty across pages
-    unless the field is declared AND server-side-pipeable — the bug that made
-    the old two-script split fetch `/exp1/.txt`):
-      (a) randomizes one of 4 arms, equal allocation
-      (b) stores arm + candidate fields + assembled ad as embedded data (record)
-      (c) fetches the arm's text, fills placeholders
-      (d) renders it as paragraphs into #adDisplay
-      (e) holds the Next button for READ_DELAY_MS after the ad appears
-
-    The treatment question's HTML must contain:
+    EXPERIMENT 1 — candidate-ad randomizer + renderer.
+    Place on the treatment/ad question. Its HTML must contain:
         <div id="adDisplay"></div>
+
+    On load:
+      (a) randomizes one of 4 arms (equal allocation)
+      (b) stores arm + candidate fields + assembled ad as embedded data
+      (c) fetches the arm's text, fills the [CANDIDATE NAME] / [CANDIDATE LAST NAME] / [STATE] placeholders
+      (d) renders it into #adDisplay as paragraphs
+      (e) holds the Next button for READ_DELAY_MS after the ad appears
   */
 
   var qThis = this;
@@ -24,16 +20,15 @@ Qualtrics.SurveyEngine.addOnload(function() {
   const ARMS = ["anti-baseline", "anti-fiscal", "anti-crowdout", "control-valence"];
   const CANDIDATE_NAME = "Mark Anderson";
   const CANDIDATE_LAST = "Anderson";
-  const READ_DELAY_MS = 7000; // reading window AFTER the ad renders
+  const READ_DELAY_MS = 7000; // reading window after the ad renders
 
-  // Respondent's state (single-line pipe = safe). Falls back if not captured.
+  // Respondent's state, filled from earlier in the survey. Falls back if empty.
   var respState = "${e://Field/resp_state}".trim();
   if (respState === "" || respState.indexOf("e://Field") !== -1) {
     respState = "your state";
   }
 
-  // Reuse an existing assignment if one is readable (guards re-randomizing on
-  // back/refresh). If the pipe returns empty, we simply randomize fresh.
+  // Reuse an existing assignment if present (guards re-randomizing on back/refresh).
   var existingArm = "${e://Field/exp1_tr_arm}".trim();
 
   // ---- Choose arm ----
