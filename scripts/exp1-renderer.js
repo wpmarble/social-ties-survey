@@ -8,7 +8,7 @@ Qualtrics.SurveyEngine.addOnload(function() {
 
     This script re-fetches the assigned arm's text and fills placeholders,
     then writes it into #adDisplay as clean paragraphs. We RE-FETCH rather
-    than pipe ${e://Field/treatment_text}, because piping a multi-paragraph
+    than pipe ${e://Field/exp1_treatment_text}, because piping a multi-paragraph
     value (a) drops the paragraph breaks in question text and (b) is a JS
     syntax error if read into a "..." string. Only single-line fields
     (arm, name, state) are read via piping here — that's safe.
@@ -21,9 +21,9 @@ Qualtrics.SurveyEngine.addOnload(function() {
   const BASE_URL = "https://williammarble.com/social-ties-survey/exp1/";
   const READ_DELAY_MS = 7000; // brief forced reading window before Next appears
 
-  var arm = "${e://Field/tr_arm}".trim();
-  var candidateName = "${e://Field/candidate_name}".trim();
-  var candidateLast = "${e://Field/candidate_last}".trim();
+  var arm = "${e://Field/exp1_tr_arm}".trim();
+  var candidateName = "${e://Field/exp1_candidate_name}".trim();
+  var candidateLast = "${e://Field/exp1_candidate_last}".trim();
   var respState = "${e://Field/resp_state}".trim();
   if (respState === "" || respState.indexOf("e://Field") !== -1) {
     respState = "your state";

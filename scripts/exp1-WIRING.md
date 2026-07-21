@@ -7,10 +7,10 @@ Survey: `SV_cPhHeZv7u82p9K6` ("Social Ties Survey Summer 2026").
 Add an Embedded Data element near the top of the survey flow with these fields
 (leave values blank — the JS sets them):
 
-- `tr_arm`          — assigned arm (`anti-baseline` | `anti-fiscal` | `anti-crowdout` | `control-valence`)
-- `treatment_text`  — full assembled ad the respondent saw (for the data record)
-- `candidate_name`  — "Mark Anderson" (set by JS; declared so it exports)
-- `candidate_last`  — "Anderson"
+- `exp1_tr_arm`          — assigned arm (`anti-baseline` | `anti-fiscal` | `anti-crowdout` | `control-valence`)
+- `exp1_treatment_text`  — full assembled ad the respondent saw (for the data record)
+- `exp1_candidate_name`  — "Mark Anderson" (set by JS; declared so it exports)
+- `exp1_candidate_last`  — "Anderson"
 
 **Dependency / KNOWN TODO:** the ads use the respondent's state via
 `${e://Field/resp_state}`. **This does not work yet.** State/county is currently
@@ -34,7 +34,7 @@ references in `exp1-randomizer.js` and `exp1-renderer.js`).
 Text" question works well since it has no answer):
 - Paste `exp1-randomizer.js` into the question's JavaScript editor.
 - It hides itself, shows a spinner, randomizes + stores the arm, fetches +
-  fills the ad, stores `treatment_text`, and auto-advances. Respondent sees
+  fills the ad, stores `exp1_treatment_text`, and auto-advances. Respondent sees
   only a brief spinner.
 
 **Q_B — treatment / ad question** (the one the respondent actually reads):
@@ -46,14 +46,14 @@ Text" question works well since it has no answer):
 - It re-fetches the assigned arm, fills placeholders, writes the ad into
   `#adDisplay` as paragraphs, and holds the Next button for 7s (`READ_DELAY_MS`).
 - You can put the DV (vote choice) on this same page below the div, or on the
-  next page — either works since `tr_arm`/`treatment_text` are already stored.
+  next page — either works since `exp1_tr_arm`/`exp1_treatment_text` are already stored.
 
-## 3. Why two scripts instead of piping `${e://Field/treatment_text}`
+## 3. Why two scripts instead of piping `${e://Field/exp1_treatment_text}`
 
 Piping the assembled ad into question text drops paragraph breaks, and reading a
 multi-line embedded value into a JS `"..."` string is a syntax error. The
 renderer re-fetches the file and reads only single-line fields (arm, name,
-state) via piping, which is safe. `treatment_text` is still stored by the
+state) via piping, which is safe. `exp1_treatment_text` is still stored by the
 randomizer for the dataset.
 
 ## 4. Files
@@ -68,5 +68,5 @@ randomizer for the dataset.
       assembled ad prints with name/state filled and **no** `[PLACEHOLDER]` left.
 - [ ] Run the preview several times — confirm all 4 arms appear.
 - [ ] Confirm the ad renders as 3 paragraphs in `#adDisplay` (not a run-on block).
-- [ ] Confirm `tr_arm` and `treatment_text` show up in the response data.
+- [ ] Confirm `exp1_tr_arm` and `exp1_treatment_text` show up in the response data.
 - [ ] Confirm `resp_state` actually fills (or intentionally falls back).

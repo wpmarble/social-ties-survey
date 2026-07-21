@@ -9,11 +9,11 @@ Qualtrics.SurveyEngine.addOnload(function() {
       (b) stores the arm + candidate fields as embedded data
       (c) fetches the arm's ad text from the public site
       (d) fills [CANDIDATE NAME] / [CANDIDATE LAST NAME] / [STATE] placeholders
-      (e) stores the fully assembled ad as embedded data `treatment_text`
+      (e) stores the fully assembled ad as embedded data `exp1_treatment_text`
       (f) advances to the treatment question (INSIDE the fetch .then())
 
     The treatment question re-fetches + renders the ad (see exp1-renderer.js);
-    `treatment_text` here is stored for the data record.
+    `exp1_treatment_text` here is stored for the data record.
   */
 
   var qThis = this;
@@ -32,7 +32,7 @@ Qualtrics.SurveyEngine.addOnload(function() {
   }
 
   // Existing assignment (guards against re-randomizing on refresh / back nav).
-  var existingArm = "${e://Field/tr_arm}".trim();
+  var existingArm = "${e://Field/exp1_tr_arm}".trim();
 
   // ---- Hide question content + nav, show a loading spinner ----
   this.getQuestionContainer().style.display = "none";
@@ -58,9 +58,9 @@ Qualtrics.SurveyEngine.addOnload(function() {
   console.log("Exp1 arm:", arm);
 
   // ---- Store assignment + candidate fields immediately ----
-  Qualtrics.SurveyEngine.setEmbeddedData("tr_arm", arm);
-  Qualtrics.SurveyEngine.setEmbeddedData("candidate_name", CANDIDATE_NAME);
-  Qualtrics.SurveyEngine.setEmbeddedData("candidate_last", CANDIDATE_LAST);
+  Qualtrics.SurveyEngine.setEmbeddedData("exp1_tr_arm", arm);
+  Qualtrics.SurveyEngine.setEmbeddedData("exp1_candidate_name", CANDIDATE_NAME);
+  Qualtrics.SurveyEngine.setEmbeddedData("exp1_candidate_last", CANDIDATE_LAST);
 
   // ---- Fetch ad text, fill placeholders, store, then advance ----
   var url = BASE_URL + arm + ".txt";
@@ -73,7 +73,7 @@ Qualtrics.SurveyEngine.addOnload(function() {
         .replace(/\[STATE\]/gi, respState);
       console.log("Exp1 assembled ad:\n", assembled);
 
-      Qualtrics.SurveyEngine.setEmbeddedData("treatment_text", assembled);
+      Qualtrics.SurveyEngine.setEmbeddedData("exp1_treatment_text", assembled);
 
       var s = document.getElementById("loadingSpinner");
       if (s) { s.remove(); }
@@ -82,7 +82,7 @@ Qualtrics.SurveyEngine.addOnload(function() {
     .catch(error => {
       // The arm is already stored; don't strand the respondent — let them advance.
       console.error("Exp1 randomizer: failed to load ad text:", error);
-      Qualtrics.SurveyEngine.setEmbeddedData("treatment_text", "");
+      Qualtrics.SurveyEngine.setEmbeddedData("exp1_treatment_text", "");
       var s2 = document.getElementById("loadingSpinner");
       if (s2) { s2.remove(); }
       qThis.showNextButton();
