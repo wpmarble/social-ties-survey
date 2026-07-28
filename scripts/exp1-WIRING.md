@@ -8,17 +8,22 @@ assignment.
 
 ## 1. The treatment / ad question
 
-- In the question text (source/HTML view), place the target div where the ad
-  should appear:
+- In the question text (source/HTML view), place an empty target div where the
+  ad should appear — no inline styles needed, the script injects all CSS:
   ```html
-  <div id="adDisplay" style="max-width:640px; margin:0 auto; text-align:left; font-size:1.05em; line-height:1.5;"></div>
+  <div id="adDisplay"></div>
   ```
 - Paste `exp1-ad.js` into this question's JavaScript editor.
 - It randomizes the arm (equal allocation over 4), stores `exp1_tr_arm` /
   `exp1_candidate_name` / `exp1_candidate_last` / `exp1_treatment_text`, fetches
-  the arm's text, fills placeholders, renders the ad into `#adDisplay` as
-  paragraphs, and holds the Next button for 7s (`READ_DELAY_MS`) after the ad
-  appears.
+  the arm's text, fills placeholders, renders the ad into `#adDisplay` as a
+  sponsored-post card (candidate photo avatar, "Mark Anderson for Senate" page
+  name, "Sponsored" label, body copy, and a muted "Paid for by" disclaimer), and
+  holds the Next button for 7s (`READ_DELAY_MS`) after the ad appears.
+- The card chrome is identical across all four arms — only the body copy differs
+  — so styling is not a treatment confound. The final paragraph of each ad
+  (the "I approve this message / Paid for by" line) auto-renders as the muted
+  disclaimer.
 - Put the DV (vote choice) on this same page below the div, or on the next page.
 
 ## 2. Declare embedded data (Survey Flow, ABOVE the Exp 1 block)
@@ -56,6 +61,9 @@ Once fixed, expose the state as embedded data named `resp_state` (or update the
 
 - Ad text: `exp1/{anti-baseline,anti-fiscal,anti-crowdout,control-valence}.txt`
   → live at `https://williammarble.com/social-ties-survey/exp1/<name>.txt`
+- Avatar photo: `exp1/politician-stock-photo.jpg`
+  → live at `https://williammarble.com/social-ties-survey/exp1/politician-stock-photo.jpg`
+  (must be committed + pushed, same as the text files, or the avatar 404s)
 - Script: `scripts/exp1-ad.js`
 
 ## 5. QA checklist before launch
@@ -63,8 +71,9 @@ Once fixed, expose the state as embedded data named `resp_state` (or update the
 - [ ] Preview the **whole survey**; open browser console — confirm `Exp1 arm:`
       logs and the assembled ad prints with name/state filled and **no**
       `[PLACEHOLDER]` left.
-- [ ] Confirm the ad renders in `#adDisplay` as 3 paragraphs (not a run-on
-      block, not stuck on "Loading…").
+- [ ] Confirm the ad renders in `#adDisplay` as the styled card (photo avatar
+      loads, "Mark Anderson for Senate" header, body paragraphs, muted "Paid
+      for by" disclaimer) — not a run-on block, not stuck on "Loading…".
 - [ ] Reload the preview several times — confirm all 4 arms appear.
 - [ ] Confirm `exp1_tr_arm` and `exp1_treatment_text` show up in the response data.
 - [ ] Confirm `resp_state` fills (or intentionally falls back to "your state").
