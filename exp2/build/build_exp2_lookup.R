@@ -27,40 +27,91 @@ stopifnot(identical(sort(ind_xw$choice_value), as.numeric(1:21)),
           identical(sort(occ_xw$choice_value), as.numeric(1:23)))
 
 # ---- Annual churn by JOLTS industry code ------------------------------------
+# n_distinct(period), not n(): duplicated months for a code would still pass
+# a bare row-count check even though the series is not actually 12 distinct
+# monthly observations.
 churn <- read_csv(file.path(SHOCK, "jt_layoff_clean.csv"), show_col_types = FALSE) %>%
   filter(year == 2025, period != "M13", !is.na(layoff_rate)) %>%
   mutate(industry_code = as.character(industry_code)) %>%
   group_by(industry_code) %>%
-  filter(n() == 12) %>%
+  filter(n_distinct(period) == 12) %>%
   summarise(churn_pct = annual_churn(layoff_rate), .groups = "drop")
 
 # ---- Projections ------------------------------------------------------------
 # bls_naics_projection.csv's `2022 NAICS` column also holds composite groupings
-# ("31, 32, 33", "44, 45", "48, 492, 493") — the same as the crosswalk. If we
-# only split the crosswalk side (below) and leave this side as the full
-# composite string, "31" never matches "31, 32, 33" and the join silently
-# returns NA for Manufacturing/Retail/Transportation. Split both sides the
-# same way so the join actually succeeds.
-ind_proj <- read_csv(file.path(SHOCK, "bls_naics_projection.csv"), show_col_types = FALSE) %>%
-  select(naics2022 = `2022 NAICS`, ind_proj = `Employment change, percent, 2024–34`) %>%
-  mutate(naics2022 = str_trim(str_split_fixed(as.character(naics2022), ",", 2)[, 1]))
+# ("31, 32, 33", "44, 45", "48, 492, 493") — the same as the crosswalk. Taking
+# only the first code on BOTH sides (as an earlier version of this script did)
+# happens to work today because the crosswalk and the projection file both
+# happen to list the same code first in each composite group — but that's a
+# coincidence of the current data, not a guarantee. If either side ever lists
+# a non-leading code first (e.g. the crosswalk tags Retail trade with "45"
+# instead of "44, 45"), first-code-only silently reintroduces the exact
+# NA-on-join bug this comment used to warn about. Unnest ALL constituent codes
+# on both sides instead, so the join matches on any shared code regardless of
+# order. `Employment, 2024` is carried through here too — it's this table's
+# only source of industry-level employment weights, used below for the
+# employment-weighted frame distribution (spec section 9).
+ind_proj_wide <- read_csv(file.path(SHOCK, "bls_naics_projection.csv"), show_col_types = FALSE) %>%
+  select(naics2022 = `2022 NAICS`,
+         ind_proj  = `Employment change, percent, 2024–34`,
+         ind_emp24 = `Employment, 2024`)
+
+ind_proj_long <- ind_proj_wide %>%
+  separate_rows(naics2022, sep = ",\\s*") %>%
+  rename(naics_code = naics2022)
+
+# One row per (crosswalk industry, constituent NAICS code); NA naics2022
+# (Government, Other) survives separate_rows as a single NA-code row, which
+# then correctly fails to match anything on the projection side (that side
+# never has an NA code), rather than being silently dropped.
+ind_key <- ind_xw %>%
+  select(choice_value, naics2022) %>%
+  separate_rows(naics2022, sep = ",\\s*") %>%
+  rename(naics_code = naics2022) %>%
+  left_join(ind_proj_long, by = "naics_code") %>%
+  group_by(choice_value) %>%
+  summarise(ind_proj  = if (all(is.na(ind_proj)))  NA_real_ else ind_proj[!is.na(ind_proj)][1],
+            ind_emp24 = if (all(is.na(ind_emp24))) NA_real_ else ind_emp24[!is.na(ind_emp24)][1],
+            .groups = "drop")
 
 occ_proj <- read_csv(file.path(SHOCK, "bls_occ_projection.csv"), show_col_types = FALSE) %>%
   filter(occ_code != "00-0000") %>%
-  select(occ_code, occ_proj = employment_change_pct_2434)
+  select(occ_code, occ_proj = employment_change_pct_2434, occ_emp24 = employment_24)
 
 # ---- Attach to crosswalks ---------------------------------------------------
-# naics2022 in the xwalk can be a list like "31, 32, 33"; take the first code.
 ind <- ind_xw %>%
-  mutate(naics_key = str_trim(str_split_fixed(as.character(naics2022), ",", 2)[, 1]),
-         industry_code = as.character(industry_code)) %>%
-  left_join(ind_proj, by = c("naics_key" = "naics2022")) %>%
-  left_join(churn,    by = "industry_code")
+  mutate(industry_code = as.character(industry_code)) %>%
+  left_join(ind_key, by = "choice_value") %>%
+  left_join(churn,   by = "industry_code")
 
 occ <- occ_xw %>% left_join(occ_proj, by = "occ_code")
 
 stopifnot("industry rows changed after join"   = nrow(ind) == 21,
           "occupation rows changed after join" = nrow(occ) == 23)
+
+# ---- Join-coverage assertions (spec section 9: "fail loudly") ---------------
+# A left_join that matches nothing produces NA silently — ordinary row-count
+# checks (nrow(ind) == 21, above) cannot detect this, because a broken join
+# still returns one row per input row, just with NA payload columns. These
+# assertions instead check that every row which HAD a joinable key actually
+# GOT a value, and that the total count of successful matches hasn't drifted.
+# Verified against the raw data directly (not assumed): 21 industries minus
+# {Government, Other} = 19 have a non-blank naics2022 and all 19 resolve via
+# bls_naics_projection.csv; 21 industries minus {Agriculture, Other} = 19 have
+# a non-blank industry_code and all 19 resolve via jt_layoff_clean.csv; 23
+# occupations minus {Other} = 22 have a non-blank occ_code and all 22 resolve
+# via bls_occ_projection.csv.
+stopifnot(
+  "industry projection lost on join" =
+    !any(!is.na(ind$naics2022) & is.na(ind$ind_proj)),
+  "industry churn lost on join" =
+    !any(!is.na(ind$industry_code) & is.na(ind$churn_pct)),
+  "occupation projection lost on join" =
+    !any(!is.na(occ$occ_code) & is.na(occ$occ_proj)),
+  "industry projection coverage changed" = sum(!is.na(ind$ind_proj))  == 19,
+  "industry churn coverage changed"      = sum(!is.na(ind$churn_pct)) == 19,
+  "occupation projection coverage changed" = sum(!is.na(occ$occ_proj)) == 22
+)
 
 # ---- Resolve one cell -------------------------------------------------------
 resolve_cell <- function(i, o) {
@@ -143,9 +194,70 @@ stopifnot("one-in-N must be suppressed above 20" =
             all(flat$churn_clause[flat$churn_pct != "" &
                 as.numeric(flat$churn_pct) < 5] == ""))
 
+# Spec section 9: "every non-generic cell has a non-missing, correctly-signed
+# number." churn_pct and decline_pct are both stored as unsigned magnitudes
+# (decline_pct via abs() in resolve_cell() above; churn_pct is a rate, never
+# negative by construction) — the prose ("declined by about X%", "roughly one
+# in N") supplies the direction/sign in words. A negative or zero string here
+# would mean either the abs() was lost (an unsigned "-3.9%" reaching a
+# respondent) or a churn rate of exactly zero routed into the churn frame,
+# neither of which should ever happen.
+stopifnot("churn_pct must be strictly positive where present" =
+            all(as.numeric(flat$churn_pct[flat$churn_pct != ""]) > 0))
+stopifnot("decline_pct must be strictly positive where present" =
+            all(as.numeric(flat$decline_pct[flat$decline_pct != ""]) > 0))
+
+# ---- Employment-weighted frame distribution (spec section 9) ----------------
+# The unweighted 483-cell count treats "Manufacturing x Manager" and
+# "Healthcare x Nurse" as equally likely, which they are not — the PAP needs
+# the distribution respondents will actually produce, weighted by how many
+# people work in each cell. We don't have a joint industry-by-occupation
+# national employment table (BLS publishes industry and occupation
+# projections separately, which is exactly why this script joins two
+# separate files rather than one). Absent joint data, we proxy the weight of
+# cell (industry, occupation) as the PRODUCT of each dimension's national
+# employment share, i.e. treat self-reported industry and occupation as
+# independent draws from their national marginals. This is the only
+# defensible choice given what's in `ind_emp24` / `occ_emp24`: an
+# industry-only weighting would ignore that decline routing (and hence the
+# churn vs. churn_decline split) depends on the paired occupation's size too;
+# an occupation-only weighting would ignore that churn itself is industry-only.
+# The product is the standard independence-assumption proxy for a joint
+# distribution when only marginals are available.
+#
+# Coverage gap, stated explicitly rather than silently zero-filled: Government
+# and "Other" (write-in) industries, and "Other" (write-in) occupation, have
+# no national employment figure in these BLS tables (bls_naics_projection.csv
+# excludes public administration; free-text write-ins have no NAICS/SOC code
+# to look up by definition) — so `ind_emp24`/`occ_emp24` is NA for those rows,
+# and any cell touching them drops out of the weighted total (na.rm) rather
+# than being counted as zero-population. The printed coverage line reports
+# exactly how much of the unweighted cell count that excludes.
+weights <- flat %>%
+  left_join(ind %>% transmute(ind = choice_value, ind_emp24), by = "ind") %>%
+  left_join(occ %>% transmute(occ = choice_value, occ_emp24), by = "occ") %>%
+  mutate(cell_weight = ind_emp24 * occ_emp24)
+
+n_weighted <- sum(!is.na(weights$cell_weight))
+total_weight <- sum(weights$cell_weight, na.rm = TRUE)
+
 # ---- Report -----------------------------------------------------------------
-cat("\nFrame distribution across", nrow(flat), "cells:\n")
+cat("\nFrame distribution across", nrow(flat), "cells (unweighted):\n")
 print(flat %>% count(frame) %>% mutate(pct = round(100 * n / sum(n), 1)))
+
+cat("\nFrame distribution weighted by national employment",
+    "(industry share x occupation share; independence-assumption proxy",
+    "for the unobserved joint distribution):\n")
+cat(n_weighted, "of", nrow(flat), "cells (", round(100 * n_weighted / nrow(flat), 1),
+    "% ) have a known employment weight; the rest touch Government, or a",
+    "write-in \"Other\" industry/occupation, none of which have a BLS national",
+    "employment figure, and are excluded from the weighted total below.\n")
+print(weights %>% filter(!is.na(cell_weight)) %>%
+        group_by(frame) %>%
+        summarise(weight = sum(cell_weight), .groups = "drop") %>%
+        mutate(pct = round(100 * weight / total_weight, 1)) %>%
+        select(frame, pct))
+
 cat("\nBy industry:\n")
 print(flat %>% group_by(ind) %>%
         summarise(frames = paste(sort(unique(frame)), collapse = "/"),
