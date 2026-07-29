@@ -1,22 +1,22 @@
-industry_survey,naics2022,industry_code
-"Agriculture, farming, forestry, or fishing",11,
-"Mining, quarrying, or oil and gas extraction",21,110099
-"Utilities (electric, gas, water)",22,
-Construction,23,230000
-"Manufacturing (factories, production of goods)","31, 32, 33",300000
-Wholesale trade or distribution,42,420000
-"Retail trade (stores, e-commerce)","44, 45",440000
-"Transportation, delivery, or warehousing","48, 492, 493",480099
-"Information, media, publishing, telecommunications, or software",51,510000
-"Finance, banking, or insurance",52,520000
-"Real estate, rental, or leasing",53,530000
-"Professional, scientific, or technical services (law, consulting, accounting, IT services)",54,540099
-Corporate management or company headquarters,55,
-"Administrative and support services (temp staffing, office support, janitorial, waste management)",56,
-"Education (K–12, higher ed, training)",61,610000
-"Healthcare, hospitals, or social assistance",62,620000
-"Arts, entertainment, or recreation",71,710000
-"Hotels, restaurants, or food service",72,720000
-"Other services (repair shops, personal services, religious or civic organizations)",81,810000
-Government or public administration,,900000
-Other (please describe),,
+choice_value,industry_survey,churn_unit,naics2022,industry_code,jolts_series
+1,"Agriculture, farming, forestry, or fishing","agriculture, forestry, and fishing",11,,
+2,"Mining, quarrying, or oil and gas extraction","the mining and oil and gas industry",21,110099,Mining and logging
+3,"Utilities (electric, gas, water)","the utilities industry",22,480099,"Transportation, warehousing, and utilities"
+4,Construction,"the construction industry",23,230000,Construction
+5,"Manufacturing (factories, production of goods)",manufacturing,"31, 32, 33",300000,Manufacturing
+6,Wholesale trade or distribution,"the wholesale trade industry",42,420000,Wholesale trade
+7,"Retail trade (stores, e-commerce)","the retail trade industry","44, 45",440000,Retail trade
+8,"Transportation, delivery, or warehousing","the transportation and warehousing industry","48, 492, 493",480099,"Transportation, warehousing, and utilities"
+9,"Information, media, publishing, telecommunications, or software","the information and telecommunications industry",51,510000,Information
+10,"Finance, banking, or insurance","the finance and insurance industry",52,520000,Finance and insurance
+11,"Real estate, rental, or leasing","the real estate industry",53,530000,Real estate and rental and leasing
+12,"Professional, scientific, or technical services (law, consulting, accounting, IT services)","professional and technical services",54,540099,Professional and business services
+13,Corporate management or company headquarters,"corporate management",55,540099,Professional and business services
+14,"Administrative and support services (temp staffing, office support, janitorial, waste management)","administrative and support services",56,540099,Professional and business services
+15,"Education (K–12, higher ed, training)","the education sector",61,610000,Private educational services
+16,"Healthcare, hospitals, or social assistance","health care and social assistance",62,620000,Health care and social assistance
+17,"Arts, entertainment, or recreation","the arts, entertainment, and recreation industry",71,710000,"Arts, entertainment, and recreation"
+18,"Hotels, restaurants, or food service","the accommodation and food service industry",72,720000,Accommodation and food services
+19,"Other services (repair shops, personal services, religious or civic organizations)","other services",81,810000,Other services
+20,Government or public administration,government,,900000,Government
+21,Other (please describe),,,,

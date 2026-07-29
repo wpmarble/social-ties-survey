@@ -1,0 +1,1 @@
+In [CHURN_UNIT], layoffs and discharges last year equaled about [CHURN_PCT]% of all jobs[CHURN_CLAUSE].
