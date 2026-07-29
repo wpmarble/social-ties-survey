@@ -30,12 +30,44 @@ stopifnot(identical(sort(ind_xw$choice_value), as.numeric(1:21)),
 # n_distinct(period), not n(): duplicated months for a code would still pass
 # a bare row-count check even though the series is not actually 12 distinct
 # monthly observations.
-churn <- read_csv(file.path(SHOCK, "jt_layoff_clean.csv"), show_col_types = FALSE) %>%
+churn_raw <- read_csv(file.path(SHOCK, "jt_layoff_clean.csv"), show_col_types = FALSE)
+
+# I2: `year == 2025` below is hardcoded because the stimulus copy says "last
+# year" (correct as of this writing). Nothing else would warn if new data
+# lands and this goes stale, so fail loudly instead. NB: a naive
+# `max(year) == 2025` is too strict for this data source in practice — this
+# JOLTS extract already carries a few months of the in-progress current year
+# before that year is usable (checked directly against the raw file: as of
+# this build, 2026 has only 4 of 12 months present, for a subset of industry
+# codes, so it correctly falls out of the `n_distinct(period) == 12` filter
+# below and never reaches `churn`). The thing that actually needs to trigger
+# this guard is a NEW COMPLETE year appearing — i.e. some year after 2025
+# with a full 12-month series for at least one industry_code — since that's
+# the point at which the filter below (and the stimulus copy's "last year"
+# claim) should move forward.
+newer_complete_years <- churn_raw %>%
+  filter(period != "M13", !is.na(layoff_rate), year > 2025) %>%
+  group_by(year, industry_code) %>%
+  summarise(n_months = n_distinct(period), .groups = "drop") %>%
+  filter(n_months == 12)
+stopifnot("a year after 2025 now has a complete 12-month series for at least one industry_code — update the year filter below AND the stimulus copy's \"last year\" claim together, then advance/remove this guard" =
+            nrow(newer_complete_years) == 0)
+
+# C2: jolts_industry_text carries the *actual* JOLTS industry_text associated
+# with each industry_code, straight from the source data — kept alongside
+# churn_pct so it can be checked against industry_xwalk.csv's own
+# `jolts_series` column below (see "Crosswalk-vs-JOLTS series assertion").
+# first(industry_text) is safe here: verified directly that every
+# industry_code in this file maps to exactly one distinct industry_text
+# (checked across the whole file, not just the 2025 subset).
+churn <- churn_raw %>%
   filter(year == 2025, period != "M13", !is.na(layoff_rate)) %>%
   mutate(industry_code = as.character(industry_code)) %>%
   group_by(industry_code) %>%
   filter(n_distinct(period) == 12) %>%
-  summarise(churn_pct = annual_churn(layoff_rate), .groups = "drop")
+  summarise(churn_pct = annual_churn(layoff_rate),
+            jolts_industry_text = first(industry_text),
+            .groups = "drop")
 
 # ---- Projections ------------------------------------------------------------
 # bls_naics_projection.csv's `2022 NAICS` column also holds composite groupings
@@ -64,14 +96,33 @@ ind_proj_long <- ind_proj_wide %>%
 # (Government, Other) survives separate_rows as a single NA-code row, which
 # then correctly fails to match anything on the projection side (that side
 # never has an NA code), rather than being silently dropped.
-ind_key <- ind_xw %>%
+ind_key_raw <- ind_xw %>%
   select(choice_value, naics2022) %>%
   separate_rows(naics2022, sep = ",\\s*") %>%
   rename(naics_code = naics2022) %>%
-  left_join(ind_proj_long, by = "naics_code") %>%
+  left_join(ind_proj_long, by = "naics_code")
+
+# I1: a composite crosswalk row (e.g. Retail = NAICS 44+45) silently took the
+# first constituent's ind_proj and discarded any disagreement between
+# constituents — e.g. splitting Retail into 44 (-0.2%) and 45 (-9.9%) in the
+# projection file would render "decline by about 0.2%" without any warning
+# that 45's -9.9% was thrown away. Require all non-NA constituents of a given
+# crosswalk row to agree before collapsing to one value.
+ind_key_agreement <- ind_key_raw %>%
+  group_by(choice_value) %>%
+  summarise(n_distinct_proj = n_distinct(na.omit(ind_proj)), .groups = "drop")
+stopifnot("composite NAICS constituents disagree on ind_proj for at least one crosswalk row" =
+            all(ind_key_agreement$n_distinct_proj <= 1))
+
+ind_key <- ind_key_raw %>%
   group_by(choice_value) %>%
   summarise(ind_proj  = if (all(is.na(ind_proj)))  NA_real_ else ind_proj[!is.na(ind_proj)][1],
-            ind_emp24 = if (all(is.na(ind_emp24))) NA_real_ else ind_emp24[!is.na(ind_emp24)][1],
+            # I1: sum, not first() — ind_emp24 feeds the employment-weighted
+            # frame distribution (spec section 9); taking only the first
+            # constituent's employment (e.g. NAICS 44 alone for Retail, which
+            # is really 44+45) understates the true employment behind that
+            # crosswalk row and corrupts the weighting the PAP relies on.
+            ind_emp24 = if (all(is.na(ind_emp24))) NA_real_ else sum(ind_emp24, na.rm = TRUE),
             .groups = "drop")
 
 occ_proj <- read_csv(file.path(SHOCK, "bls_occ_projection.csv"), show_col_types = FALSE) %>%
@@ -111,6 +162,27 @@ stopifnot(
   "industry projection coverage changed" = sum(!is.na(ind$ind_proj))  == 19,
   "industry churn coverage changed"      = sum(!is.na(ind$churn_pct)) == 19,
   "occupation projection coverage changed" = sum(!is.na(occ$occ_proj)) == 22
+)
+
+# ---- Crosswalk-vs-JOLTS series assertion (C2) --------------------------------
+# A wrong `industry_code` in industry_xwalk.csv (e.g. swapped between two
+# industries) is invisible to every assertion above: the join still succeeds
+# (it just succeeds against the WRONG JOLTS series), coverage counts don't
+# move, and the crosswalk's prose *labels* are still correct — only the
+# NUMBER attached to them is wrong. `industry_xwalk.csv`'s `jolts_series`
+# column records, for each row, the JOLTS `industry_text` its `industry_code`
+# is supposed to resolve to; `churn`'s `jolts_industry_text` (above) is what
+# it actually resolved to. Requiring these to match catches both a hand-edit
+# swap and a BLS renumbering, and — because `jolts_series` lives in the file
+# people actually hand-edit — makes a scope mismatch visible at the point of
+# editing, not just at build time.
+# (`ind` already carries `jolts_series` — it came straight through from
+# `ind_xw`, which is where `ind` starts, and neither `ind_key` nor `churn`
+# defines a column of that name to collide with it.)
+stopifnot(
+  "industry_xwalk.csv's jolts_series does not match the JOLTS industry_text actually resolved via industry_code — check for a wrong/swapped industry_code" =
+    all(is.na(ind$jolts_series) |
+        ind$jolts_series == ind$jolts_industry_text)
 )
 
 # ---- Resolve one cell -------------------------------------------------------
@@ -206,6 +278,25 @@ stopifnot("churn_pct must be strictly positive where present" =
             all(as.numeric(flat$churn_pct[flat$churn_pct != ""]) > 0))
 stopifnot("decline_pct must be strictly positive where present" =
             all(as.numeric(flat$decline_pct[flat$decline_pct != ""]) > 0))
+
+# ---- C3: churn_pct ceiling and one-in-N floor --------------------------------
+# The only prior guard on churn_pct was "> 0" — no upper bound. A 5x input
+# mis-scale (a plausible units or vintage change upstream) produces a
+# churn_pct near 92 with no assertion to catch it, and the rendered sentence
+# reads "...about 92% of all jobs — roughly one in one." Ceiling chosen as
+# ~45: the current observed max across all industry codes in use is 37%
+# (Arts, entertainment, and recreation), so 45 gives headroom for normal
+# data movement while still catching an order-of-magnitude-style error.
+stopifnot("churn_pct exceeds sane ceiling (45%; current observed max is ~37%) — check for an input-rate scaling/units/vintage error upstream" =
+            all(as.numeric(flat$churn_pct[flat$churn_pct != ""]) <= 45))
+
+# Lower bound on the one-in-N denominator: churn_pct >= 50 would round to
+# "one in one", which is a claim of certainty, not a hedge — checked directly
+# against churn_pct (not just against churn_clause) so this fires even though
+# churn_word() now separately suppresses n == 1 into an empty clause; the
+# suppression alone would hide the bad rate rather than flag it.
+stopifnot("one-in-N denominator must be at least 2 (churn_pct at or above ~50 would imply 'one in one')" =
+            all(round(100 / as.numeric(flat$churn_pct[flat$churn_pct != ""])) >= 2))
 
 # ---- Label-alignment assertions (row-misalignment, not a broken join) -------
 # A row-shifted prose label (e.g. `churn_unit` off by one row) produces a

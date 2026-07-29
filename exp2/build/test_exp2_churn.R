@@ -19,6 +19,13 @@ stopifnot(churn_word(12) == "twelve")
 stopifnot(churn_word(20) == "twenty")
 stopifnot(is.na(churn_word(21)))   # suppressed above 20
 
+# n == 1 ("roughly one in one") is suppressed too, not spelled as "one" — it
+# reads as a claim of certainty rather than a hedge, and can only arise from a
+# churn_pct >= ~50 (an upstream scaling bug; see C3's ceiling assertion in
+# build_exp2_lookup.R). This is defense-in-depth against that bug reaching the
+# rendered sentence even if the ceiling assertion were ever loosened.
+stopifnot("churn_word(1) must be suppressed, not spelled as one" = is.na(churn_word(1)))
+
 # Non-uniform test vectors: these are essential to detect implementations that
 # reduce the 12 rates to a single representative value (e.g., max, mean, min)
 # and then compound that one value 12 times. Such implementations are wrong but

@@ -115,9 +115,18 @@ skipped.
   it excludes some cells), the unweighted composition of the excluded cells, and a per-industry
   breakdown. This is the number the PAP needs for expected cell sizes (spec §9) — inspect it, don't
   just check the exit code.
-- Push the regenerated `exp2/exp2_lookup.json`. **Never edit `exp2b-threat.js`** — it contains zero
-  routing logic; every threshold, fallback, and label decision lives in the R script and its
-  crosswalks.
+- Push the regenerated `exp2/exp2_lookup.json`. **Don't edit `exp2b-threat.js` for a data change** —
+  it contains zero routing logic; every threshold, fallback, and label decision lives in the R
+  script and its crosswalks. This does NOT mean the JS is never touched: it hardcodes the survey's
+  current choice counts as bounds — `code("${q://QID23/SelectedChoicesRecode}", 21)` and
+  `code("${q://QID28/SelectedChoicesRecode}", 23)` (lines 25–26), and the "missing axis" fallback
+  indices `lookup[...]["23"]` / `lookup["21"][...]` (lines 94/96). **Adding or removing a choice on
+  QID23 or QID28 requires updating all four of these numbers in the script, updating the
+  corresponding crosswalk CSV, and rebuilding `exp2_lookup.json`** — skip the script edit and every
+  respondent who picks a choice beyond the old bound gets `code()` returning `0` (treated as
+  invalid, indistinguishable from a blank/unparseable answer), which silently routes them onto the
+  existing "missing axis" fallback (the known axis's real cell, "Other" substituted for the new
+  one) or, if both axes are affected, the fully generic stimulus — with no error anywhere.
 - The build script's `stopifnot()` assertions are the safety net, and they've been adversarially
   tested: an independent review ran a full mutation suite against the script (deliberately
   reintroducing join breaks, an unsigned-decline bug, a row-misalignment bug, and a
@@ -216,6 +225,12 @@ Run this after every rebuild of `exp2_lookup.json`, before pushing.
 - [ ] Open the browser console. Confirm `Exp2B arm: ... ind: ... occ: ...` logs on load, and
       `Exp2B frame: ...` followed by the full text logs after render.
 - [ ] Confirm the div never gets stuck on "Loading…".
+- [ ] Confirm the stimulus text is **visibly rendered on screen** in `#exp2bDisplay` — not merely
+      that the `exp2b_*` embedded data fields populated. If the div is absent or misnamed (e.g. the
+      question HTML doesn't contain `<div id="exp2bDisplay"></div>` exactly), the script still
+      stores all embedded data and logs success, so both the console-log check above and the
+      embedded-data-export check below would pass while the respondent sees a blank page. The
+      script now logs a `console.error` in this case — check the console for it too.
 - [ ] No literal `[CHURN_UNIT]`, `[CHURN_PCT]`, `[CHURN_CLAUSE]`, `[DECLINE_UNIT]`, or
       `[DECLINE_PCT]` visible anywhere in the rendered text.
 - [ ] Reload the preview repeatedly — confirm both arms appear (`threat` and `placebo`), and across

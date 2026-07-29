@@ -38,6 +38,7 @@ Qualtrics.SurveyEngine.addOnload(function() {
 
   var target = document.getElementById("exp2bDisplay");
   if (target) { target.innerHTML = '<p style="color:#888;">Loading…</p>'; }
+  else { console.error("Exp2B: #exp2bDisplay not found in the DOM — embedded data will still be stored, but nothing will render on screen. Check the question HTML."); }
 
   function render(text, frame, cell) {
     Qualtrics.SurveyEngine.setEmbeddedData("exp2b_text", text);
@@ -51,6 +52,8 @@ Qualtrics.SurveyEngine.addOnload(function() {
         .filter(p => p.trim() !== "")
         .map(p => '<p style="margin:0 0 1em 0;">' + p.trim().replace(/\n/g, " ") + "</p>")
         .join("");
+    } else {
+      console.error("Exp2B: #exp2bDisplay not found in the DOM — stimulus text was composed and embedded data was stored, but nothing was rendered on screen for this respondent.");
     }
     console.log("Exp2B frame:", frame, "\n", text);
   }
