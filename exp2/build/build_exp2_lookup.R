@@ -108,21 +108,40 @@ ind_key_raw <- ind_xw %>%
 # projection file would render "decline by about 0.2%" without any warning
 # that 45's -9.9% was thrown away. Require all non-NA constituents of a given
 # crosswalk row to agree before collapsing to one value.
+#
+# The same agreement-then-take-one treatment applies to ind_emp24, and NOT
+# sum() — this is not the same situation as "each constituent has its own
+# distinct value and we need all of it." bls_naics_projection.csv stores a
+# composite group (e.g. "31, 32, 33") as ONE row already holding the
+# sector's combined 2024 employment total (Manufacturing: 12,817.2K). When
+# separate_rows() explodes that row into one row per constituent NAICS code,
+# it REPLICATES the already-combined total onto each constituent row — it
+# does not divide it. So summing across constituents multiplies the true
+# total by the number of constituent codes (3x for Manufacturing and
+# Transportation, 2x for Retail) — verified directly against
+# bls_naics_projection.csv: Manufacturing's true total is 12,817.2, not the
+# 38,452 that summing three replicated copies produces. Because the
+# replicated copies are identical by construction (same source row), take-one
+# is exactly correct here, the same way it already is for ind_proj. A
+# disagreement in ind_emp24 across constituents is impossible under the
+# current data (it would mean bls_naics_projection.csv split a composite
+# across multiple rows with different totals, which it doesn't do today),
+# but is checked defensively anyway so a future format change that DID split
+# it that way would fail loudly rather than silently pick one arbitrary total.
 ind_key_agreement <- ind_key_raw %>%
   group_by(choice_value) %>%
-  summarise(n_distinct_proj = n_distinct(na.omit(ind_proj)), .groups = "drop")
+  summarise(n_distinct_proj = n_distinct(na.omit(ind_proj)),
+            n_distinct_emp  = n_distinct(na.omit(ind_emp24)),
+            .groups = "drop")
 stopifnot("composite NAICS constituents disagree on ind_proj for at least one crosswalk row" =
             all(ind_key_agreement$n_distinct_proj <= 1))
+stopifnot("composite NAICS constituents disagree on ind_emp24 for at least one crosswalk row" =
+            all(ind_key_agreement$n_distinct_emp <= 1))
 
 ind_key <- ind_key_raw %>%
   group_by(choice_value) %>%
   summarise(ind_proj  = if (all(is.na(ind_proj)))  NA_real_ else ind_proj[!is.na(ind_proj)][1],
-            # I1: sum, not first() — ind_emp24 feeds the employment-weighted
-            # frame distribution (spec section 9); taking only the first
-            # constituent's employment (e.g. NAICS 44 alone for Retail, which
-            # is really 44+45) understates the true employment behind that
-            # crosswalk row and corrupts the weighting the PAP relies on.
-            ind_emp24 = if (all(is.na(ind_emp24))) NA_real_ else sum(ind_emp24, na.rm = TRUE),
+            ind_emp24 = if (all(is.na(ind_emp24))) NA_real_ else ind_emp24[!is.na(ind_emp24)][1],
             .groups = "drop")
 
 occ_proj <- read_csv(file.path(SHOCK, "bls_occ_projection.csv"), show_col_types = FALSE) %>%
