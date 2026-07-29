@@ -177,8 +177,8 @@ flat <- do.call(rbind, lapply(names(lookup), function(iv)
   do.call(rbind, lapply(names(lookup[[iv]]), function(ov) {
     c <- lookup[[iv]][[ov]]
     tibble(ind = as.integer(iv), occ = as.integer(ov), frame = c$frame,
-           churn_pct = c$churn_pct, decline_pct = c$decline_pct,
-           churn_clause = c$churn_clause)
+           churn_unit = c$churn_unit, churn_pct = c$churn_pct, churn_clause = c$churn_clause,
+           decline_unit = c$decline_unit, decline_pct = c$decline_pct)
   }))))
 
 stopifnot("must be 483 cells" = nrow(flat) == 483)
@@ -206,6 +206,51 @@ stopifnot("churn_pct must be strictly positive where present" =
             all(as.numeric(flat$churn_pct[flat$churn_pct != ""]) > 0))
 stopifnot("decline_pct must be strictly positive where present" =
             all(as.numeric(flat$decline_pct[flat$decline_pct != ""]) > 0))
+
+# ---- Label-alignment assertions (row-misalignment, not a broken join) -------
+# A row-shifted prose label (e.g. `churn_unit` off by one row) produces a
+# cell with every number correct and a frame correctly routed, but a
+# respondent reads a sentence naming the WRONG industry — e.g. a healthcare
+# respondent reading "In the arts, entertainment, and recreation industry...
+# about 8%...". The join-coverage assertions above cannot see this: nothing
+# is missing, a value just landed on the wrong row. Re-derive each cell's
+# expected label straight from the crosswalk, keyed on that cell's own
+# ind_code/occ_code (NOT from the `ind`/`occ` objects the main loop used, so
+# a shift introduced anywhere in that pipeline is still visible here), and
+# require an exact match.
+ind_churn_unit_by_code   <- setNames(ind_xw$churn_unit,   as.character(ind_xw$choice_value))
+occ_decline_unit_by_code <- setNames(occ_xw$decline_unit, as.character(occ_xw$choice_value))
+
+stopifnot("churn_unit is not this cell's own industry label" =
+  all(flat$churn_unit == "" |
+      flat$churn_unit == ind_churn_unit_by_code[as.character(flat$ind)]))
+# decline_unit names either the cell's own industry (churn_unit vocabulary)
+# or its own occupation (decline_unit vocabulary) — never any other row's
+# label from either vocabulary. The two vocabularies don't overlap in text
+# ("the retail trade industry" vs. "office, administrative, and clerical
+# jobs"), so this still catches a same-vocabulary off-by-one shift.
+stopifnot("decline_unit is not this cell's own industry or occupation label" =
+  all(flat$decline_unit == "" |
+      flat$decline_unit == ind_churn_unit_by_code[as.character(flat$ind)] |
+      flat$decline_unit == occ_decline_unit_by_code[as.character(flat$occ)]))
+
+# ---- Churn-clause / churn_pct consistency ------------------------------------
+# Spec's rounding-convention ruling (task-4-report.md addendum) requires the
+# "roughly one in N" word to be derivable from the DISPLAYED churn_pct in
+# that same cell — that is the whole reason the ruling rounds churn_pct
+# first and derives N from the rounded value, so the two numbers in one
+# sentence never contradict each other. The existing "suppress above 20"
+# check only catches decoupling by accident, when it happens to cross that
+# one boundary; this closes the loop directly by recomputing the expected
+# word from what's actually printed and requiring an exact match.
+extract_one_in_word <- function(clause) stringr::str_match(clause, "roughly one in (\\w+)$")[, 2]
+clause_rows    <- which(flat$churn_clause != "")
+expected_word  <- vapply(clause_rows, function(k)
+                    churn_word(round(100 / as.numeric(flat$churn_pct[k]))), character(1))
+actual_word    <- vapply(clause_rows, function(k)
+                    extract_one_in_word(flat$churn_clause[k]), character(1))
+stopifnot("churn_clause one-in-N decoupled from displayed churn_pct" =
+            identical(expected_word, actual_word))
 
 # ---- Employment-weighted frame distribution (spec section 9) ----------------
 # The unweighted 483-cell count treats "Manufacturing x Manager" and
@@ -251,12 +296,26 @@ cat("\nFrame distribution weighted by national employment",
 cat(n_weighted, "of", nrow(flat), "cells (", round(100 * n_weighted / nrow(flat), 1),
     "% ) have a known employment weight; the rest touch Government, or a",
     "write-in \"Other\" industry/occupation, none of which have a BLS national",
-    "employment figure, and are excluded from the weighted total below.\n")
+    "employment figure, and are excluded from the weighted total below",
+    "(na.rm, NOT treated as zero population).\n")
+cat("These shares are CONDITIONAL on the", n_weighted, "weighted cells above —",
+    "NOT unconditional full-sample shares. Government and write-in \"Other\"",
+    "are real categories respondents will select, and the excluded cells are",
+    "not a random slice of the 483 (see composition below), so do not read",
+    "the percentages here as \"the\" expected cell sizes without accounting",
+    "for that excluded mass.\n")
 print(weights %>% filter(!is.na(cell_weight)) %>%
         group_by(frame) %>%
         summarise(weight = sum(cell_weight), .groups = "drop") %>%
         mutate(pct = round(100 * weight / total_weight, 1)) %>%
         select(frame, pct))
+
+n_excluded <- sum(is.na(weights$cell_weight))
+cat("\nUnweighted frame composition of the", n_excluded,
+    "excluded cells (Government and/or write-in \"Other\" on either side),",
+    "shown so the direction of the skew is visible rather than inferred:\n")
+print(weights %>% filter(is.na(cell_weight)) %>%
+        count(frame) %>% mutate(pct = round(100 * n / sum(n), 1)))
 
 cat("\nBy industry:\n")
 print(flat %>% group_by(ind) %>%
