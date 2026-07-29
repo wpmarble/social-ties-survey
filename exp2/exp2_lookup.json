@@ -1,0 +1,4874 @@
+{
+  "1": {
+    "1": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "1",
+      "occ_code": "1"
+    },
+    "2": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "1",
+      "occ_code": "2"
+    },
+    "3": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "1",
+      "occ_code": "3"
+    },
+    "4": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "1",
+      "occ_code": "4"
+    },
+    "5": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "1",
+      "occ_code": "5"
+    },
+    "6": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "1",
+      "occ_code": "6"
+    },
+    "7": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "1",
+      "occ_code": "7"
+    },
+    "8": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "1",
+      "occ_code": "8"
+    },
+    "9": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "1",
+      "occ_code": "9"
+    },
+    "10": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "1",
+      "occ_code": "10"
+    },
+    "11": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "1",
+      "occ_code": "11"
+    },
+    "12": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "1",
+      "occ_code": "12"
+    },
+    "13": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "1",
+      "occ_code": "13"
+    },
+    "14": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "1",
+      "occ_code": "14"
+    },
+    "15": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "1",
+      "occ_code": "15"
+    },
+    "16": {
+      "frame": "decline",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "sales jobs",
+      "decline_pct": "2.0",
+      "ind_code": "1",
+      "occ_code": "16"
+    },
+    "17": {
+      "frame": "decline",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "office, administrative, and clerical jobs",
+      "decline_pct": "3.9",
+      "ind_code": "1",
+      "occ_code": "17"
+    },
+    "18": {
+      "frame": "decline",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "farming, fishing, and forestry jobs",
+      "decline_pct": "2.5",
+      "ind_code": "1",
+      "occ_code": "18"
+    },
+    "19": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "1",
+      "occ_code": "19"
+    },
+    "20": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "1",
+      "occ_code": "20"
+    },
+    "21": {
+      "frame": "decline",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "production jobs",
+      "decline_pct": "1.1",
+      "ind_code": "1",
+      "occ_code": "21"
+    },
+    "22": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "1",
+      "occ_code": "22"
+    },
+    "23": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "1",
+      "occ_code": "23"
+    }
+  },
+  "2": {
+    "1": {
+      "frame": "churn_decline",
+      "churn_unit": "the mining and oil and gas industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the mining and oil and gas industry",
+      "decline_pct": "1.6",
+      "ind_code": "2",
+      "occ_code": "1"
+    },
+    "2": {
+      "frame": "churn_decline",
+      "churn_unit": "the mining and oil and gas industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the mining and oil and gas industry",
+      "decline_pct": "1.6",
+      "ind_code": "2",
+      "occ_code": "2"
+    },
+    "3": {
+      "frame": "churn_decline",
+      "churn_unit": "the mining and oil and gas industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the mining and oil and gas industry",
+      "decline_pct": "1.6",
+      "ind_code": "2",
+      "occ_code": "3"
+    },
+    "4": {
+      "frame": "churn_decline",
+      "churn_unit": "the mining and oil and gas industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the mining and oil and gas industry",
+      "decline_pct": "1.6",
+      "ind_code": "2",
+      "occ_code": "4"
+    },
+    "5": {
+      "frame": "churn_decline",
+      "churn_unit": "the mining and oil and gas industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the mining and oil and gas industry",
+      "decline_pct": "1.6",
+      "ind_code": "2",
+      "occ_code": "5"
+    },
+    "6": {
+      "frame": "churn_decline",
+      "churn_unit": "the mining and oil and gas industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the mining and oil and gas industry",
+      "decline_pct": "1.6",
+      "ind_code": "2",
+      "occ_code": "6"
+    },
+    "7": {
+      "frame": "churn_decline",
+      "churn_unit": "the mining and oil and gas industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the mining and oil and gas industry",
+      "decline_pct": "1.6",
+      "ind_code": "2",
+      "occ_code": "7"
+    },
+    "8": {
+      "frame": "churn_decline",
+      "churn_unit": "the mining and oil and gas industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the mining and oil and gas industry",
+      "decline_pct": "1.6",
+      "ind_code": "2",
+      "occ_code": "8"
+    },
+    "9": {
+      "frame": "churn_decline",
+      "churn_unit": "the mining and oil and gas industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the mining and oil and gas industry",
+      "decline_pct": "1.6",
+      "ind_code": "2",
+      "occ_code": "9"
+    },
+    "10": {
+      "frame": "churn_decline",
+      "churn_unit": "the mining and oil and gas industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the mining and oil and gas industry",
+      "decline_pct": "1.6",
+      "ind_code": "2",
+      "occ_code": "10"
+    },
+    "11": {
+      "frame": "churn_decline",
+      "churn_unit": "the mining and oil and gas industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the mining and oil and gas industry",
+      "decline_pct": "1.6",
+      "ind_code": "2",
+      "occ_code": "11"
+    },
+    "12": {
+      "frame": "churn_decline",
+      "churn_unit": "the mining and oil and gas industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the mining and oil and gas industry",
+      "decline_pct": "1.6",
+      "ind_code": "2",
+      "occ_code": "12"
+    },
+    "13": {
+      "frame": "churn_decline",
+      "churn_unit": "the mining and oil and gas industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the mining and oil and gas industry",
+      "decline_pct": "1.6",
+      "ind_code": "2",
+      "occ_code": "13"
+    },
+    "14": {
+      "frame": "churn_decline",
+      "churn_unit": "the mining and oil and gas industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the mining and oil and gas industry",
+      "decline_pct": "1.6",
+      "ind_code": "2",
+      "occ_code": "14"
+    },
+    "15": {
+      "frame": "churn_decline",
+      "churn_unit": "the mining and oil and gas industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the mining and oil and gas industry",
+      "decline_pct": "1.6",
+      "ind_code": "2",
+      "occ_code": "15"
+    },
+    "16": {
+      "frame": "churn_decline",
+      "churn_unit": "the mining and oil and gas industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "sales jobs",
+      "decline_pct": "2.0",
+      "ind_code": "2",
+      "occ_code": "16"
+    },
+    "17": {
+      "frame": "churn_decline",
+      "churn_unit": "the mining and oil and gas industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "office, administrative, and clerical jobs",
+      "decline_pct": "3.9",
+      "ind_code": "2",
+      "occ_code": "17"
+    },
+    "18": {
+      "frame": "churn_decline",
+      "churn_unit": "the mining and oil and gas industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "farming, fishing, and forestry jobs",
+      "decline_pct": "2.5",
+      "ind_code": "2",
+      "occ_code": "18"
+    },
+    "19": {
+      "frame": "churn_decline",
+      "churn_unit": "the mining and oil and gas industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the mining and oil and gas industry",
+      "decline_pct": "1.6",
+      "ind_code": "2",
+      "occ_code": "19"
+    },
+    "20": {
+      "frame": "churn_decline",
+      "churn_unit": "the mining and oil and gas industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the mining and oil and gas industry",
+      "decline_pct": "1.6",
+      "ind_code": "2",
+      "occ_code": "20"
+    },
+    "21": {
+      "frame": "churn_decline",
+      "churn_unit": "the mining and oil and gas industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the mining and oil and gas industry",
+      "decline_pct": "1.6",
+      "ind_code": "2",
+      "occ_code": "21"
+    },
+    "22": {
+      "frame": "churn_decline",
+      "churn_unit": "the mining and oil and gas industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the mining and oil and gas industry",
+      "decline_pct": "1.6",
+      "ind_code": "2",
+      "occ_code": "22"
+    },
+    "23": {
+      "frame": "churn_decline",
+      "churn_unit": "the mining and oil and gas industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the mining and oil and gas industry",
+      "decline_pct": "1.6",
+      "ind_code": "2",
+      "occ_code": "23"
+    }
+  },
+  "3": {
+    "1": {
+      "frame": "churn",
+      "churn_unit": "the utilities industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "3",
+      "occ_code": "1"
+    },
+    "2": {
+      "frame": "churn",
+      "churn_unit": "the utilities industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "3",
+      "occ_code": "2"
+    },
+    "3": {
+      "frame": "churn",
+      "churn_unit": "the utilities industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "3",
+      "occ_code": "3"
+    },
+    "4": {
+      "frame": "churn",
+      "churn_unit": "the utilities industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "3",
+      "occ_code": "4"
+    },
+    "5": {
+      "frame": "churn",
+      "churn_unit": "the utilities industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "3",
+      "occ_code": "5"
+    },
+    "6": {
+      "frame": "churn",
+      "churn_unit": "the utilities industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "3",
+      "occ_code": "6"
+    },
+    "7": {
+      "frame": "churn",
+      "churn_unit": "the utilities industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "3",
+      "occ_code": "7"
+    },
+    "8": {
+      "frame": "churn",
+      "churn_unit": "the utilities industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "3",
+      "occ_code": "8"
+    },
+    "9": {
+      "frame": "churn",
+      "churn_unit": "the utilities industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "3",
+      "occ_code": "9"
+    },
+    "10": {
+      "frame": "churn",
+      "churn_unit": "the utilities industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "3",
+      "occ_code": "10"
+    },
+    "11": {
+      "frame": "churn",
+      "churn_unit": "the utilities industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "3",
+      "occ_code": "11"
+    },
+    "12": {
+      "frame": "churn",
+      "churn_unit": "the utilities industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "3",
+      "occ_code": "12"
+    },
+    "13": {
+      "frame": "churn",
+      "churn_unit": "the utilities industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "3",
+      "occ_code": "13"
+    },
+    "14": {
+      "frame": "churn",
+      "churn_unit": "the utilities industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "3",
+      "occ_code": "14"
+    },
+    "15": {
+      "frame": "churn",
+      "churn_unit": "the utilities industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "3",
+      "occ_code": "15"
+    },
+    "16": {
+      "frame": "churn_decline",
+      "churn_unit": "the utilities industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "sales jobs",
+      "decline_pct": "2.0",
+      "ind_code": "3",
+      "occ_code": "16"
+    },
+    "17": {
+      "frame": "churn_decline",
+      "churn_unit": "the utilities industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "office, administrative, and clerical jobs",
+      "decline_pct": "3.9",
+      "ind_code": "3",
+      "occ_code": "17"
+    },
+    "18": {
+      "frame": "churn_decline",
+      "churn_unit": "the utilities industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "farming, fishing, and forestry jobs",
+      "decline_pct": "2.5",
+      "ind_code": "3",
+      "occ_code": "18"
+    },
+    "19": {
+      "frame": "churn",
+      "churn_unit": "the utilities industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "3",
+      "occ_code": "19"
+    },
+    "20": {
+      "frame": "churn",
+      "churn_unit": "the utilities industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "3",
+      "occ_code": "20"
+    },
+    "21": {
+      "frame": "churn_decline",
+      "churn_unit": "the utilities industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "production jobs",
+      "decline_pct": "1.1",
+      "ind_code": "3",
+      "occ_code": "21"
+    },
+    "22": {
+      "frame": "churn",
+      "churn_unit": "the utilities industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "3",
+      "occ_code": "22"
+    },
+    "23": {
+      "frame": "churn",
+      "churn_unit": "the utilities industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "3",
+      "occ_code": "23"
+    }
+  },
+  "4": {
+    "1": {
+      "frame": "churn",
+      "churn_unit": "the construction industry",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "4",
+      "occ_code": "1"
+    },
+    "2": {
+      "frame": "churn",
+      "churn_unit": "the construction industry",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "4",
+      "occ_code": "2"
+    },
+    "3": {
+      "frame": "churn",
+      "churn_unit": "the construction industry",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "4",
+      "occ_code": "3"
+    },
+    "4": {
+      "frame": "churn",
+      "churn_unit": "the construction industry",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "4",
+      "occ_code": "4"
+    },
+    "5": {
+      "frame": "churn",
+      "churn_unit": "the construction industry",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "4",
+      "occ_code": "5"
+    },
+    "6": {
+      "frame": "churn",
+      "churn_unit": "the construction industry",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "4",
+      "occ_code": "6"
+    },
+    "7": {
+      "frame": "churn",
+      "churn_unit": "the construction industry",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "4",
+      "occ_code": "7"
+    },
+    "8": {
+      "frame": "churn",
+      "churn_unit": "the construction industry",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "4",
+      "occ_code": "8"
+    },
+    "9": {
+      "frame": "churn",
+      "churn_unit": "the construction industry",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "4",
+      "occ_code": "9"
+    },
+    "10": {
+      "frame": "churn",
+      "churn_unit": "the construction industry",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "4",
+      "occ_code": "10"
+    },
+    "11": {
+      "frame": "churn",
+      "churn_unit": "the construction industry",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "4",
+      "occ_code": "11"
+    },
+    "12": {
+      "frame": "churn",
+      "churn_unit": "the construction industry",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "4",
+      "occ_code": "12"
+    },
+    "13": {
+      "frame": "churn",
+      "churn_unit": "the construction industry",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "4",
+      "occ_code": "13"
+    },
+    "14": {
+      "frame": "churn",
+      "churn_unit": "the construction industry",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "4",
+      "occ_code": "14"
+    },
+    "15": {
+      "frame": "churn",
+      "churn_unit": "the construction industry",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "4",
+      "occ_code": "15"
+    },
+    "16": {
+      "frame": "churn_decline",
+      "churn_unit": "the construction industry",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "sales jobs",
+      "decline_pct": "2.0",
+      "ind_code": "4",
+      "occ_code": "16"
+    },
+    "17": {
+      "frame": "churn_decline",
+      "churn_unit": "the construction industry",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "office, administrative, and clerical jobs",
+      "decline_pct": "3.9",
+      "ind_code": "4",
+      "occ_code": "17"
+    },
+    "18": {
+      "frame": "churn_decline",
+      "churn_unit": "the construction industry",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "farming, fishing, and forestry jobs",
+      "decline_pct": "2.5",
+      "ind_code": "4",
+      "occ_code": "18"
+    },
+    "19": {
+      "frame": "churn",
+      "churn_unit": "the construction industry",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "4",
+      "occ_code": "19"
+    },
+    "20": {
+      "frame": "churn",
+      "churn_unit": "the construction industry",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "4",
+      "occ_code": "20"
+    },
+    "21": {
+      "frame": "churn_decline",
+      "churn_unit": "the construction industry",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "production jobs",
+      "decline_pct": "1.1",
+      "ind_code": "4",
+      "occ_code": "21"
+    },
+    "22": {
+      "frame": "churn",
+      "churn_unit": "the construction industry",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "4",
+      "occ_code": "22"
+    },
+    "23": {
+      "frame": "churn",
+      "churn_unit": "the construction industry",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "4",
+      "occ_code": "23"
+    }
+  },
+  "5": {
+    "1": {
+      "frame": "churn",
+      "churn_unit": "manufacturing",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "5",
+      "occ_code": "1"
+    },
+    "2": {
+      "frame": "churn",
+      "churn_unit": "manufacturing",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "5",
+      "occ_code": "2"
+    },
+    "3": {
+      "frame": "churn",
+      "churn_unit": "manufacturing",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "5",
+      "occ_code": "3"
+    },
+    "4": {
+      "frame": "churn",
+      "churn_unit": "manufacturing",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "5",
+      "occ_code": "4"
+    },
+    "5": {
+      "frame": "churn",
+      "churn_unit": "manufacturing",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "5",
+      "occ_code": "5"
+    },
+    "6": {
+      "frame": "churn",
+      "churn_unit": "manufacturing",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "5",
+      "occ_code": "6"
+    },
+    "7": {
+      "frame": "churn",
+      "churn_unit": "manufacturing",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "5",
+      "occ_code": "7"
+    },
+    "8": {
+      "frame": "churn",
+      "churn_unit": "manufacturing",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "5",
+      "occ_code": "8"
+    },
+    "9": {
+      "frame": "churn",
+      "churn_unit": "manufacturing",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "5",
+      "occ_code": "9"
+    },
+    "10": {
+      "frame": "churn",
+      "churn_unit": "manufacturing",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "5",
+      "occ_code": "10"
+    },
+    "11": {
+      "frame": "churn",
+      "churn_unit": "manufacturing",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "5",
+      "occ_code": "11"
+    },
+    "12": {
+      "frame": "churn",
+      "churn_unit": "manufacturing",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "5",
+      "occ_code": "12"
+    },
+    "13": {
+      "frame": "churn",
+      "churn_unit": "manufacturing",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "5",
+      "occ_code": "13"
+    },
+    "14": {
+      "frame": "churn",
+      "churn_unit": "manufacturing",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "5",
+      "occ_code": "14"
+    },
+    "15": {
+      "frame": "churn",
+      "churn_unit": "manufacturing",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "5",
+      "occ_code": "15"
+    },
+    "16": {
+      "frame": "churn_decline",
+      "churn_unit": "manufacturing",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "sales jobs",
+      "decline_pct": "2.0",
+      "ind_code": "5",
+      "occ_code": "16"
+    },
+    "17": {
+      "frame": "churn_decline",
+      "churn_unit": "manufacturing",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "office, administrative, and clerical jobs",
+      "decline_pct": "3.9",
+      "ind_code": "5",
+      "occ_code": "17"
+    },
+    "18": {
+      "frame": "churn_decline",
+      "churn_unit": "manufacturing",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "farming, fishing, and forestry jobs",
+      "decline_pct": "2.5",
+      "ind_code": "5",
+      "occ_code": "18"
+    },
+    "19": {
+      "frame": "churn",
+      "churn_unit": "manufacturing",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "5",
+      "occ_code": "19"
+    },
+    "20": {
+      "frame": "churn",
+      "churn_unit": "manufacturing",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "5",
+      "occ_code": "20"
+    },
+    "21": {
+      "frame": "churn_decline",
+      "churn_unit": "manufacturing",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "production jobs",
+      "decline_pct": "1.1",
+      "ind_code": "5",
+      "occ_code": "21"
+    },
+    "22": {
+      "frame": "churn",
+      "churn_unit": "manufacturing",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "5",
+      "occ_code": "22"
+    },
+    "23": {
+      "frame": "churn",
+      "churn_unit": "manufacturing",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "5",
+      "occ_code": "23"
+    }
+  },
+  "6": {
+    "1": {
+      "frame": "churn",
+      "churn_unit": "the wholesale trade industry",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "6",
+      "occ_code": "1"
+    },
+    "2": {
+      "frame": "churn",
+      "churn_unit": "the wholesale trade industry",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "6",
+      "occ_code": "2"
+    },
+    "3": {
+      "frame": "churn",
+      "churn_unit": "the wholesale trade industry",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "6",
+      "occ_code": "3"
+    },
+    "4": {
+      "frame": "churn",
+      "churn_unit": "the wholesale trade industry",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "6",
+      "occ_code": "4"
+    },
+    "5": {
+      "frame": "churn",
+      "churn_unit": "the wholesale trade industry",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "6",
+      "occ_code": "5"
+    },
+    "6": {
+      "frame": "churn",
+      "churn_unit": "the wholesale trade industry",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "6",
+      "occ_code": "6"
+    },
+    "7": {
+      "frame": "churn",
+      "churn_unit": "the wholesale trade industry",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "6",
+      "occ_code": "7"
+    },
+    "8": {
+      "frame": "churn",
+      "churn_unit": "the wholesale trade industry",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "6",
+      "occ_code": "8"
+    },
+    "9": {
+      "frame": "churn",
+      "churn_unit": "the wholesale trade industry",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "6",
+      "occ_code": "9"
+    },
+    "10": {
+      "frame": "churn",
+      "churn_unit": "the wholesale trade industry",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "6",
+      "occ_code": "10"
+    },
+    "11": {
+      "frame": "churn",
+      "churn_unit": "the wholesale trade industry",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "6",
+      "occ_code": "11"
+    },
+    "12": {
+      "frame": "churn",
+      "churn_unit": "the wholesale trade industry",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "6",
+      "occ_code": "12"
+    },
+    "13": {
+      "frame": "churn",
+      "churn_unit": "the wholesale trade industry",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "6",
+      "occ_code": "13"
+    },
+    "14": {
+      "frame": "churn",
+      "churn_unit": "the wholesale trade industry",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "6",
+      "occ_code": "14"
+    },
+    "15": {
+      "frame": "churn",
+      "churn_unit": "the wholesale trade industry",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "6",
+      "occ_code": "15"
+    },
+    "16": {
+      "frame": "churn_decline",
+      "churn_unit": "the wholesale trade industry",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "sales jobs",
+      "decline_pct": "2.0",
+      "ind_code": "6",
+      "occ_code": "16"
+    },
+    "17": {
+      "frame": "churn_decline",
+      "churn_unit": "the wholesale trade industry",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "office, administrative, and clerical jobs",
+      "decline_pct": "3.9",
+      "ind_code": "6",
+      "occ_code": "17"
+    },
+    "18": {
+      "frame": "churn_decline",
+      "churn_unit": "the wholesale trade industry",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "farming, fishing, and forestry jobs",
+      "decline_pct": "2.5",
+      "ind_code": "6",
+      "occ_code": "18"
+    },
+    "19": {
+      "frame": "churn",
+      "churn_unit": "the wholesale trade industry",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "6",
+      "occ_code": "19"
+    },
+    "20": {
+      "frame": "churn",
+      "churn_unit": "the wholesale trade industry",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "6",
+      "occ_code": "20"
+    },
+    "21": {
+      "frame": "churn_decline",
+      "churn_unit": "the wholesale trade industry",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "production jobs",
+      "decline_pct": "1.1",
+      "ind_code": "6",
+      "occ_code": "21"
+    },
+    "22": {
+      "frame": "churn",
+      "churn_unit": "the wholesale trade industry",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "6",
+      "occ_code": "22"
+    },
+    "23": {
+      "frame": "churn",
+      "churn_unit": "the wholesale trade industry",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "6",
+      "occ_code": "23"
+    }
+  },
+  "7": {
+    "1": {
+      "frame": "churn_decline",
+      "churn_unit": "the retail trade industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the retail trade industry",
+      "decline_pct": "1.2",
+      "ind_code": "7",
+      "occ_code": "1"
+    },
+    "2": {
+      "frame": "churn_decline",
+      "churn_unit": "the retail trade industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the retail trade industry",
+      "decline_pct": "1.2",
+      "ind_code": "7",
+      "occ_code": "2"
+    },
+    "3": {
+      "frame": "churn_decline",
+      "churn_unit": "the retail trade industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the retail trade industry",
+      "decline_pct": "1.2",
+      "ind_code": "7",
+      "occ_code": "3"
+    },
+    "4": {
+      "frame": "churn_decline",
+      "churn_unit": "the retail trade industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the retail trade industry",
+      "decline_pct": "1.2",
+      "ind_code": "7",
+      "occ_code": "4"
+    },
+    "5": {
+      "frame": "churn_decline",
+      "churn_unit": "the retail trade industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the retail trade industry",
+      "decline_pct": "1.2",
+      "ind_code": "7",
+      "occ_code": "5"
+    },
+    "6": {
+      "frame": "churn_decline",
+      "churn_unit": "the retail trade industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the retail trade industry",
+      "decline_pct": "1.2",
+      "ind_code": "7",
+      "occ_code": "6"
+    },
+    "7": {
+      "frame": "churn_decline",
+      "churn_unit": "the retail trade industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the retail trade industry",
+      "decline_pct": "1.2",
+      "ind_code": "7",
+      "occ_code": "7"
+    },
+    "8": {
+      "frame": "churn_decline",
+      "churn_unit": "the retail trade industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the retail trade industry",
+      "decline_pct": "1.2",
+      "ind_code": "7",
+      "occ_code": "8"
+    },
+    "9": {
+      "frame": "churn_decline",
+      "churn_unit": "the retail trade industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the retail trade industry",
+      "decline_pct": "1.2",
+      "ind_code": "7",
+      "occ_code": "9"
+    },
+    "10": {
+      "frame": "churn_decline",
+      "churn_unit": "the retail trade industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the retail trade industry",
+      "decline_pct": "1.2",
+      "ind_code": "7",
+      "occ_code": "10"
+    },
+    "11": {
+      "frame": "churn_decline",
+      "churn_unit": "the retail trade industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the retail trade industry",
+      "decline_pct": "1.2",
+      "ind_code": "7",
+      "occ_code": "11"
+    },
+    "12": {
+      "frame": "churn_decline",
+      "churn_unit": "the retail trade industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the retail trade industry",
+      "decline_pct": "1.2",
+      "ind_code": "7",
+      "occ_code": "12"
+    },
+    "13": {
+      "frame": "churn_decline",
+      "churn_unit": "the retail trade industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the retail trade industry",
+      "decline_pct": "1.2",
+      "ind_code": "7",
+      "occ_code": "13"
+    },
+    "14": {
+      "frame": "churn_decline",
+      "churn_unit": "the retail trade industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the retail trade industry",
+      "decline_pct": "1.2",
+      "ind_code": "7",
+      "occ_code": "14"
+    },
+    "15": {
+      "frame": "churn_decline",
+      "churn_unit": "the retail trade industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the retail trade industry",
+      "decline_pct": "1.2",
+      "ind_code": "7",
+      "occ_code": "15"
+    },
+    "16": {
+      "frame": "churn_decline",
+      "churn_unit": "the retail trade industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "sales jobs",
+      "decline_pct": "2.0",
+      "ind_code": "7",
+      "occ_code": "16"
+    },
+    "17": {
+      "frame": "churn_decline",
+      "churn_unit": "the retail trade industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "office, administrative, and clerical jobs",
+      "decline_pct": "3.9",
+      "ind_code": "7",
+      "occ_code": "17"
+    },
+    "18": {
+      "frame": "churn_decline",
+      "churn_unit": "the retail trade industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "farming, fishing, and forestry jobs",
+      "decline_pct": "2.5",
+      "ind_code": "7",
+      "occ_code": "18"
+    },
+    "19": {
+      "frame": "churn_decline",
+      "churn_unit": "the retail trade industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the retail trade industry",
+      "decline_pct": "1.2",
+      "ind_code": "7",
+      "occ_code": "19"
+    },
+    "20": {
+      "frame": "churn_decline",
+      "churn_unit": "the retail trade industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the retail trade industry",
+      "decline_pct": "1.2",
+      "ind_code": "7",
+      "occ_code": "20"
+    },
+    "21": {
+      "frame": "churn_decline",
+      "churn_unit": "the retail trade industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the retail trade industry",
+      "decline_pct": "1.2",
+      "ind_code": "7",
+      "occ_code": "21"
+    },
+    "22": {
+      "frame": "churn_decline",
+      "churn_unit": "the retail trade industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the retail trade industry",
+      "decline_pct": "1.2",
+      "ind_code": "7",
+      "occ_code": "22"
+    },
+    "23": {
+      "frame": "churn_decline",
+      "churn_unit": "the retail trade industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "the retail trade industry",
+      "decline_pct": "1.2",
+      "ind_code": "7",
+      "occ_code": "23"
+    }
+  },
+  "8": {
+    "1": {
+      "frame": "churn",
+      "churn_unit": "the transportation and warehousing industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "8",
+      "occ_code": "1"
+    },
+    "2": {
+      "frame": "churn",
+      "churn_unit": "the transportation and warehousing industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "8",
+      "occ_code": "2"
+    },
+    "3": {
+      "frame": "churn",
+      "churn_unit": "the transportation and warehousing industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "8",
+      "occ_code": "3"
+    },
+    "4": {
+      "frame": "churn",
+      "churn_unit": "the transportation and warehousing industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "8",
+      "occ_code": "4"
+    },
+    "5": {
+      "frame": "churn",
+      "churn_unit": "the transportation and warehousing industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "8",
+      "occ_code": "5"
+    },
+    "6": {
+      "frame": "churn",
+      "churn_unit": "the transportation and warehousing industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "8",
+      "occ_code": "6"
+    },
+    "7": {
+      "frame": "churn",
+      "churn_unit": "the transportation and warehousing industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "8",
+      "occ_code": "7"
+    },
+    "8": {
+      "frame": "churn",
+      "churn_unit": "the transportation and warehousing industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "8",
+      "occ_code": "8"
+    },
+    "9": {
+      "frame": "churn",
+      "churn_unit": "the transportation and warehousing industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "8",
+      "occ_code": "9"
+    },
+    "10": {
+      "frame": "churn",
+      "churn_unit": "the transportation and warehousing industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "8",
+      "occ_code": "10"
+    },
+    "11": {
+      "frame": "churn",
+      "churn_unit": "the transportation and warehousing industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "8",
+      "occ_code": "11"
+    },
+    "12": {
+      "frame": "churn",
+      "churn_unit": "the transportation and warehousing industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "8",
+      "occ_code": "12"
+    },
+    "13": {
+      "frame": "churn",
+      "churn_unit": "the transportation and warehousing industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "8",
+      "occ_code": "13"
+    },
+    "14": {
+      "frame": "churn",
+      "churn_unit": "the transportation and warehousing industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "8",
+      "occ_code": "14"
+    },
+    "15": {
+      "frame": "churn",
+      "churn_unit": "the transportation and warehousing industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "8",
+      "occ_code": "15"
+    },
+    "16": {
+      "frame": "churn_decline",
+      "churn_unit": "the transportation and warehousing industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "sales jobs",
+      "decline_pct": "2.0",
+      "ind_code": "8",
+      "occ_code": "16"
+    },
+    "17": {
+      "frame": "churn_decline",
+      "churn_unit": "the transportation and warehousing industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "office, administrative, and clerical jobs",
+      "decline_pct": "3.9",
+      "ind_code": "8",
+      "occ_code": "17"
+    },
+    "18": {
+      "frame": "churn_decline",
+      "churn_unit": "the transportation and warehousing industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "farming, fishing, and forestry jobs",
+      "decline_pct": "2.5",
+      "ind_code": "8",
+      "occ_code": "18"
+    },
+    "19": {
+      "frame": "churn",
+      "churn_unit": "the transportation and warehousing industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "8",
+      "occ_code": "19"
+    },
+    "20": {
+      "frame": "churn",
+      "churn_unit": "the transportation and warehousing industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "8",
+      "occ_code": "20"
+    },
+    "21": {
+      "frame": "churn_decline",
+      "churn_unit": "the transportation and warehousing industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "production jobs",
+      "decline_pct": "1.1",
+      "ind_code": "8",
+      "occ_code": "21"
+    },
+    "22": {
+      "frame": "churn",
+      "churn_unit": "the transportation and warehousing industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "8",
+      "occ_code": "22"
+    },
+    "23": {
+      "frame": "churn",
+      "churn_unit": "the transportation and warehousing industry",
+      "churn_pct": "18",
+      "churn_clause": " — roughly one in six",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "8",
+      "occ_code": "23"
+    }
+  },
+  "9": {
+    "1": {
+      "frame": "churn",
+      "churn_unit": "the information and telecommunications industry",
+      "churn_pct": "15",
+      "churn_clause": " — roughly one in seven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "9",
+      "occ_code": "1"
+    },
+    "2": {
+      "frame": "churn",
+      "churn_unit": "the information and telecommunications industry",
+      "churn_pct": "15",
+      "churn_clause": " — roughly one in seven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "9",
+      "occ_code": "2"
+    },
+    "3": {
+      "frame": "churn",
+      "churn_unit": "the information and telecommunications industry",
+      "churn_pct": "15",
+      "churn_clause": " — roughly one in seven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "9",
+      "occ_code": "3"
+    },
+    "4": {
+      "frame": "churn",
+      "churn_unit": "the information and telecommunications industry",
+      "churn_pct": "15",
+      "churn_clause": " — roughly one in seven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "9",
+      "occ_code": "4"
+    },
+    "5": {
+      "frame": "churn",
+      "churn_unit": "the information and telecommunications industry",
+      "churn_pct": "15",
+      "churn_clause": " — roughly one in seven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "9",
+      "occ_code": "5"
+    },
+    "6": {
+      "frame": "churn",
+      "churn_unit": "the information and telecommunications industry",
+      "churn_pct": "15",
+      "churn_clause": " — roughly one in seven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "9",
+      "occ_code": "6"
+    },
+    "7": {
+      "frame": "churn",
+      "churn_unit": "the information and telecommunications industry",
+      "churn_pct": "15",
+      "churn_clause": " — roughly one in seven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "9",
+      "occ_code": "7"
+    },
+    "8": {
+      "frame": "churn",
+      "churn_unit": "the information and telecommunications industry",
+      "churn_pct": "15",
+      "churn_clause": " — roughly one in seven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "9",
+      "occ_code": "8"
+    },
+    "9": {
+      "frame": "churn",
+      "churn_unit": "the information and telecommunications industry",
+      "churn_pct": "15",
+      "churn_clause": " — roughly one in seven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "9",
+      "occ_code": "9"
+    },
+    "10": {
+      "frame": "churn",
+      "churn_unit": "the information and telecommunications industry",
+      "churn_pct": "15",
+      "churn_clause": " — roughly one in seven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "9",
+      "occ_code": "10"
+    },
+    "11": {
+      "frame": "churn",
+      "churn_unit": "the information and telecommunications industry",
+      "churn_pct": "15",
+      "churn_clause": " — roughly one in seven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "9",
+      "occ_code": "11"
+    },
+    "12": {
+      "frame": "churn",
+      "churn_unit": "the information and telecommunications industry",
+      "churn_pct": "15",
+      "churn_clause": " — roughly one in seven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "9",
+      "occ_code": "12"
+    },
+    "13": {
+      "frame": "churn",
+      "churn_unit": "the information and telecommunications industry",
+      "churn_pct": "15",
+      "churn_clause": " — roughly one in seven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "9",
+      "occ_code": "13"
+    },
+    "14": {
+      "frame": "churn",
+      "churn_unit": "the information and telecommunications industry",
+      "churn_pct": "15",
+      "churn_clause": " — roughly one in seven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "9",
+      "occ_code": "14"
+    },
+    "15": {
+      "frame": "churn",
+      "churn_unit": "the information and telecommunications industry",
+      "churn_pct": "15",
+      "churn_clause": " — roughly one in seven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "9",
+      "occ_code": "15"
+    },
+    "16": {
+      "frame": "churn_decline",
+      "churn_unit": "the information and telecommunications industry",
+      "churn_pct": "15",
+      "churn_clause": " — roughly one in seven",
+      "decline_unit": "sales jobs",
+      "decline_pct": "2.0",
+      "ind_code": "9",
+      "occ_code": "16"
+    },
+    "17": {
+      "frame": "churn_decline",
+      "churn_unit": "the information and telecommunications industry",
+      "churn_pct": "15",
+      "churn_clause": " — roughly one in seven",
+      "decline_unit": "office, administrative, and clerical jobs",
+      "decline_pct": "3.9",
+      "ind_code": "9",
+      "occ_code": "17"
+    },
+    "18": {
+      "frame": "churn_decline",
+      "churn_unit": "the information and telecommunications industry",
+      "churn_pct": "15",
+      "churn_clause": " — roughly one in seven",
+      "decline_unit": "farming, fishing, and forestry jobs",
+      "decline_pct": "2.5",
+      "ind_code": "9",
+      "occ_code": "18"
+    },
+    "19": {
+      "frame": "churn",
+      "churn_unit": "the information and telecommunications industry",
+      "churn_pct": "15",
+      "churn_clause": " — roughly one in seven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "9",
+      "occ_code": "19"
+    },
+    "20": {
+      "frame": "churn",
+      "churn_unit": "the information and telecommunications industry",
+      "churn_pct": "15",
+      "churn_clause": " — roughly one in seven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "9",
+      "occ_code": "20"
+    },
+    "21": {
+      "frame": "churn_decline",
+      "churn_unit": "the information and telecommunications industry",
+      "churn_pct": "15",
+      "churn_clause": " — roughly one in seven",
+      "decline_unit": "production jobs",
+      "decline_pct": "1.1",
+      "ind_code": "9",
+      "occ_code": "21"
+    },
+    "22": {
+      "frame": "churn",
+      "churn_unit": "the information and telecommunications industry",
+      "churn_pct": "15",
+      "churn_clause": " — roughly one in seven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "9",
+      "occ_code": "22"
+    },
+    "23": {
+      "frame": "churn",
+      "churn_unit": "the information and telecommunications industry",
+      "churn_pct": "15",
+      "churn_clause": " — roughly one in seven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "9",
+      "occ_code": "23"
+    }
+  },
+  "10": {
+    "1": {
+      "frame": "churn",
+      "churn_unit": "the finance and insurance industry",
+      "churn_pct": "6",
+      "churn_clause": " — roughly one in seventeen",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "10",
+      "occ_code": "1"
+    },
+    "2": {
+      "frame": "churn",
+      "churn_unit": "the finance and insurance industry",
+      "churn_pct": "6",
+      "churn_clause": " — roughly one in seventeen",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "10",
+      "occ_code": "2"
+    },
+    "3": {
+      "frame": "churn",
+      "churn_unit": "the finance and insurance industry",
+      "churn_pct": "6",
+      "churn_clause": " — roughly one in seventeen",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "10",
+      "occ_code": "3"
+    },
+    "4": {
+      "frame": "churn",
+      "churn_unit": "the finance and insurance industry",
+      "churn_pct": "6",
+      "churn_clause": " — roughly one in seventeen",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "10",
+      "occ_code": "4"
+    },
+    "5": {
+      "frame": "churn",
+      "churn_unit": "the finance and insurance industry",
+      "churn_pct": "6",
+      "churn_clause": " — roughly one in seventeen",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "10",
+      "occ_code": "5"
+    },
+    "6": {
+      "frame": "churn",
+      "churn_unit": "the finance and insurance industry",
+      "churn_pct": "6",
+      "churn_clause": " — roughly one in seventeen",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "10",
+      "occ_code": "6"
+    },
+    "7": {
+      "frame": "churn",
+      "churn_unit": "the finance and insurance industry",
+      "churn_pct": "6",
+      "churn_clause": " — roughly one in seventeen",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "10",
+      "occ_code": "7"
+    },
+    "8": {
+      "frame": "churn",
+      "churn_unit": "the finance and insurance industry",
+      "churn_pct": "6",
+      "churn_clause": " — roughly one in seventeen",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "10",
+      "occ_code": "8"
+    },
+    "9": {
+      "frame": "churn",
+      "churn_unit": "the finance and insurance industry",
+      "churn_pct": "6",
+      "churn_clause": " — roughly one in seventeen",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "10",
+      "occ_code": "9"
+    },
+    "10": {
+      "frame": "churn",
+      "churn_unit": "the finance and insurance industry",
+      "churn_pct": "6",
+      "churn_clause": " — roughly one in seventeen",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "10",
+      "occ_code": "10"
+    },
+    "11": {
+      "frame": "churn",
+      "churn_unit": "the finance and insurance industry",
+      "churn_pct": "6",
+      "churn_clause": " — roughly one in seventeen",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "10",
+      "occ_code": "11"
+    },
+    "12": {
+      "frame": "churn",
+      "churn_unit": "the finance and insurance industry",
+      "churn_pct": "6",
+      "churn_clause": " — roughly one in seventeen",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "10",
+      "occ_code": "12"
+    },
+    "13": {
+      "frame": "churn",
+      "churn_unit": "the finance and insurance industry",
+      "churn_pct": "6",
+      "churn_clause": " — roughly one in seventeen",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "10",
+      "occ_code": "13"
+    },
+    "14": {
+      "frame": "churn",
+      "churn_unit": "the finance and insurance industry",
+      "churn_pct": "6",
+      "churn_clause": " — roughly one in seventeen",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "10",
+      "occ_code": "14"
+    },
+    "15": {
+      "frame": "churn",
+      "churn_unit": "the finance and insurance industry",
+      "churn_pct": "6",
+      "churn_clause": " — roughly one in seventeen",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "10",
+      "occ_code": "15"
+    },
+    "16": {
+      "frame": "churn_decline",
+      "churn_unit": "the finance and insurance industry",
+      "churn_pct": "6",
+      "churn_clause": " — roughly one in seventeen",
+      "decline_unit": "sales jobs",
+      "decline_pct": "2.0",
+      "ind_code": "10",
+      "occ_code": "16"
+    },
+    "17": {
+      "frame": "churn_decline",
+      "churn_unit": "the finance and insurance industry",
+      "churn_pct": "6",
+      "churn_clause": " — roughly one in seventeen",
+      "decline_unit": "office, administrative, and clerical jobs",
+      "decline_pct": "3.9",
+      "ind_code": "10",
+      "occ_code": "17"
+    },
+    "18": {
+      "frame": "churn_decline",
+      "churn_unit": "the finance and insurance industry",
+      "churn_pct": "6",
+      "churn_clause": " — roughly one in seventeen",
+      "decline_unit": "farming, fishing, and forestry jobs",
+      "decline_pct": "2.5",
+      "ind_code": "10",
+      "occ_code": "18"
+    },
+    "19": {
+      "frame": "churn",
+      "churn_unit": "the finance and insurance industry",
+      "churn_pct": "6",
+      "churn_clause": " — roughly one in seventeen",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "10",
+      "occ_code": "19"
+    },
+    "20": {
+      "frame": "churn",
+      "churn_unit": "the finance and insurance industry",
+      "churn_pct": "6",
+      "churn_clause": " — roughly one in seventeen",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "10",
+      "occ_code": "20"
+    },
+    "21": {
+      "frame": "churn_decline",
+      "churn_unit": "the finance and insurance industry",
+      "churn_pct": "6",
+      "churn_clause": " — roughly one in seventeen",
+      "decline_unit": "production jobs",
+      "decline_pct": "1.1",
+      "ind_code": "10",
+      "occ_code": "21"
+    },
+    "22": {
+      "frame": "churn",
+      "churn_unit": "the finance and insurance industry",
+      "churn_pct": "6",
+      "churn_clause": " — roughly one in seventeen",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "10",
+      "occ_code": "22"
+    },
+    "23": {
+      "frame": "churn",
+      "churn_unit": "the finance and insurance industry",
+      "churn_pct": "6",
+      "churn_clause": " — roughly one in seventeen",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "10",
+      "occ_code": "23"
+    }
+  },
+  "11": {
+    "1": {
+      "frame": "churn",
+      "churn_unit": "the real estate industry",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "11",
+      "occ_code": "1"
+    },
+    "2": {
+      "frame": "churn",
+      "churn_unit": "the real estate industry",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "11",
+      "occ_code": "2"
+    },
+    "3": {
+      "frame": "churn",
+      "churn_unit": "the real estate industry",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "11",
+      "occ_code": "3"
+    },
+    "4": {
+      "frame": "churn",
+      "churn_unit": "the real estate industry",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "11",
+      "occ_code": "4"
+    },
+    "5": {
+      "frame": "churn",
+      "churn_unit": "the real estate industry",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "11",
+      "occ_code": "5"
+    },
+    "6": {
+      "frame": "churn",
+      "churn_unit": "the real estate industry",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "11",
+      "occ_code": "6"
+    },
+    "7": {
+      "frame": "churn",
+      "churn_unit": "the real estate industry",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "11",
+      "occ_code": "7"
+    },
+    "8": {
+      "frame": "churn",
+      "churn_unit": "the real estate industry",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "11",
+      "occ_code": "8"
+    },
+    "9": {
+      "frame": "churn",
+      "churn_unit": "the real estate industry",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "11",
+      "occ_code": "9"
+    },
+    "10": {
+      "frame": "churn",
+      "churn_unit": "the real estate industry",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "11",
+      "occ_code": "10"
+    },
+    "11": {
+      "frame": "churn",
+      "churn_unit": "the real estate industry",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "11",
+      "occ_code": "11"
+    },
+    "12": {
+      "frame": "churn",
+      "churn_unit": "the real estate industry",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "11",
+      "occ_code": "12"
+    },
+    "13": {
+      "frame": "churn",
+      "churn_unit": "the real estate industry",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "11",
+      "occ_code": "13"
+    },
+    "14": {
+      "frame": "churn",
+      "churn_unit": "the real estate industry",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "11",
+      "occ_code": "14"
+    },
+    "15": {
+      "frame": "churn",
+      "churn_unit": "the real estate industry",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "11",
+      "occ_code": "15"
+    },
+    "16": {
+      "frame": "churn_decline",
+      "churn_unit": "the real estate industry",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "sales jobs",
+      "decline_pct": "2.0",
+      "ind_code": "11",
+      "occ_code": "16"
+    },
+    "17": {
+      "frame": "churn_decline",
+      "churn_unit": "the real estate industry",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "office, administrative, and clerical jobs",
+      "decline_pct": "3.9",
+      "ind_code": "11",
+      "occ_code": "17"
+    },
+    "18": {
+      "frame": "churn_decline",
+      "churn_unit": "the real estate industry",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "farming, fishing, and forestry jobs",
+      "decline_pct": "2.5",
+      "ind_code": "11",
+      "occ_code": "18"
+    },
+    "19": {
+      "frame": "churn",
+      "churn_unit": "the real estate industry",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "11",
+      "occ_code": "19"
+    },
+    "20": {
+      "frame": "churn",
+      "churn_unit": "the real estate industry",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "11",
+      "occ_code": "20"
+    },
+    "21": {
+      "frame": "churn_decline",
+      "churn_unit": "the real estate industry",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "production jobs",
+      "decline_pct": "1.1",
+      "ind_code": "11",
+      "occ_code": "21"
+    },
+    "22": {
+      "frame": "churn",
+      "churn_unit": "the real estate industry",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "11",
+      "occ_code": "22"
+    },
+    "23": {
+      "frame": "churn",
+      "churn_unit": "the real estate industry",
+      "churn_pct": "10",
+      "churn_clause": " — roughly one in ten",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "11",
+      "occ_code": "23"
+    }
+  },
+  "12": {
+    "1": {
+      "frame": "churn",
+      "churn_unit": "professional and technical services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "12",
+      "occ_code": "1"
+    },
+    "2": {
+      "frame": "churn",
+      "churn_unit": "professional and technical services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "12",
+      "occ_code": "2"
+    },
+    "3": {
+      "frame": "churn",
+      "churn_unit": "professional and technical services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "12",
+      "occ_code": "3"
+    },
+    "4": {
+      "frame": "churn",
+      "churn_unit": "professional and technical services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "12",
+      "occ_code": "4"
+    },
+    "5": {
+      "frame": "churn",
+      "churn_unit": "professional and technical services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "12",
+      "occ_code": "5"
+    },
+    "6": {
+      "frame": "churn",
+      "churn_unit": "professional and technical services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "12",
+      "occ_code": "6"
+    },
+    "7": {
+      "frame": "churn",
+      "churn_unit": "professional and technical services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "12",
+      "occ_code": "7"
+    },
+    "8": {
+      "frame": "churn",
+      "churn_unit": "professional and technical services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "12",
+      "occ_code": "8"
+    },
+    "9": {
+      "frame": "churn",
+      "churn_unit": "professional and technical services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "12",
+      "occ_code": "9"
+    },
+    "10": {
+      "frame": "churn",
+      "churn_unit": "professional and technical services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "12",
+      "occ_code": "10"
+    },
+    "11": {
+      "frame": "churn",
+      "churn_unit": "professional and technical services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "12",
+      "occ_code": "11"
+    },
+    "12": {
+      "frame": "churn",
+      "churn_unit": "professional and technical services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "12",
+      "occ_code": "12"
+    },
+    "13": {
+      "frame": "churn",
+      "churn_unit": "professional and technical services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "12",
+      "occ_code": "13"
+    },
+    "14": {
+      "frame": "churn",
+      "churn_unit": "professional and technical services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "12",
+      "occ_code": "14"
+    },
+    "15": {
+      "frame": "churn",
+      "churn_unit": "professional and technical services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "12",
+      "occ_code": "15"
+    },
+    "16": {
+      "frame": "churn_decline",
+      "churn_unit": "professional and technical services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "sales jobs",
+      "decline_pct": "2.0",
+      "ind_code": "12",
+      "occ_code": "16"
+    },
+    "17": {
+      "frame": "churn_decline",
+      "churn_unit": "professional and technical services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "office, administrative, and clerical jobs",
+      "decline_pct": "3.9",
+      "ind_code": "12",
+      "occ_code": "17"
+    },
+    "18": {
+      "frame": "churn_decline",
+      "churn_unit": "professional and technical services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "farming, fishing, and forestry jobs",
+      "decline_pct": "2.5",
+      "ind_code": "12",
+      "occ_code": "18"
+    },
+    "19": {
+      "frame": "churn",
+      "churn_unit": "professional and technical services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "12",
+      "occ_code": "19"
+    },
+    "20": {
+      "frame": "churn",
+      "churn_unit": "professional and technical services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "12",
+      "occ_code": "20"
+    },
+    "21": {
+      "frame": "churn_decline",
+      "churn_unit": "professional and technical services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "production jobs",
+      "decline_pct": "1.1",
+      "ind_code": "12",
+      "occ_code": "21"
+    },
+    "22": {
+      "frame": "churn",
+      "churn_unit": "professional and technical services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "12",
+      "occ_code": "22"
+    },
+    "23": {
+      "frame": "churn",
+      "churn_unit": "professional and technical services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "12",
+      "occ_code": "23"
+    }
+  },
+  "13": {
+    "1": {
+      "frame": "churn",
+      "churn_unit": "corporate management",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "13",
+      "occ_code": "1"
+    },
+    "2": {
+      "frame": "churn",
+      "churn_unit": "corporate management",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "13",
+      "occ_code": "2"
+    },
+    "3": {
+      "frame": "churn",
+      "churn_unit": "corporate management",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "13",
+      "occ_code": "3"
+    },
+    "4": {
+      "frame": "churn",
+      "churn_unit": "corporate management",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "13",
+      "occ_code": "4"
+    },
+    "5": {
+      "frame": "churn",
+      "churn_unit": "corporate management",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "13",
+      "occ_code": "5"
+    },
+    "6": {
+      "frame": "churn",
+      "churn_unit": "corporate management",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "13",
+      "occ_code": "6"
+    },
+    "7": {
+      "frame": "churn",
+      "churn_unit": "corporate management",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "13",
+      "occ_code": "7"
+    },
+    "8": {
+      "frame": "churn",
+      "churn_unit": "corporate management",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "13",
+      "occ_code": "8"
+    },
+    "9": {
+      "frame": "churn",
+      "churn_unit": "corporate management",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "13",
+      "occ_code": "9"
+    },
+    "10": {
+      "frame": "churn",
+      "churn_unit": "corporate management",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "13",
+      "occ_code": "10"
+    },
+    "11": {
+      "frame": "churn",
+      "churn_unit": "corporate management",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "13",
+      "occ_code": "11"
+    },
+    "12": {
+      "frame": "churn",
+      "churn_unit": "corporate management",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "13",
+      "occ_code": "12"
+    },
+    "13": {
+      "frame": "churn",
+      "churn_unit": "corporate management",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "13",
+      "occ_code": "13"
+    },
+    "14": {
+      "frame": "churn",
+      "churn_unit": "corporate management",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "13",
+      "occ_code": "14"
+    },
+    "15": {
+      "frame": "churn",
+      "churn_unit": "corporate management",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "13",
+      "occ_code": "15"
+    },
+    "16": {
+      "frame": "churn_decline",
+      "churn_unit": "corporate management",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "sales jobs",
+      "decline_pct": "2.0",
+      "ind_code": "13",
+      "occ_code": "16"
+    },
+    "17": {
+      "frame": "churn_decline",
+      "churn_unit": "corporate management",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "office, administrative, and clerical jobs",
+      "decline_pct": "3.9",
+      "ind_code": "13",
+      "occ_code": "17"
+    },
+    "18": {
+      "frame": "churn_decline",
+      "churn_unit": "corporate management",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "farming, fishing, and forestry jobs",
+      "decline_pct": "2.5",
+      "ind_code": "13",
+      "occ_code": "18"
+    },
+    "19": {
+      "frame": "churn",
+      "churn_unit": "corporate management",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "13",
+      "occ_code": "19"
+    },
+    "20": {
+      "frame": "churn",
+      "churn_unit": "corporate management",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "13",
+      "occ_code": "20"
+    },
+    "21": {
+      "frame": "churn_decline",
+      "churn_unit": "corporate management",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "production jobs",
+      "decline_pct": "1.1",
+      "ind_code": "13",
+      "occ_code": "21"
+    },
+    "22": {
+      "frame": "churn",
+      "churn_unit": "corporate management",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "13",
+      "occ_code": "22"
+    },
+    "23": {
+      "frame": "churn",
+      "churn_unit": "corporate management",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "13",
+      "occ_code": "23"
+    }
+  },
+  "14": {
+    "1": {
+      "frame": "churn",
+      "churn_unit": "administrative and support services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "14",
+      "occ_code": "1"
+    },
+    "2": {
+      "frame": "churn",
+      "churn_unit": "administrative and support services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "14",
+      "occ_code": "2"
+    },
+    "3": {
+      "frame": "churn",
+      "churn_unit": "administrative and support services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "14",
+      "occ_code": "3"
+    },
+    "4": {
+      "frame": "churn",
+      "churn_unit": "administrative and support services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "14",
+      "occ_code": "4"
+    },
+    "5": {
+      "frame": "churn",
+      "churn_unit": "administrative and support services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "14",
+      "occ_code": "5"
+    },
+    "6": {
+      "frame": "churn",
+      "churn_unit": "administrative and support services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "14",
+      "occ_code": "6"
+    },
+    "7": {
+      "frame": "churn",
+      "churn_unit": "administrative and support services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "14",
+      "occ_code": "7"
+    },
+    "8": {
+      "frame": "churn",
+      "churn_unit": "administrative and support services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "14",
+      "occ_code": "8"
+    },
+    "9": {
+      "frame": "churn",
+      "churn_unit": "administrative and support services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "14",
+      "occ_code": "9"
+    },
+    "10": {
+      "frame": "churn",
+      "churn_unit": "administrative and support services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "14",
+      "occ_code": "10"
+    },
+    "11": {
+      "frame": "churn",
+      "churn_unit": "administrative and support services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "14",
+      "occ_code": "11"
+    },
+    "12": {
+      "frame": "churn",
+      "churn_unit": "administrative and support services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "14",
+      "occ_code": "12"
+    },
+    "13": {
+      "frame": "churn",
+      "churn_unit": "administrative and support services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "14",
+      "occ_code": "13"
+    },
+    "14": {
+      "frame": "churn",
+      "churn_unit": "administrative and support services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "14",
+      "occ_code": "14"
+    },
+    "15": {
+      "frame": "churn",
+      "churn_unit": "administrative and support services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "14",
+      "occ_code": "15"
+    },
+    "16": {
+      "frame": "churn_decline",
+      "churn_unit": "administrative and support services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "sales jobs",
+      "decline_pct": "2.0",
+      "ind_code": "14",
+      "occ_code": "16"
+    },
+    "17": {
+      "frame": "churn_decline",
+      "churn_unit": "administrative and support services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "office, administrative, and clerical jobs",
+      "decline_pct": "3.9",
+      "ind_code": "14",
+      "occ_code": "17"
+    },
+    "18": {
+      "frame": "churn_decline",
+      "churn_unit": "administrative and support services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "farming, fishing, and forestry jobs",
+      "decline_pct": "2.5",
+      "ind_code": "14",
+      "occ_code": "18"
+    },
+    "19": {
+      "frame": "churn",
+      "churn_unit": "administrative and support services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "14",
+      "occ_code": "19"
+    },
+    "20": {
+      "frame": "churn",
+      "churn_unit": "administrative and support services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "14",
+      "occ_code": "20"
+    },
+    "21": {
+      "frame": "churn_decline",
+      "churn_unit": "administrative and support services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "production jobs",
+      "decline_pct": "1.1",
+      "ind_code": "14",
+      "occ_code": "21"
+    },
+    "22": {
+      "frame": "churn",
+      "churn_unit": "administrative and support services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "14",
+      "occ_code": "22"
+    },
+    "23": {
+      "frame": "churn",
+      "churn_unit": "administrative and support services",
+      "churn_pct": "22",
+      "churn_clause": " — roughly one in five",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "14",
+      "occ_code": "23"
+    }
+  },
+  "15": {
+    "1": {
+      "frame": "churn",
+      "churn_unit": "the education sector",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "15",
+      "occ_code": "1"
+    },
+    "2": {
+      "frame": "churn",
+      "churn_unit": "the education sector",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "15",
+      "occ_code": "2"
+    },
+    "3": {
+      "frame": "churn",
+      "churn_unit": "the education sector",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "15",
+      "occ_code": "3"
+    },
+    "4": {
+      "frame": "churn",
+      "churn_unit": "the education sector",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "15",
+      "occ_code": "4"
+    },
+    "5": {
+      "frame": "churn",
+      "churn_unit": "the education sector",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "15",
+      "occ_code": "5"
+    },
+    "6": {
+      "frame": "churn",
+      "churn_unit": "the education sector",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "15",
+      "occ_code": "6"
+    },
+    "7": {
+      "frame": "churn",
+      "churn_unit": "the education sector",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "15",
+      "occ_code": "7"
+    },
+    "8": {
+      "frame": "churn",
+      "churn_unit": "the education sector",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "15",
+      "occ_code": "8"
+    },
+    "9": {
+      "frame": "churn",
+      "churn_unit": "the education sector",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "15",
+      "occ_code": "9"
+    },
+    "10": {
+      "frame": "churn",
+      "churn_unit": "the education sector",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "15",
+      "occ_code": "10"
+    },
+    "11": {
+      "frame": "churn",
+      "churn_unit": "the education sector",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "15",
+      "occ_code": "11"
+    },
+    "12": {
+      "frame": "churn",
+      "churn_unit": "the education sector",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "15",
+      "occ_code": "12"
+    },
+    "13": {
+      "frame": "churn",
+      "churn_unit": "the education sector",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "15",
+      "occ_code": "13"
+    },
+    "14": {
+      "frame": "churn",
+      "churn_unit": "the education sector",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "15",
+      "occ_code": "14"
+    },
+    "15": {
+      "frame": "churn",
+      "churn_unit": "the education sector",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "15",
+      "occ_code": "15"
+    },
+    "16": {
+      "frame": "churn_decline",
+      "churn_unit": "the education sector",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "sales jobs",
+      "decline_pct": "2.0",
+      "ind_code": "15",
+      "occ_code": "16"
+    },
+    "17": {
+      "frame": "churn_decline",
+      "churn_unit": "the education sector",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "office, administrative, and clerical jobs",
+      "decline_pct": "3.9",
+      "ind_code": "15",
+      "occ_code": "17"
+    },
+    "18": {
+      "frame": "churn_decline",
+      "churn_unit": "the education sector",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "farming, fishing, and forestry jobs",
+      "decline_pct": "2.5",
+      "ind_code": "15",
+      "occ_code": "18"
+    },
+    "19": {
+      "frame": "churn",
+      "churn_unit": "the education sector",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "15",
+      "occ_code": "19"
+    },
+    "20": {
+      "frame": "churn",
+      "churn_unit": "the education sector",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "15",
+      "occ_code": "20"
+    },
+    "21": {
+      "frame": "churn_decline",
+      "churn_unit": "the education sector",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "production jobs",
+      "decline_pct": "1.1",
+      "ind_code": "15",
+      "occ_code": "21"
+    },
+    "22": {
+      "frame": "churn",
+      "churn_unit": "the education sector",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "15",
+      "occ_code": "22"
+    },
+    "23": {
+      "frame": "churn",
+      "churn_unit": "the education sector",
+      "churn_pct": "9",
+      "churn_clause": " — roughly one in eleven",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "15",
+      "occ_code": "23"
+    }
+  },
+  "16": {
+    "1": {
+      "frame": "churn",
+      "churn_unit": "health care and social assistance",
+      "churn_pct": "8",
+      "churn_clause": " — roughly one in twelve",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "16",
+      "occ_code": "1"
+    },
+    "2": {
+      "frame": "churn",
+      "churn_unit": "health care and social assistance",
+      "churn_pct": "8",
+      "churn_clause": " — roughly one in twelve",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "16",
+      "occ_code": "2"
+    },
+    "3": {
+      "frame": "churn",
+      "churn_unit": "health care and social assistance",
+      "churn_pct": "8",
+      "churn_clause": " — roughly one in twelve",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "16",
+      "occ_code": "3"
+    },
+    "4": {
+      "frame": "churn",
+      "churn_unit": "health care and social assistance",
+      "churn_pct": "8",
+      "churn_clause": " — roughly one in twelve",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "16",
+      "occ_code": "4"
+    },
+    "5": {
+      "frame": "churn",
+      "churn_unit": "health care and social assistance",
+      "churn_pct": "8",
+      "churn_clause": " — roughly one in twelve",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "16",
+      "occ_code": "5"
+    },
+    "6": {
+      "frame": "churn",
+      "churn_unit": "health care and social assistance",
+      "churn_pct": "8",
+      "churn_clause": " — roughly one in twelve",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "16",
+      "occ_code": "6"
+    },
+    "7": {
+      "frame": "churn",
+      "churn_unit": "health care and social assistance",
+      "churn_pct": "8",
+      "churn_clause": " — roughly one in twelve",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "16",
+      "occ_code": "7"
+    },
+    "8": {
+      "frame": "churn",
+      "churn_unit": "health care and social assistance",
+      "churn_pct": "8",
+      "churn_clause": " — roughly one in twelve",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "16",
+      "occ_code": "8"
+    },
+    "9": {
+      "frame": "churn",
+      "churn_unit": "health care and social assistance",
+      "churn_pct": "8",
+      "churn_clause": " — roughly one in twelve",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "16",
+      "occ_code": "9"
+    },
+    "10": {
+      "frame": "churn",
+      "churn_unit": "health care and social assistance",
+      "churn_pct": "8",
+      "churn_clause": " — roughly one in twelve",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "16",
+      "occ_code": "10"
+    },
+    "11": {
+      "frame": "churn",
+      "churn_unit": "health care and social assistance",
+      "churn_pct": "8",
+      "churn_clause": " — roughly one in twelve",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "16",
+      "occ_code": "11"
+    },
+    "12": {
+      "frame": "churn",
+      "churn_unit": "health care and social assistance",
+      "churn_pct": "8",
+      "churn_clause": " — roughly one in twelve",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "16",
+      "occ_code": "12"
+    },
+    "13": {
+      "frame": "churn",
+      "churn_unit": "health care and social assistance",
+      "churn_pct": "8",
+      "churn_clause": " — roughly one in twelve",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "16",
+      "occ_code": "13"
+    },
+    "14": {
+      "frame": "churn",
+      "churn_unit": "health care and social assistance",
+      "churn_pct": "8",
+      "churn_clause": " — roughly one in twelve",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "16",
+      "occ_code": "14"
+    },
+    "15": {
+      "frame": "churn",
+      "churn_unit": "health care and social assistance",
+      "churn_pct": "8",
+      "churn_clause": " — roughly one in twelve",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "16",
+      "occ_code": "15"
+    },
+    "16": {
+      "frame": "churn_decline",
+      "churn_unit": "health care and social assistance",
+      "churn_pct": "8",
+      "churn_clause": " — roughly one in twelve",
+      "decline_unit": "sales jobs",
+      "decline_pct": "2.0",
+      "ind_code": "16",
+      "occ_code": "16"
+    },
+    "17": {
+      "frame": "churn_decline",
+      "churn_unit": "health care and social assistance",
+      "churn_pct": "8",
+      "churn_clause": " — roughly one in twelve",
+      "decline_unit": "office, administrative, and clerical jobs",
+      "decline_pct": "3.9",
+      "ind_code": "16",
+      "occ_code": "17"
+    },
+    "18": {
+      "frame": "churn_decline",
+      "churn_unit": "health care and social assistance",
+      "churn_pct": "8",
+      "churn_clause": " — roughly one in twelve",
+      "decline_unit": "farming, fishing, and forestry jobs",
+      "decline_pct": "2.5",
+      "ind_code": "16",
+      "occ_code": "18"
+    },
+    "19": {
+      "frame": "churn",
+      "churn_unit": "health care and social assistance",
+      "churn_pct": "8",
+      "churn_clause": " — roughly one in twelve",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "16",
+      "occ_code": "19"
+    },
+    "20": {
+      "frame": "churn",
+      "churn_unit": "health care and social assistance",
+      "churn_pct": "8",
+      "churn_clause": " — roughly one in twelve",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "16",
+      "occ_code": "20"
+    },
+    "21": {
+      "frame": "churn_decline",
+      "churn_unit": "health care and social assistance",
+      "churn_pct": "8",
+      "churn_clause": " — roughly one in twelve",
+      "decline_unit": "production jobs",
+      "decline_pct": "1.1",
+      "ind_code": "16",
+      "occ_code": "21"
+    },
+    "22": {
+      "frame": "churn",
+      "churn_unit": "health care and social assistance",
+      "churn_pct": "8",
+      "churn_clause": " — roughly one in twelve",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "16",
+      "occ_code": "22"
+    },
+    "23": {
+      "frame": "churn",
+      "churn_unit": "health care and social assistance",
+      "churn_pct": "8",
+      "churn_clause": " — roughly one in twelve",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "16",
+      "occ_code": "23"
+    }
+  },
+  "17": {
+    "1": {
+      "frame": "churn",
+      "churn_unit": "the arts, entertainment, and recreation industry",
+      "churn_pct": "37",
+      "churn_clause": " — roughly one in three",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "17",
+      "occ_code": "1"
+    },
+    "2": {
+      "frame": "churn",
+      "churn_unit": "the arts, entertainment, and recreation industry",
+      "churn_pct": "37",
+      "churn_clause": " — roughly one in three",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "17",
+      "occ_code": "2"
+    },
+    "3": {
+      "frame": "churn",
+      "churn_unit": "the arts, entertainment, and recreation industry",
+      "churn_pct": "37",
+      "churn_clause": " — roughly one in three",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "17",
+      "occ_code": "3"
+    },
+    "4": {
+      "frame": "churn",
+      "churn_unit": "the arts, entertainment, and recreation industry",
+      "churn_pct": "37",
+      "churn_clause": " — roughly one in three",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "17",
+      "occ_code": "4"
+    },
+    "5": {
+      "frame": "churn",
+      "churn_unit": "the arts, entertainment, and recreation industry",
+      "churn_pct": "37",
+      "churn_clause": " — roughly one in three",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "17",
+      "occ_code": "5"
+    },
+    "6": {
+      "frame": "churn",
+      "churn_unit": "the arts, entertainment, and recreation industry",
+      "churn_pct": "37",
+      "churn_clause": " — roughly one in three",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "17",
+      "occ_code": "6"
+    },
+    "7": {
+      "frame": "churn",
+      "churn_unit": "the arts, entertainment, and recreation industry",
+      "churn_pct": "37",
+      "churn_clause": " — roughly one in three",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "17",
+      "occ_code": "7"
+    },
+    "8": {
+      "frame": "churn",
+      "churn_unit": "the arts, entertainment, and recreation industry",
+      "churn_pct": "37",
+      "churn_clause": " — roughly one in three",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "17",
+      "occ_code": "8"
+    },
+    "9": {
+      "frame": "churn",
+      "churn_unit": "the arts, entertainment, and recreation industry",
+      "churn_pct": "37",
+      "churn_clause": " — roughly one in three",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "17",
+      "occ_code": "9"
+    },
+    "10": {
+      "frame": "churn",
+      "churn_unit": "the arts, entertainment, and recreation industry",
+      "churn_pct": "37",
+      "churn_clause": " — roughly one in three",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "17",
+      "occ_code": "10"
+    },
+    "11": {
+      "frame": "churn",
+      "churn_unit": "the arts, entertainment, and recreation industry",
+      "churn_pct": "37",
+      "churn_clause": " — roughly one in three",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "17",
+      "occ_code": "11"
+    },
+    "12": {
+      "frame": "churn",
+      "churn_unit": "the arts, entertainment, and recreation industry",
+      "churn_pct": "37",
+      "churn_clause": " — roughly one in three",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "17",
+      "occ_code": "12"
+    },
+    "13": {
+      "frame": "churn",
+      "churn_unit": "the arts, entertainment, and recreation industry",
+      "churn_pct": "37",
+      "churn_clause": " — roughly one in three",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "17",
+      "occ_code": "13"
+    },
+    "14": {
+      "frame": "churn",
+      "churn_unit": "the arts, entertainment, and recreation industry",
+      "churn_pct": "37",
+      "churn_clause": " — roughly one in three",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "17",
+      "occ_code": "14"
+    },
+    "15": {
+      "frame": "churn",
+      "churn_unit": "the arts, entertainment, and recreation industry",
+      "churn_pct": "37",
+      "churn_clause": " — roughly one in three",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "17",
+      "occ_code": "15"
+    },
+    "16": {
+      "frame": "churn_decline",
+      "churn_unit": "the arts, entertainment, and recreation industry",
+      "churn_pct": "37",
+      "churn_clause": " — roughly one in three",
+      "decline_unit": "sales jobs",
+      "decline_pct": "2.0",
+      "ind_code": "17",
+      "occ_code": "16"
+    },
+    "17": {
+      "frame": "churn_decline",
+      "churn_unit": "the arts, entertainment, and recreation industry",
+      "churn_pct": "37",
+      "churn_clause": " — roughly one in three",
+      "decline_unit": "office, administrative, and clerical jobs",
+      "decline_pct": "3.9",
+      "ind_code": "17",
+      "occ_code": "17"
+    },
+    "18": {
+      "frame": "churn_decline",
+      "churn_unit": "the arts, entertainment, and recreation industry",
+      "churn_pct": "37",
+      "churn_clause": " — roughly one in three",
+      "decline_unit": "farming, fishing, and forestry jobs",
+      "decline_pct": "2.5",
+      "ind_code": "17",
+      "occ_code": "18"
+    },
+    "19": {
+      "frame": "churn",
+      "churn_unit": "the arts, entertainment, and recreation industry",
+      "churn_pct": "37",
+      "churn_clause": " — roughly one in three",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "17",
+      "occ_code": "19"
+    },
+    "20": {
+      "frame": "churn",
+      "churn_unit": "the arts, entertainment, and recreation industry",
+      "churn_pct": "37",
+      "churn_clause": " — roughly one in three",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "17",
+      "occ_code": "20"
+    },
+    "21": {
+      "frame": "churn_decline",
+      "churn_unit": "the arts, entertainment, and recreation industry",
+      "churn_pct": "37",
+      "churn_clause": " — roughly one in three",
+      "decline_unit": "production jobs",
+      "decline_pct": "1.1",
+      "ind_code": "17",
+      "occ_code": "21"
+    },
+    "22": {
+      "frame": "churn",
+      "churn_unit": "the arts, entertainment, and recreation industry",
+      "churn_pct": "37",
+      "churn_clause": " — roughly one in three",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "17",
+      "occ_code": "22"
+    },
+    "23": {
+      "frame": "churn",
+      "churn_unit": "the arts, entertainment, and recreation industry",
+      "churn_pct": "37",
+      "churn_clause": " — roughly one in three",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "17",
+      "occ_code": "23"
+    }
+  },
+  "18": {
+    "1": {
+      "frame": "churn",
+      "churn_unit": "the accommodation and food service industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "18",
+      "occ_code": "1"
+    },
+    "2": {
+      "frame": "churn",
+      "churn_unit": "the accommodation and food service industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "18",
+      "occ_code": "2"
+    },
+    "3": {
+      "frame": "churn",
+      "churn_unit": "the accommodation and food service industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "18",
+      "occ_code": "3"
+    },
+    "4": {
+      "frame": "churn",
+      "churn_unit": "the accommodation and food service industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "18",
+      "occ_code": "4"
+    },
+    "5": {
+      "frame": "churn",
+      "churn_unit": "the accommodation and food service industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "18",
+      "occ_code": "5"
+    },
+    "6": {
+      "frame": "churn",
+      "churn_unit": "the accommodation and food service industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "18",
+      "occ_code": "6"
+    },
+    "7": {
+      "frame": "churn",
+      "churn_unit": "the accommodation and food service industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "18",
+      "occ_code": "7"
+    },
+    "8": {
+      "frame": "churn",
+      "churn_unit": "the accommodation and food service industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "18",
+      "occ_code": "8"
+    },
+    "9": {
+      "frame": "churn",
+      "churn_unit": "the accommodation and food service industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "18",
+      "occ_code": "9"
+    },
+    "10": {
+      "frame": "churn",
+      "churn_unit": "the accommodation and food service industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "18",
+      "occ_code": "10"
+    },
+    "11": {
+      "frame": "churn",
+      "churn_unit": "the accommodation and food service industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "18",
+      "occ_code": "11"
+    },
+    "12": {
+      "frame": "churn",
+      "churn_unit": "the accommodation and food service industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "18",
+      "occ_code": "12"
+    },
+    "13": {
+      "frame": "churn",
+      "churn_unit": "the accommodation and food service industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "18",
+      "occ_code": "13"
+    },
+    "14": {
+      "frame": "churn",
+      "churn_unit": "the accommodation and food service industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "18",
+      "occ_code": "14"
+    },
+    "15": {
+      "frame": "churn",
+      "churn_unit": "the accommodation and food service industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "18",
+      "occ_code": "15"
+    },
+    "16": {
+      "frame": "churn_decline",
+      "churn_unit": "the accommodation and food service industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "sales jobs",
+      "decline_pct": "2.0",
+      "ind_code": "18",
+      "occ_code": "16"
+    },
+    "17": {
+      "frame": "churn_decline",
+      "churn_unit": "the accommodation and food service industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "office, administrative, and clerical jobs",
+      "decline_pct": "3.9",
+      "ind_code": "18",
+      "occ_code": "17"
+    },
+    "18": {
+      "frame": "churn_decline",
+      "churn_unit": "the accommodation and food service industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "farming, fishing, and forestry jobs",
+      "decline_pct": "2.5",
+      "ind_code": "18",
+      "occ_code": "18"
+    },
+    "19": {
+      "frame": "churn",
+      "churn_unit": "the accommodation and food service industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "18",
+      "occ_code": "19"
+    },
+    "20": {
+      "frame": "churn",
+      "churn_unit": "the accommodation and food service industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "18",
+      "occ_code": "20"
+    },
+    "21": {
+      "frame": "churn_decline",
+      "churn_unit": "the accommodation and food service industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "production jobs",
+      "decline_pct": "1.1",
+      "ind_code": "18",
+      "occ_code": "21"
+    },
+    "22": {
+      "frame": "churn",
+      "churn_unit": "the accommodation and food service industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "18",
+      "occ_code": "22"
+    },
+    "23": {
+      "frame": "churn",
+      "churn_unit": "the accommodation and food service industry",
+      "churn_pct": "12",
+      "churn_clause": " — roughly one in eight",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "18",
+      "occ_code": "23"
+    }
+  },
+  "19": {
+    "1": {
+      "frame": "churn",
+      "churn_unit": "other services",
+      "churn_pct": "11",
+      "churn_clause": " — roughly one in nine",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "19",
+      "occ_code": "1"
+    },
+    "2": {
+      "frame": "churn",
+      "churn_unit": "other services",
+      "churn_pct": "11",
+      "churn_clause": " — roughly one in nine",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "19",
+      "occ_code": "2"
+    },
+    "3": {
+      "frame": "churn",
+      "churn_unit": "other services",
+      "churn_pct": "11",
+      "churn_clause": " — roughly one in nine",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "19",
+      "occ_code": "3"
+    },
+    "4": {
+      "frame": "churn",
+      "churn_unit": "other services",
+      "churn_pct": "11",
+      "churn_clause": " — roughly one in nine",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "19",
+      "occ_code": "4"
+    },
+    "5": {
+      "frame": "churn",
+      "churn_unit": "other services",
+      "churn_pct": "11",
+      "churn_clause": " — roughly one in nine",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "19",
+      "occ_code": "5"
+    },
+    "6": {
+      "frame": "churn",
+      "churn_unit": "other services",
+      "churn_pct": "11",
+      "churn_clause": " — roughly one in nine",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "19",
+      "occ_code": "6"
+    },
+    "7": {
+      "frame": "churn",
+      "churn_unit": "other services",
+      "churn_pct": "11",
+      "churn_clause": " — roughly one in nine",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "19",
+      "occ_code": "7"
+    },
+    "8": {
+      "frame": "churn",
+      "churn_unit": "other services",
+      "churn_pct": "11",
+      "churn_clause": " — roughly one in nine",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "19",
+      "occ_code": "8"
+    },
+    "9": {
+      "frame": "churn",
+      "churn_unit": "other services",
+      "churn_pct": "11",
+      "churn_clause": " — roughly one in nine",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "19",
+      "occ_code": "9"
+    },
+    "10": {
+      "frame": "churn",
+      "churn_unit": "other services",
+      "churn_pct": "11",
+      "churn_clause": " — roughly one in nine",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "19",
+      "occ_code": "10"
+    },
+    "11": {
+      "frame": "churn",
+      "churn_unit": "other services",
+      "churn_pct": "11",
+      "churn_clause": " — roughly one in nine",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "19",
+      "occ_code": "11"
+    },
+    "12": {
+      "frame": "churn",
+      "churn_unit": "other services",
+      "churn_pct": "11",
+      "churn_clause": " — roughly one in nine",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "19",
+      "occ_code": "12"
+    },
+    "13": {
+      "frame": "churn",
+      "churn_unit": "other services",
+      "churn_pct": "11",
+      "churn_clause": " — roughly one in nine",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "19",
+      "occ_code": "13"
+    },
+    "14": {
+      "frame": "churn",
+      "churn_unit": "other services",
+      "churn_pct": "11",
+      "churn_clause": " — roughly one in nine",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "19",
+      "occ_code": "14"
+    },
+    "15": {
+      "frame": "churn",
+      "churn_unit": "other services",
+      "churn_pct": "11",
+      "churn_clause": " — roughly one in nine",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "19",
+      "occ_code": "15"
+    },
+    "16": {
+      "frame": "churn_decline",
+      "churn_unit": "other services",
+      "churn_pct": "11",
+      "churn_clause": " — roughly one in nine",
+      "decline_unit": "sales jobs",
+      "decline_pct": "2.0",
+      "ind_code": "19",
+      "occ_code": "16"
+    },
+    "17": {
+      "frame": "churn_decline",
+      "churn_unit": "other services",
+      "churn_pct": "11",
+      "churn_clause": " — roughly one in nine",
+      "decline_unit": "office, administrative, and clerical jobs",
+      "decline_pct": "3.9",
+      "ind_code": "19",
+      "occ_code": "17"
+    },
+    "18": {
+      "frame": "churn_decline",
+      "churn_unit": "other services",
+      "churn_pct": "11",
+      "churn_clause": " — roughly one in nine",
+      "decline_unit": "farming, fishing, and forestry jobs",
+      "decline_pct": "2.5",
+      "ind_code": "19",
+      "occ_code": "18"
+    },
+    "19": {
+      "frame": "churn",
+      "churn_unit": "other services",
+      "churn_pct": "11",
+      "churn_clause": " — roughly one in nine",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "19",
+      "occ_code": "19"
+    },
+    "20": {
+      "frame": "churn",
+      "churn_unit": "other services",
+      "churn_pct": "11",
+      "churn_clause": " — roughly one in nine",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "19",
+      "occ_code": "20"
+    },
+    "21": {
+      "frame": "churn_decline",
+      "churn_unit": "other services",
+      "churn_pct": "11",
+      "churn_clause": " — roughly one in nine",
+      "decline_unit": "production jobs",
+      "decline_pct": "1.1",
+      "ind_code": "19",
+      "occ_code": "21"
+    },
+    "22": {
+      "frame": "churn",
+      "churn_unit": "other services",
+      "churn_pct": "11",
+      "churn_clause": " — roughly one in nine",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "19",
+      "occ_code": "22"
+    },
+    "23": {
+      "frame": "churn",
+      "churn_unit": "other services",
+      "churn_pct": "11",
+      "churn_clause": " — roughly one in nine",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "19",
+      "occ_code": "23"
+    }
+  },
+  "20": {
+    "1": {
+      "frame": "churn",
+      "churn_unit": "government",
+      "churn_pct": "4",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "20",
+      "occ_code": "1"
+    },
+    "2": {
+      "frame": "churn",
+      "churn_unit": "government",
+      "churn_pct": "4",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "20",
+      "occ_code": "2"
+    },
+    "3": {
+      "frame": "churn",
+      "churn_unit": "government",
+      "churn_pct": "4",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "20",
+      "occ_code": "3"
+    },
+    "4": {
+      "frame": "churn",
+      "churn_unit": "government",
+      "churn_pct": "4",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "20",
+      "occ_code": "4"
+    },
+    "5": {
+      "frame": "churn",
+      "churn_unit": "government",
+      "churn_pct": "4",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "20",
+      "occ_code": "5"
+    },
+    "6": {
+      "frame": "churn",
+      "churn_unit": "government",
+      "churn_pct": "4",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "20",
+      "occ_code": "6"
+    },
+    "7": {
+      "frame": "churn",
+      "churn_unit": "government",
+      "churn_pct": "4",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "20",
+      "occ_code": "7"
+    },
+    "8": {
+      "frame": "churn",
+      "churn_unit": "government",
+      "churn_pct": "4",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "20",
+      "occ_code": "8"
+    },
+    "9": {
+      "frame": "churn",
+      "churn_unit": "government",
+      "churn_pct": "4",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "20",
+      "occ_code": "9"
+    },
+    "10": {
+      "frame": "churn",
+      "churn_unit": "government",
+      "churn_pct": "4",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "20",
+      "occ_code": "10"
+    },
+    "11": {
+      "frame": "churn",
+      "churn_unit": "government",
+      "churn_pct": "4",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "20",
+      "occ_code": "11"
+    },
+    "12": {
+      "frame": "churn",
+      "churn_unit": "government",
+      "churn_pct": "4",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "20",
+      "occ_code": "12"
+    },
+    "13": {
+      "frame": "churn",
+      "churn_unit": "government",
+      "churn_pct": "4",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "20",
+      "occ_code": "13"
+    },
+    "14": {
+      "frame": "churn",
+      "churn_unit": "government",
+      "churn_pct": "4",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "20",
+      "occ_code": "14"
+    },
+    "15": {
+      "frame": "churn",
+      "churn_unit": "government",
+      "churn_pct": "4",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "20",
+      "occ_code": "15"
+    },
+    "16": {
+      "frame": "churn_decline",
+      "churn_unit": "government",
+      "churn_pct": "4",
+      "churn_clause": "",
+      "decline_unit": "sales jobs",
+      "decline_pct": "2.0",
+      "ind_code": "20",
+      "occ_code": "16"
+    },
+    "17": {
+      "frame": "churn_decline",
+      "churn_unit": "government",
+      "churn_pct": "4",
+      "churn_clause": "",
+      "decline_unit": "office, administrative, and clerical jobs",
+      "decline_pct": "3.9",
+      "ind_code": "20",
+      "occ_code": "17"
+    },
+    "18": {
+      "frame": "churn_decline",
+      "churn_unit": "government",
+      "churn_pct": "4",
+      "churn_clause": "",
+      "decline_unit": "farming, fishing, and forestry jobs",
+      "decline_pct": "2.5",
+      "ind_code": "20",
+      "occ_code": "18"
+    },
+    "19": {
+      "frame": "churn",
+      "churn_unit": "government",
+      "churn_pct": "4",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "20",
+      "occ_code": "19"
+    },
+    "20": {
+      "frame": "churn",
+      "churn_unit": "government",
+      "churn_pct": "4",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "20",
+      "occ_code": "20"
+    },
+    "21": {
+      "frame": "churn_decline",
+      "churn_unit": "government",
+      "churn_pct": "4",
+      "churn_clause": "",
+      "decline_unit": "production jobs",
+      "decline_pct": "1.1",
+      "ind_code": "20",
+      "occ_code": "21"
+    },
+    "22": {
+      "frame": "churn",
+      "churn_unit": "government",
+      "churn_pct": "4",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "20",
+      "occ_code": "22"
+    },
+    "23": {
+      "frame": "churn",
+      "churn_unit": "government",
+      "churn_pct": "4",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "20",
+      "occ_code": "23"
+    }
+  },
+  "21": {
+    "1": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "21",
+      "occ_code": "1"
+    },
+    "2": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "21",
+      "occ_code": "2"
+    },
+    "3": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "21",
+      "occ_code": "3"
+    },
+    "4": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "21",
+      "occ_code": "4"
+    },
+    "5": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "21",
+      "occ_code": "5"
+    },
+    "6": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "21",
+      "occ_code": "6"
+    },
+    "7": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "21",
+      "occ_code": "7"
+    },
+    "8": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "21",
+      "occ_code": "8"
+    },
+    "9": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "21",
+      "occ_code": "9"
+    },
+    "10": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "21",
+      "occ_code": "10"
+    },
+    "11": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "21",
+      "occ_code": "11"
+    },
+    "12": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "21",
+      "occ_code": "12"
+    },
+    "13": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "21",
+      "occ_code": "13"
+    },
+    "14": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "21",
+      "occ_code": "14"
+    },
+    "15": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "21",
+      "occ_code": "15"
+    },
+    "16": {
+      "frame": "decline",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "sales jobs",
+      "decline_pct": "2.0",
+      "ind_code": "21",
+      "occ_code": "16"
+    },
+    "17": {
+      "frame": "decline",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "office, administrative, and clerical jobs",
+      "decline_pct": "3.9",
+      "ind_code": "21",
+      "occ_code": "17"
+    },
+    "18": {
+      "frame": "decline",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "farming, fishing, and forestry jobs",
+      "decline_pct": "2.5",
+      "ind_code": "21",
+      "occ_code": "18"
+    },
+    "19": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "21",
+      "occ_code": "19"
+    },
+    "20": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "21",
+      "occ_code": "20"
+    },
+    "21": {
+      "frame": "decline",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "production jobs",
+      "decline_pct": "1.1",
+      "ind_code": "21",
+      "occ_code": "21"
+    },
+    "22": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "21",
+      "occ_code": "22"
+    },
+    "23": {
+      "frame": "generic",
+      "churn_unit": "",
+      "churn_pct": "",
+      "churn_clause": "",
+      "decline_unit": "",
+      "decline_pct": "",
+      "ind_code": "21",
+      "occ_code": "23"
+    }
+  }
+}
