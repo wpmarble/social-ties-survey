@@ -96,9 +96,12 @@ resolves to an empty/unresolved token, `parseInt` returns `NaN`, and `code()` re
 codes — every single respondent in that preview silently gets the `generic` fallback, with no error
 of any kind. **Preview the whole survey**, not the block.
 
-This exact class of bug already bit Exp 1 once (`exp1-WIRING.md` §3, cross-page piping of
-`resp_state`) and the design spec calls it out again by name for Exp 2 (§10: "embedded data declared
-in earlier blocks does not exist in block-only preview"). Say it plainly: this will happen again if
+This exact class of bug already bit Exp 1 once — `exp1-WIRING.md` §2: Exp 1's embedded-data fields
+(`exp1_tr_arm` etc.) are likewise declared in an earlier block, so previewing only the Exp 1 block
+skips the declaration and "the arm-reuse guard won't resolve." (`exp1-WIRING.md` §3 is a different,
+unrelated bug — a Qualtrics drill-down exceeding the 2,000-permutation limit for piped text — not
+this one.) The design spec calls the earlier-block-preview issue out again by name for Exp 2
+(§10: "embedded data declared in earlier blocks does not exist in block-only preview"). Say it plainly: this will happen again if
 skipped.
 
 ## 5. How to change the data
@@ -152,8 +155,8 @@ will flag it, so don't skip it.
   just the 65 excluded cells. **The weighted percentages the build script prints are conditional on
   the 418 weighted cells, not an unconditional full-sample share** — the script's own console output
   says this, but it's easy to miss.
-- **Three (really, verify: four) industry labels currently name a narrower category than the JOLTS
-  number they quote — under review by the researcher, may change.** Checked directly against
+- **Four industry labels currently name a narrower category than the JOLTS number they quote —
+  under review by the researcher, may change.** Checked directly against
   `industry_xwalk.csv`'s `industry_code` column and the build script's output:
   - Utilities (choice 3) shares JOLTS code `480099` with Transportation (choice 8) — both show the
     same 18% churn figure, but "the utilities industry" is narrower than the JOLTS aggregate
