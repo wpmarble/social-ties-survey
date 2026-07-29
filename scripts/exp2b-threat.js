@@ -82,9 +82,18 @@ Qualtrics.SurveyEngine.addOnload(function() {
     const lede = res[1].trim(), churn = res[2].trim();
     const decline = res[3].trim(), generic = res[4].trim();
 
+    // Both codes present: exact cell. One missing/invalid: fall back onto the
+    // "Other" row for the missing axis (occ 23 / ind 21) rather than
+    // discarding a perfectly good statistic on the axis that IS known —
+    // those rows are already resolved by build_exp2_lookup.R, so this is a
+    // lookup substitution, not routing logic. Both missing: generic.
     var cell = null;
     if (indCode > 0 && occCode > 0 && lookup[String(indCode)]) {
       cell = lookup[String(indCode)][String(occCode)];
+    } else if (indCode > 0 && lookup[String(indCode)]) {
+      cell = lookup[String(indCode)]["23"];
+    } else if (occCode > 0 && lookup["21"]) {
+      cell = lookup["21"][String(occCode)];
     }
     if (!cell) { cell = { frame: "generic", churn_pct: "", decline_pct: "",
                           churn_unit: "", decline_unit: "", churn_clause: "" }; }
@@ -105,7 +114,14 @@ Qualtrics.SurveyEngine.addOnload(function() {
     render(text, cell.frame, cell);
   }).catch(function(e) {
     console.error("Exp2B fetch failed:", e);
-    render("Imagine you found out your workplace was planning significant layoffs " +
+    // Must match the real "generic" composition exactly (lede + generic
+    // sentence, joined by a blank line) so a transient fetch failure doesn't
+    // silently hand this respondent a shorter, less authoritative stimulus
+    // than the real generic-frame group gets. Inline string literals only —
+    // no second fetch attempt from a catch path.
+    render("The U.S. Bureau of Labor Statistics collects data on job loss and " +
+           "projects how employment will change in the years ahead.\n\n" +
+           "Imagine you found out your workplace was planning significant layoffs " +
            "in the coming months, and your own job might be at risk.", "generic", EMPTY);
   });
 
