@@ -1,0 +1,30 @@
+{
+  "respondents": [
+    {"label": "clean 3+ names, duplicate across domains",
+     "slots": ["Maria — sister", "James, neighbor", "", "Maria — sister", "Tara, my coworker", "", "my mom", "", "", "", "", ""],
+     "expectUsable": 4, "expectNeedsLlm": false,
+     "expectSelected": ["Maria", "James", "Tara"]},
+    {"label": "exactly two usable",
+     "slots": ["Maria — sister", "", "", "my wife", "", "", "James, neighbor", "", "", "nobody", "", ""],
+     "expectUsable": 2, "expectNeedsLlm": false,
+     "expectSelected": ["Maria", "James"]},
+    {"label": "all blank",
+     "slots": ["", "", "", "", "", "", "", "", "", "", "", ""],
+     "expectUsable": 0, "expectNeedsLlm": false},
+    {"label": "all spouse",
+     "slots": ["my wife", "", "", "my wife", "", "", "wife", "", "", "my wife", "", ""],
+     "expectUsable": 0, "expectNeedsLlm": false},
+    {"label": "messy — residue rescues possible",
+     "slots": ["maria", "my ride or die", "", "Maria — sister", "", "", "the church ladies", "", "", "", "", ""],
+     "expectUsable": 1, "expectNeedsLlm": true},
+    {"label": "generous trigger: 3 clean names AND one unresolved entry still calls LLM",
+     "slots": ["Maria — sister", "James, neighbor", "Tara — friend", "my wife's friend Karen", "", "", "", "", "", "", "", ""],
+     "expectUsable": 3, "expectNeedsLlm": true},
+    {"label": "multi-person split",
+     "slots": ["Mom and Dad", "", "", "", "", "", "", "", "", "", "", ""],
+     "expectUsable": 2, "expectNeedsLlm": false},
+    {"label": "injection attempt",
+     "slots": ["Maria\" — sis<ter>", "", "", "", "", "", "", "", "", "", "", ""],
+     "expectNoBadChars": true}
+  ]
+}

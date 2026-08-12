@@ -222,12 +222,89 @@ var EXP2A = (function () {
     return null;
   }
 
+  var CLS_RANK = { named_rel: 3, name_only: 2, rel_only: 1 };
+
+  function pairKey(p) {
+    if (p.name) { return "n:" + p.name.toLowerCase().replace(/[^\p{L}]/gu, ""); }
+    return "r:" + (p.rel || "").toLowerCase();
+  }
+
+  function dedupePairs(pairs) {
+    var byKey = {}, order = [];
+    for (var i = 0; i < pairs.length; i++) {
+      var p = pairs[i], k = pairKey(p);
+      if (!byKey[k]) { byKey[k] = p; order.push(k); continue; }
+      var q = byKey[k];
+      // union domains, earliest mention, richest info wins
+      for (var d = 0; d < p.domains.length; d++) {
+        if (q.domains.indexOf(p.domains[d]) === -1) { q.domains.push(p.domains[d]); }
+      }
+      if (p.firstIndex < q.firstIndex) { q.firstIndex = p.firstIndex; }
+      if (CLS_RANK[p.cls] > CLS_RANK[q.cls]) { q.cls = p.cls; }
+      if (!q.rel && p.rel) { q.rel = p.rel; }
+      if (!q.name && p.name) { q.name = p.name; }
+    }
+    var out = [];
+    for (var j = 0; j < order.length; j++) { out.push(byKey[order[j]]); }
+    return out;
+  }
+
+  function selectPairs(pairs, maxN) {
+    var n = maxN || 3;
+    var sorted = pairs.slice().sort(function (a, b) {
+      var ma = a.domains.length > 1 ? 1 : 0, mb = b.domains.length > 1 ? 1 : 0;
+      if (ma !== mb) { return mb - ma; }
+      if (CLS_RANK[a.cls] !== CLS_RANK[b.cls]) { return CLS_RANK[b.cls] - CLS_RANK[a.cls]; }
+      return a.firstIndex - b.firstIndex;
+    });
+    return sorted.slice(0, n);
+  }
+
+  // The single deterministic entry point (parse hook calls exactly this).
+  function processSlots(slots) {
+    var pairs = [], residue = [], nSpouse = 0;
+    for (var i = 0; i < slots.length; i++) {
+      var cleaned = normalizeEntry(slots[i].text);
+      if (cleaned === "") { continue; }
+      var cands = splitCandidates(cleaned);
+      var results = [], anyResidue = false;
+      for (var c = 0; c < cands.length; c++) {
+        var r = classifyEntry(cands[c]);
+        results.push(r);
+        if (r.cls === "residue") { anyResidue = true; }
+      }
+      if (cands.length > 1 && anyResidue) {
+        // split didn't resolve cleanly — treat the whole entry as one unit
+        results = [classifyEntry(cleaned)];
+      }
+      for (var k = 0; k < results.length; k++) {
+        var res = results[k];
+        if (res.cls === "unusable") { continue; }
+        if (res.cls === "spouse") { nSpouse++; continue; }
+        if (res.cls === "residue") {
+          residue.push({ text: sanitize(k === 0 && results.length === 1 ? cleaned : cands[k]), domain: slots[i].domain, index: i });
+          continue;
+        }
+        pairs.push({
+          name: res.name ? sanitize(res.name) : null,
+          rel: res.rel ? sanitize(res.rel) : null,
+          cls: res.cls, domains: [slots[i].domain], firstIndex: i
+        });
+      }
+    }
+    return { pairs: dedupePairs(pairs), residue: residue, needsLlm: residue.length > 0, nSpouse: nSpouse };
+  }
+
   return {
     DOMAINS: DOMAINS,
     sanitize: sanitize,
     normalizeEntry: normalizeEntry,
     splitCandidates: splitCandidates,
-    classifyEntry: classifyEntry
+    classifyEntry: classifyEntry,
+    processSlots: processSlots,
+    dedupePairs: dedupePairs,
+    selectPairs: selectPairs,
+    CLS_RANK: CLS_RANK
   };
 })();
 
