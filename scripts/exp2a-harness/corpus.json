@@ -49,6 +49,10 @@
     {"text": "mi hermana Lucia",             "expect": "residue"},
     {"text": "ex-wife",                      "expect": "residue"},
     {"text": "friend from work jimmy",       "expect": "residue"},
-    {"text": "my parents",                   "expect": "residue"}
+    {"text": "my parents",                   "expect": "residue"},
+
+    {"text": "My Boss Karen",                "expect": "named_rel", "name": "Karen", "rel": "boss"},
+    {"text": "The Church Ladies",            "expect": "residue"},
+    {"text": "My Homie",                     "expect": "residue"}
   ]
 }

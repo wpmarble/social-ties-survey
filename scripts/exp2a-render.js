@@ -169,7 +169,7 @@ var EXP2A = (function () {
     }
 
     // 2. "my <rel> <Name>" (no separator)
-    m = text.match(/^((?:my|our)\s+.+?)\s+(\p{Lu}[\p{L}'.\u2019-]*)$/u);
+    m = text.match(/^((?:[Mm]y|[Oo]ur)\s+.+?)\s+(\p{Lu}[\p{L}'.\u2019-]*)$/u);
     if (m) {
       var relLead = parseRelPhrase(m[1]);
       if (relLead && NAME_TOKEN_RE.test(m[2])) {
@@ -178,7 +178,7 @@ var EXP2A = (function () {
       }
     }
     // 3. "<Name> my <rel>" (no separator)
-    m = text.match(/^(\p{Lu}[\p{L}'.\u2019-]*)\s+((?:my|our)\s+.+)$/u);
+    m = text.match(/^(\p{Lu}[\p{L}'.\u2019-]*)\s+((?:[Mm]y|[Oo]ur)\s+.+)$/u);
     if (m) {
       var relTail = parseRelPhrase(m[2]);
       if (relTail && NAME_TOKEN_RE.test(m[1])) {
@@ -198,16 +198,32 @@ var EXP2A = (function () {
     //    the "(your ...)" clause is naturally suppressed.
     if (HONORIFIC_RE.test(text)) { return { cls: "name_only", name: text, rel: null }; }
 
-    // 6. capitalized name(s): keep first token of a multi-token full name
-    if (isNameLike(text)) { return { cls: "name_only", name: firstNameOf(text), rel: null }; }
+    // 6. capitalized name(s): keep first token of a multi-token full name.
+    // A capitalized determiner as the first token ("The Church Ladies", "My
+    // Homie") is not a name — no legitimate rel phrase resolved above, so
+    // this is ambiguous residue, not a name (WM 2026-08-12: ambiguity ->
+    // residue, never stretch a heuristic).
+    if (isNameLike(text)) {
+      var first6 = text.trim().split(/\s+/)[0].toLowerCase();
+      if (first6 === "my" || first6 === "our" || first6 === "the" || first6 === "a") {
+        return { cls: "residue", name: null, rel: null };
+      }
+      return { cls: "name_only", name: firstNameOf(text), rel: null };
+    }
 
     return { cls: "residue", name: null, rel: null };
   }
 
+  // Skips leading determiner tokens (my/our/the/a) so a phrase like "The Bob"
+  // (reachable via the separator branches' isNameLike side) never yields the
+  // determiner as the name; always leaves at least the final token.
   function firstNameOf(s) {
     if (HONORIFIC_RE.test(s)) { return s; }
     var toks = s.trim().split(/\s+/);
-    return toks.length > 1 ? toks[0] : s.trim();
+    if (toks.length <= 1) { return s.trim(); }
+    var i = 0;
+    while (i < toks.length - 1 && /^(?:my|our|the|a)$/i.test(toks[i])) { i++; }
+    return toks[i];
   }
 
   // "neighbor across the street" -> {rel:"neighbor"} (leading rel word, trailing description)
