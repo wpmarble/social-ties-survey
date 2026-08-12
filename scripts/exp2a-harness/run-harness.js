@@ -99,5 +99,46 @@ for (const [arm,n,variant,lowTie] of dv) {
   }
 }
 
+console.log("\n=== 4. residue + LLM merge (mocked) ===");
+const det = [
+  { name: "Maria", rel: "sister", cls: "named_rel", domains: ["transport"], firstIndex: 0 }
+];
+const residue = [
+  { text: "my ride or die", domain: "job", index: 3 },
+  { text: "karen my wifes friend", domain: "money", index: 6 },
+  { text: "the church ladies", domain: "other", index: 9 }
+];
+const rs = E.buildResidueString(residue);
+if (rs !== "job: my ride or die ||| money: karen my wifes friend ||| other: the church ladies") {
+  fail("buildResidueString: got " + rs);
+}
+if (/["\\`<>\n]/.test(rs)) { fail("residue string contains unsafe chars"); }
+
+// valid mock: rescues 2 entries, one is a group (dropped), one echoes Maria (deduped)
+const okMock = JSON.stringify({ entries: [
+  { text: "my ride or die", name: "Denise", relationship: "best friend", category: "friend", usable: true },
+  { text: "karen my wifes friend", name: "Karen", relationship: "friend", category: "friend", usable: true },
+  { text: "the church ladies", name: null, relationship: null, category: "group", usable: false }
+]});
+let merged = E.mergeLlm(det, okMock, residue);
+if (merged.length !== 3) { fail(`mergeLlm ok: expected 3 pairs, got ${merged.length}`); }
+if (merged.map(p => p.name).join(",") !== "Maria,Denise,Karen") { fail("mergeLlm ok: wrong pairs " + merged.map(p => p.name)); }
+
+// adversarial mocks: must never throw, must never let spouse/garbage through
+for (const [label, raw, expectN] of [
+  ["malformed JSON", "{oops", 1],
+  ["empty string", "", 1],
+  ["spouse smuggled", JSON.stringify({entries:[{text:"x", name:"Sam", relationship:"husband", category:"spouse_partner", usable:true}]}), 1],
+  ["quote injection", JSON.stringify({entries:[{text:"x", name:'Eve"<script>', relationship:"friend", category:"friend", usable:true}]}), 2],
+  ["bare array form", JSON.stringify([{text:"my ride or die", name:"Denise", relationship:"friend", category:"friend", usable:true}]), 2]
+]) {
+  let m;
+  try { m = E.mergeLlm(det, raw, residue); } catch (e) { fail(`mergeLlm ${label}: threw ${e}`); continue; }
+  if (m.length !== expectN) { fail(`mergeLlm ${label}: expected ${expectN}, got ${m.length}`); }
+  for (const p of m) {
+    if (/["\\`<>]/.test((p.name || "") + (p.rel || ""))) { fail(`mergeLlm ${label}: unsanitized output`); }
+  }
+}
+
 if (nBad > 0) { console.error(`\nFAILED: ${nBad} problems`); process.exit(1); }
 console.log("\nall harness sections passed");

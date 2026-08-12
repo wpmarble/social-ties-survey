@@ -325,6 +325,48 @@ var EXP2A = (function () {
     return text.split("[REFLECT_CLAUSE]").join(reflectClause(selected));
   }
 
+  function buildResidueString(residue) {
+    var parts = [];
+    for (var i = 0; i < residue.length; i++) {
+      parts.push(residue[i].domain + ": " + residue[i].text);
+    }
+    return parts.join(" ||| ");
+  }
+
+  var LLM_DROP = { spouse_partner: 1, group: 1, unusable: 1 };
+
+  function mergeLlm(detPairs, llmRaw, residue) {
+    var entries = null;
+    try {
+      var parsed = JSON.parse(llmRaw);
+      if (Object.prototype.toString.call(parsed) === "[object Array]") { entries = parsed; }
+      else if (parsed && Object.prototype.toString.call(parsed.entries) === "[object Array]") { entries = parsed.entries; }
+    } catch (e) { entries = null; }
+    if (!entries) { return detPairs; }
+
+    var llmPairs = [];
+    for (var i = 0; i < entries.length; i++) {
+      var e = entries[i];
+      if (!e || e.usable !== true) { continue; }
+      if (LLM_DROP[e.category]) { continue; }
+      var name = e.name ? sanitize(String(e.name)).split(/\s+/)[0] : null;
+      var rel = e.relationship ? sanitize(String(e.relationship)).toLowerCase() : null;
+      if (!name && !rel) { continue; }
+      // locate the source residue row for domain/index (order fallback)
+      var src = null;
+      for (var j = 0; j < residue.length; j++) {
+        if (sanitize(String(e.text || "")) === residue[j].text) { src = residue[j]; break; }
+      }
+      if (!src) { src = residue[Math.min(i, residue.length - 1)] || { domain: "other", index: 99 }; }
+      llmPairs.push({
+        name: name, rel: rel,
+        cls: name ? (rel ? "named_rel" : "name_only") : "rel_only",
+        domains: [src.domain], firstIndex: src.index
+      });
+    }
+    return dedupePairs(detPairs.concat(llmPairs));
+  }
+
   return {
     DOMAINS: DOMAINS,
     sanitize: sanitize,
@@ -337,6 +379,8 @@ var EXP2A = (function () {
     displayNameOf: displayNameOf,
     decideVariant: decideVariant,
     composeStimulus: composeStimulus,
+    buildResidueString: buildResidueString,
+    mergeLlm: mergeLlm,
     CLS_RANK: CLS_RANK
   };
 })();

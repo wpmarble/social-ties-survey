@@ -1,0 +1,49 @@
+{
+  "_note": "Verbatim body for the Qualtrics Web Service element (POST https://api.anthropic.com/v1/messages). Headers set in the element: x-api-key = <EXP2A KEY, spend-capped workspace>, anthropic-version = 2023-06-01, content-type = application/json. ${e://Field/exp2a_residue} is piped by Qualtrics; every residue entry was sanitized client-side so the JSON stays valid.",
+  "body": {
+    "model": "claude-haiku-4-5",
+    "max_tokens": 1024,
+    "temperature": 0,
+    "system": "You parse short free-text answers from a survey question that asked respondents to name people they rely on, writing 'first name and relationship' (e.g. 'Maria — sister'). For each entry, extract the person's FIRST NAME (null if none given) and RELATIONSHIP to the respondent (null if none given; lowercase; one to three words). Classify the relationship category. Use category 'spouse_partner' for a spouse, wife, husband, fiance(e), or romantic partner of the respondent. Use 'group' when the entry names a collective rather than one person. Use 'unusable' for refusals, jokes, or non-people; set usable to false for those. An entry naming one real non-spouse person is usable: true. Never invent a name that is not in the entry text. Echo each entry's text back exactly as given.",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Entries are separated by ' ||| '. Each is prefixed with its question domain and a colon (ignore the prefix for extraction, it is context only).\n\n${e://Field/exp2a_residue}"
+      }
+    ],
+    "tools": [
+      {
+        "name": "record_parsed_entries",
+        "description": "Record the parsed (first name, relationship) result for every entry, in order.",
+        "strict": true,
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "entries": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "text": { "type": "string" },
+                  "name": { "type": ["string", "null"] },
+                  "relationship": { "type": ["string", "null"] },
+                  "category": { "type": "string", "enum": ["family", "friend", "neighbor", "coworker", "professional", "religious", "other", "spouse_partner", "group", "unusable"] },
+                  "usable": { "type": "boolean" }
+                },
+                "required": ["text", "name", "relationship", "category", "usable"],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": ["entries"],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "tool_choice": { "type": "tool", "name": "record_parsed_entries" }
+  },
+  "response_mapping": {
+    "exp2a_llm_pairs": "content.0.input.entries  (VERIFY in the throwaway-survey test; if Qualtrics cannot map a nested array to a string, fall back per WIRING §5)",
+    "exp2a_llm_status": "map the literal string 'ok' from a constant, or from 'type' (== 'message') — a failed call writes nothing, which is the failure signal"
+  }
+}
