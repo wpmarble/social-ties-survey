@@ -1,0 +1,54 @@
+{
+  "entries": [
+    {"text": "Maria — sister",              "expect": "named_rel", "name": "Maria",  "rel": "sister"},
+    {"text": "Maria - sister",               "expect": "named_rel", "name": "Maria",  "rel": "sister"},
+    {"text": "Maria, my sister",             "expect": "named_rel", "name": "Maria",  "rel": "sister"},
+    {"text": "Maria: sister",                "expect": "named_rel", "name": "Maria",  "rel": "sister"},
+    {"text": "my sister Maria",              "expect": "named_rel", "name": "Maria",  "rel": "sister"},
+    {"text": "Angie, my childhood friend",   "expect": "named_rel", "name": "Angie",  "rel": "childhood friend"},
+    {"text": "James — neighbor across the street", "expect": "named_rel", "name": "James", "rel": "neighbor"},
+    {"text": "Tara, best friend",            "expect": "named_rel", "name": "Tara",   "rel": "best friend"},
+    {"text": "my brother Dave",              "expect": "named_rel", "name": "Dave",   "rel": "brother"},
+    {"text": "DeShawn my coworker",          "expect": "named_rel", "name": "DeShawn","rel": "coworker"},
+    {"text": "Rosa (aunt)",                  "expect": "named_rel", "name": "Rosa",   "rel": "aunt"},
+    {"text": "Kim- mother in law",           "expect": "named_rel", "name": "Kim",    "rel": "mother in law"},
+
+    {"text": "Pastor Williams",              "expect": "name_only", "name": "Pastor Williams", "rel": null},
+    {"text": "Dr. Chen",                     "expect": "name_only", "name": "Dr. Chen", "rel": null},
+    {"text": "DeShawn",                      "expect": "name_only", "name": "DeShawn", "rel": null},
+    {"text": "Maria Gonzalez",               "expect": "name_only", "name": "Maria",   "rel": null},
+    {"text": "Jean-Luc",                     "expect": "name_only", "name": "Jean-Luc","rel": null},
+    {"text": "O'Brien",                      "expect": "name_only", "name": "O'Brien", "rel": null},
+
+    {"text": "my mom",                       "expect": "rel_only",  "name": null, "rel": "mom"},
+    {"text": "sister",                       "expect": "rel_only",  "name": null, "rel": "sister"},
+    {"text": "my best friend",               "expect": "rel_only",  "name": null, "rel": "best friend"},
+    {"text": "grandma",                      "expect": "rel_only",  "name": null, "rel": "grandma"},
+    {"text": "my next door neighbor",        "expect": "residue"},
+
+    {"text": "my wife",                      "expect": "spouse"},
+    {"text": "husband",                      "expect": "spouse"},
+    {"text": "my fiancée",                   "expect": "spouse"},
+    {"text": "Sarah — my wife",              "expect": "spouse"},
+    {"text": "my bf",                        "expect": "spouse"},
+    {"text": "hubby",                        "expect": "spouse"},
+
+    {"text": "nobody",                       "expect": "unusable"},
+    {"text": "no one",                       "expect": "unusable"},
+    {"text": "N/A",                          "expect": "unusable"},
+    {"text": "idk",                          "expect": "unusable"},
+    {"text": "myself",                       "expect": "unusable"},
+    {"text": "same as above",                "expect": "unusable"},
+
+    {"text": "maria",                        "expect": "residue"},
+    {"text": "my ride or die",               "expect": "residue"},
+    {"text": "the church ladies",            "expect": "residue"},
+    {"text": "coworkers",                    "expect": "residue"},
+    {"text": "my wife's friend Karen",       "expect": "residue"},
+    {"text": "the lady at the front desk",   "expect": "residue"},
+    {"text": "mi hermana Lucia",             "expect": "residue"},
+    {"text": "ex-wife",                      "expect": "residue"},
+    {"text": "friend from work jimmy",       "expect": "residue"},
+    {"text": "my parents",                   "expect": "residue"}
+  ]
+}

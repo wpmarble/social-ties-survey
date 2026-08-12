@@ -50,11 +50,184 @@ var EXP2A = (function () {
     return out.length >= 2 ? out : [text];
   }
 
+  // --- wordlists -----------------------------------------------------------
+  var SPOUSE_WORDS = ["spouse", "wife", "husband", "partner", "fiance", "fiancee",
+    "fiancé", "fiancée", "boyfriend", "girlfriend", "bf", "gf", "hubby", "wifey",
+    "significant other", "my other half", "life partner"];
+
+  // relationship word -> coarse category (category used for diagnostics only)
+  var REL_WORDS = {};
+  (function () {
+    function add(words, cat) {
+      for (var i = 0; i < words.length; i++) { REL_WORDS[words[i]] = cat; }
+    }
+    add(["mom", "mother", "momma", "mama", "dad", "father", "papa", "pop",
+         "stepmom", "stepdad", "stepmother", "stepfather",
+         "mother in law", "father in law", "sister in law", "brother in law",
+         "son in law", "daughter in law",
+         "sister", "sis", "brother", "bro", "aunt", "auntie", "uncle", "cousin",
+         "grandma", "grandmother", "nana", "granny", "grandpa", "grandfather",
+         "son", "daughter", "niece", "nephew", "grandson", "granddaughter",
+         "godmother", "godfather", "godparent"], "family");
+    add(["friend", "buddy", "pal", "bestie", "roommate", "housemate"], "friend");
+    add(["neighbor", "neighbour"], "neighbor");
+    add(["coworker", "co worker", "colleague", "boss", "supervisor", "manager",
+         "mentor", "coach"], "coworker");
+    add(["pastor", "priest", "rabbi", "imam", "minister", "deacon"], "religious");
+    add(["doctor", "therapist", "counselor", "lawyer", "teacher", "professor",
+         "babysitter", "nanny", "caregiver", "landlord"], "professional");
+  })();
+
+  var REL_MODIFIERS = ["my", "our", "a", "the", "best", "close", "good", "old",
+    "older", "younger", "little", "big", "childhood", "college", "church",
+    "work", "family", "dear", "longtime", "twin", "half", "step", "great"];
+
+  var UNUSABLE_EXACT = ["nobody", "no one", "noone", "none", "n a", "na",
+    "nothing", "nope", "no", "idk", "i dont know", "dont know", "not sure",
+    "myself", "me", "self", "same", "same as above", "see above", "x", "xx",
+    "unknown", "not applicable", "no idea"];
+
+  // --- classification helpers ----------------------------------------------
+  function lowerKey(s) {
+    return s.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, " ").replace(/\s+/g, " ").trim();
+  }
+
+  // "my childhood friend" -> {rel: "childhood friend", spouse: false}; null if not a rel phrase.
+  // The returned rel keeps informative modifiers (childhood, best, ...) but drops
+  // my/our/a/the so the template can say "(your childhood friend)".
+  function parseRelPhrase(s) {
+    var words = lowerKey(s).split(" ");
+    if (words.length === 0 || words[0] === "") { return null; }
+    // multi-word rel entries ("mother in law") get matched greedily from each start
+    var kept = [];
+    var i = 0;
+    while (i < words.length) {
+      var matched = null;
+      for (var len = Math.min(3, words.length - i); len >= 1; len--) {
+        var cand = words.slice(i, i + len).join(" ");
+        if (SPOUSE_WORDS.indexOf(cand) !== -1) { matched = { word: cand, spouse: true, len: len }; break; }
+        if (REL_WORDS[cand]) { matched = { word: cand, spouse: false, len: len }; break; }
+      }
+      if (matched) {
+        // must be the FINAL content of the phrase
+        if (i + matched.len !== words.length) { return null; }
+        var informative = [];
+        for (var k = 0; k < kept.length; k++) {
+          if (["my", "our", "a", "the"].indexOf(kept[k]) === -1) { informative.push(kept[k]); }
+        }
+        return { rel: informative.concat([matched.word]).join(" "), spouse: matched.spouse };
+      }
+      if (REL_MODIFIERS.indexOf(words[i]) === -1) { return null; }
+      kept.push(words[i]);
+      i++;
+    }
+    return null;
+  }
+
+  var NAME_TOKEN_RE = /^\p{Lu}[\p{L}'.\u2019-]*$/u;      // capitalized token
+  function isNameLike(s) {
+    var toks = s.trim().split(/\s+/);
+    if (toks.length < 1 || toks.length > 3) { return false; }
+    for (var i = 0; i < toks.length; i++) {
+      if (!NAME_TOKEN_RE.test(toks[i])) { return false; }
+    }
+    return parseRelPhrase(s) === null;
+  }
+
+  var HONORIFIC_RE = /^(Pastor|Father|Rev\.?|Reverend|Dr\.?|Coach|Ms\.?|Mr\.?|Mrs\.?)\s+\p{Lu}[\p{L}'.\u2019-]*$/u;
+
+  // --- the classifier -------------------------------------------------------
+  // Claims only certain patterns; anything ambiguous returns cls "residue"
+  // so the LLM resolves it (generous triggering, WM 2026-08-12).
+  function classifyEntry(text) {
+    var lk = lowerKey(text);
+    if (UNUSABLE_EXACT.indexOf(lk) !== -1) { return { cls: "unusable", name: null, rel: null }; }
+
+    // 1. separator form: "<name> SEP <rel>" or "<rel> SEP <name>"; also "(rel)"
+    var m = text.match(/^(.+?)\s*(?:\u2014|\u2013|-|,|:|;|\()\s*(.+?)\)?\s*$/);
+    if (m) {
+      var a = m[1].trim(), b = m[2].trim();
+      var relB = parseRelPhrase(b), relA = parseRelPhrase(a);
+      if (relB && isNameLike(a)) {
+        if (relB.spouse) { return { cls: "spouse", name: null, rel: null }; }
+        // rel side may carry a trailing description ("neighbor across the street"):
+        // parseRelPhrase already rejected that, so retry on the first rel word run.
+        return { cls: "named_rel", name: firstNameOf(a), rel: relB.rel };
+      }
+      if (!relB && isNameLike(a)) {
+        var relB2 = leadingRelOf(b);
+        if (relB2) {
+          if (relB2.spouse) { return { cls: "spouse", name: null, rel: null }; }
+          return { cls: "named_rel", name: firstNameOf(a), rel: relB2.rel };
+        }
+      }
+      if (relA && isNameLike(b)) {
+        if (relA.spouse) { return { cls: "spouse", name: null, rel: null }; }
+        return { cls: "named_rel", name: firstNameOf(b), rel: relA.rel };
+      }
+    }
+
+    // 2. "my <rel> <Name>" (no separator)
+    m = text.match(/^((?:my|our)\s+.+?)\s+(\p{Lu}[\p{L}'.\u2019-]*)$/u);
+    if (m) {
+      var relLead = parseRelPhrase(m[1]);
+      if (relLead && NAME_TOKEN_RE.test(m[2])) {
+        if (relLead.spouse) { return { cls: "spouse", name: null, rel: null }; }
+        return { cls: "named_rel", name: m[2], rel: relLead.rel };
+      }
+    }
+    // 3. "<Name> my <rel>" (no separator)
+    m = text.match(/^(\p{Lu}[\p{L}'.\u2019-]*)\s+((?:my|our)\s+.+)$/u);
+    if (m) {
+      var relTail = parseRelPhrase(m[2]);
+      if (relTail && NAME_TOKEN_RE.test(m[1])) {
+        if (relTail.spouse) { return { cls: "spouse", name: null, rel: null }; }
+        return { cls: "named_rel", name: m[1], rel: relTail.rel };
+      }
+    }
+
+    // 4. whole entry is a rel phrase
+    var relWhole = parseRelPhrase(text);
+    if (relWhole) {
+      if (relWhole.spouse) { return { cls: "spouse", name: null, rel: null }; }
+      return { cls: "rel_only", name: null, rel: relWhole.rel };
+    }
+
+    // 5. honorific + surname stays whole ("Pastor Williams"); rel stays null so
+    //    the "(your ...)" clause is naturally suppressed.
+    if (HONORIFIC_RE.test(text)) { return { cls: "name_only", name: text, rel: null }; }
+
+    // 6. capitalized name(s): keep first token of a multi-token full name
+    if (isNameLike(text)) { return { cls: "name_only", name: firstNameOf(text), rel: null }; }
+
+    return { cls: "residue", name: null, rel: null };
+  }
+
+  function firstNameOf(s) {
+    if (HONORIFIC_RE.test(s)) { return s; }
+    var toks = s.trim().split(/\s+/);
+    return toks.length > 1 ? toks[0] : s.trim();
+  }
+
+  // "neighbor across the street" -> {rel:"neighbor"} (leading rel word, trailing description)
+  function leadingRelOf(s) {
+    var words = lowerKey(s).split(" ");
+    var start = 0;
+    while (start < words.length && REL_MODIFIERS.indexOf(words[start]) !== -1) { start++; }
+    for (var len = Math.min(3, words.length - start); len >= 1; len--) {
+      var cand = words.slice(start, start + len).join(" ");
+      if (SPOUSE_WORDS.indexOf(cand) !== -1) { return { rel: cand, spouse: true }; }
+      if (REL_WORDS[cand]) { return { rel: cand, spouse: false }; }
+    }
+    return null;
+  }
+
   return {
     DOMAINS: DOMAINS,
     sanitize: sanitize,
     normalizeEntry: normalizeEntry,
-    splitCandidates: splitCandidates
+    splitCandidates: splitCandidates,
+    classifyEntry: classifyEntry
   };
 })();
 
