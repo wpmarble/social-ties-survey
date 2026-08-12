@@ -104,6 +104,14 @@ for the Web Service to fill).
 
 ## 3. Flow: Branch → Web Service
 
+**STOP — before adding anything from this section to the real survey, complete the §5
+throwaway-survey verification below.** §5 determines whether the response mapping in
+this section even works as written (the nested-array mapping may need to change to the
+`entries_json` fallback) and whether a broken/timed-out call actually lets the flow
+continue. Wiring this section into the live survey first, out of the order it appears
+in this document, risks a live respondent getting stuck or a mapping that silently
+writes nothing.
+
 In the Survey Flow, insert one new element **after** the Political Views block entry
 (`BL_0CYW1xfM3PkZSgS`, currently at position `FL_12` in the flow list) and **before**
 the Exp 2A block entry (`BL_82I0C2NV9OA6FPo`, `FL_14`) — note the flow list's *array
