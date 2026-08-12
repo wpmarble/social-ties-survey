@@ -59,5 +59,45 @@ for (const r of resp.respondents) {
 console.log("usable-name distribution across fixtures:", usableDist);
 console.log(`LLM trigger rate across fixtures: ${nTrigger}/${resp.respondents.length}`);
 
+console.log("\n=== 3. template render pass ===");
+const TPL = {};
+for (const v of ["tie-named-3", "tie-named-2", "tie-generic", "placebo"]) {
+  TPL[v] = fs.readFileSync(path.join(__dirname, "..", "..", "exp2a", "templates", v + ".txt"), "utf8").trim();
+}
+function checkText(label, text) {
+  if (/\[[A-Z_0-9]+\]/.test(text)) { fail(`${label}: unfilled token\n${text}`); }
+  if (/[ \t]{2,}|[ \t][,.]/.test(text)) { fail(`${label}: spacing problem\n${text}`); }
+  if (text.indexOf("undefined") !== -1 || text.indexOf("null") !== -1) { fail(`${label}: undefined/null leaked`); }
+  if (/\(your [^)]*\(your/.test(text)) { fail(`${label}: nested rel clause`); }
+  if (/your your/.test(text)) { fail(`${label}: doubled 'your'`); }
+}
+const P = (name, rel, cls) => ({ name, rel, cls, domains: ["money"], firstIndex: 0 });
+const renderCases = [
+  ["named3 full",        "tie-named-3", [P("Maria","sister","named_rel"), P("James","neighbor","named_rel"), P("Tara","coworker","named_rel")]],
+  ["named3 name-only",   "tie-named-3", [P("Pastor Williams",null,"name_only"), P("Maria","sister","named_rel"), P("DeShawn",null,"name_only")]],
+  ["named3 rel-only mix","tie-named-3", [P("Maria","sister","named_rel"), P(null,"mom","rel_only"), P("O'Brien",null,"name_only")]],
+  ["named2",             "tie-named-2", [P("Maria","sister","named_rel"), P(null,"childhood friend","rel_only")]],
+  ["generic",            "tie-generic", []],
+  ["placebo",            "placebo",     []]
+];
+for (const [label, v, sel] of renderCases) {
+  const text = E.composeStimulus(TPL[v], sel);
+  checkText(label, text);
+}
+// print two renders for eyeballing
+console.log("\n--- named3 rel-only mix ---\n" +
+  E.composeStimulus(TPL["tie-named-3"], [P("Maria","sister","named_rel"), P(null,"mom","rel_only"), P("O'Brien",null,"name_only")]));
+console.log("\n--- named2 ---\n" +
+  E.composeStimulus(TPL["tie-named-2"], [P("Maria","sister","named_rel"), P(null,"childhood friend","rel_only")]));
+
+// decideVariant truth table
+const dv = [["tie",5,"named3",0],["tie",3,"named3",0],["tie",2,"named2",0],["tie",1,"generic",1],["tie",0,"generic",1],["placebo",4,"placebo",0]];
+for (const [arm,n,variant,lowTie] of dv) {
+  const got = E.decideVariant(arm, n);
+  if (got.variant !== variant || got.lowTie !== lowTie) {
+    fail(`decideVariant(${arm},${n}): got ${JSON.stringify(got)}, want ${variant}/${lowTie}`);
+  }
+}
+
 if (nBad > 0) { console.error(`\nFAILED: ${nBad} problems`); process.exit(1); }
 console.log("\nall harness sections passed");

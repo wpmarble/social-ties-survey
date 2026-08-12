@@ -295,6 +295,36 @@ var EXP2A = (function () {
     return { pairs: dedupePairs(pairs), residue: residue, needsLlm: residue.length > 0, nSpouse: nSpouse };
   }
 
+  function displayNameOf(p) { return p.name ? p.name : "your " + p.rel; }
+
+  function decideVariant(arm, usableCount) {
+    if (arm === "placebo") { return { variant: "placebo", lowTie: 0 }; }
+    if (usableCount >= 3) { return { variant: "named3", lowTie: 0 }; }
+    if (usableCount === 2) { return { variant: "named2", lowTie: 0 }; }
+    return { variant: "generic", lowTie: 1 };
+  }
+
+  function reflectClause(selected) {
+    var names = [];
+    for (var i = 0; i < selected.length; i++) { names.push(displayNameOf(selected[i])); }
+    if (names.length >= 3) { return names[0] + ", " + names[1] + ", and " + names[2]; }
+    if (names.length === 2) { return names[0] + " and " + names[1]; }
+    return names.join("");
+  }
+
+  function composeStimulus(templateText, selected) {
+    var text = templateText;
+    for (var k = 0; k < 3; k++) {
+      var p = selected[k];
+      var name = p ? displayNameOf(p) : "";
+      // "(your sister)" only when we have BOTH a real name and a relationship
+      var clause = (p && p.name && p.rel) ? " (your " + p.rel + ")" : "";
+      text = text.split("[NAME" + (k + 1) + "]").join(name)
+                 .split("[RELCLAUSE" + (k + 1) + "]").join(clause);
+    }
+    return text.split("[REFLECT_CLAUSE]").join(reflectClause(selected));
+  }
+
   return {
     DOMAINS: DOMAINS,
     sanitize: sanitize,
@@ -304,6 +334,9 @@ var EXP2A = (function () {
     processSlots: processSlots,
     dedupePairs: dedupePairs,
     selectPairs: selectPairs,
+    displayNameOf: displayNameOf,
+    decideVariant: decideVariant,
+    composeStimulus: composeStimulus,
     CLS_RANK: CLS_RANK
   };
 })();
