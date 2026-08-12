@@ -130,7 +130,12 @@ for (const [label, raw, expectN] of [
   ["empty string", "", 1],
   ["spouse smuggled", JSON.stringify({entries:[{text:"x", name:"Sam", relationship:"husband", category:"spouse_partner", usable:true}]}), 1],
   ["quote injection", JSON.stringify({entries:[{text:"x", name:'Eve"<script>', relationship:"friend", category:"friend", usable:true}]}), 2],
-  ["bare array form", JSON.stringify([{text:"my ride or die", name:"Denise", relationship:"friend", category:"friend", usable:true}]), 2]
+  ["bare array form", JSON.stringify([{text:"my ride or die", name:"Denise", relationship:"friend", category:"friend", usable:true}]), 2],
+  ["spouse mis-cased", JSON.stringify({entries:[{text:"x", name:"Sam", relationship:"husband", category:"Spouse_Partner", usable:true}]}), 1],
+  ["spouse padded category", JSON.stringify({entries:[{text:"x", name:"Sam", relationship:"husband", category:"spouse_partner ", usable:true}]}), 1],
+  ["spouse missing category", JSON.stringify({entries:[{text:"x", name:"Sam", relationship:"husband", usable:true}]}), 1],
+  ["spouse null category", JSON.stringify({entries:[{text:"x", name:"Sam", relationship:"husband", category:null, usable:true}]}), 1],
+  ["spouse rel with benign category", JSON.stringify({entries:[{text:"x", name:"Sam", relationship:"wife", category:"friend", usable:true}]}), 1]
 ]) {
   let m;
   try { m = E.mergeLlm(det, raw, residue); } catch (e) { fail(`mergeLlm ${label}: threw ${e}`); continue; }

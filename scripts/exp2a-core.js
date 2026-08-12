@@ -348,9 +348,11 @@ var EXP2A = (function () {
     for (var i = 0; i < entries.length; i++) {
       var e = entries[i];
       if (!e || e.usable !== true) { continue; }
-      if (LLM_DROP[e.category]) { continue; }
+      var cat = e.category ? sanitize(String(e.category)).toLowerCase() : "";
+      if (LLM_DROP[cat]) { continue; }
       var name = e.name ? sanitize(String(e.name)).split(/\s+/)[0] : null;
       var rel = e.relationship ? sanitize(String(e.relationship)).toLowerCase() : null;
+      if (rel && SPOUSE_WORDS.indexOf(rel) !== -1) { continue; }
       if (!name && !rel) { continue; }
       // locate the source residue row for domain/index (order fallback)
       var src = null;
