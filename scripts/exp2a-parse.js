@@ -427,25 +427,30 @@ if (typeof module !== "undefined" && module.exports) { module.exports = EXP2A; }
   .exp2a-slot spans (server-piped pages 1-3); see exp2a-WIRING.md §2.
   All logic is in EXP2A (exp2a-core.js) — this file only harvests and stores.
 */
-Qualtrics.SurveyEngine.addOnPageSubmit(function (type) {
-  if (type === "prev") { return; }
+// `this` inside addOnPageSubmit as question-context is not a documented
+// Qualtrics guarantee. addOnload's `this` IS documented as the question
+// context, so we capture it there and close over it in the submit handler.
+Qualtrics.SurveyEngine.addOnload(function () {
   var qThis = this;
-  var slots = [];
-  var prior = document.getElementById("exp2aPrior");
-  if (prior) {
-    var spans = prior.querySelectorAll(".exp2a-slot");
-    for (var i = 0; i < spans.length; i++) {
-      slots.push({ text: spans[i].textContent, domain: spans[i].getAttribute("data-domain") });
+  Qualtrics.SurveyEngine.addOnPageSubmit(function (type) {
+    if (type === "prev") { return; }
+    var slots = [];
+    var prior = document.getElementById("exp2aPrior");
+    if (prior) {
+      var spans = prior.querySelectorAll(".exp2a-slot");
+      for (var i = 0; i < spans.length; i++) {
+        slots.push({ text: spans[i].textContent, domain: spans[i].getAttribute("data-domain") });
+      }
     }
-  }
-  var inputs = qThis.getQuestionContainer().querySelectorAll("input[type=text], textarea");
-  for (var j = 0; j < inputs.length; j++) {
-    slots.push({ text: inputs[j].value, domain: "other" });
-  }
-  var out = EXP2A.processSlots(slots);
-  Qualtrics.SurveyEngine.setEmbeddedData("exp2a_det_pairs", JSON.stringify(out.pairs));
-  Qualtrics.SurveyEngine.setEmbeddedData("exp2a_residue", EXP2A.buildResidueString(out.residue));
-  Qualtrics.SurveyEngine.setEmbeddedData("exp2a_needs_llm", out.needsLlm ? "1" : "0");
-  Qualtrics.SurveyEngine.setEmbeddedData("exp2a_llm_status", out.needsLlm ? "" : "skipped");
-  console.log("Exp2A parse:", out.pairs.length, "pairs,", out.residue.length, "residue, spouse:", out.nSpouse);
+    var inputs = qThis.getQuestionContainer().querySelectorAll("input[type=text], textarea");
+    for (var j = 0; j < inputs.length; j++) {
+      slots.push({ text: inputs[j].value, domain: "other" });
+    }
+    var out = EXP2A.processSlots(slots);
+    Qualtrics.SurveyEngine.setEmbeddedData("exp2a_det_pairs", JSON.stringify(out.pairs));
+    Qualtrics.SurveyEngine.setEmbeddedData("exp2a_residue", EXP2A.buildResidueString(out.residue));
+    Qualtrics.SurveyEngine.setEmbeddedData("exp2a_needs_llm", out.needsLlm ? "1" : "0");
+    Qualtrics.SurveyEngine.setEmbeddedData("exp2a_llm_status", out.needsLlm ? "" : "skipped");
+    console.log("Exp2A parse:", out.pairs.length, "pairs,", out.residue.length, "residue, spouse:", out.nSpouse);
+  });
 });

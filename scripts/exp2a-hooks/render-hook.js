@@ -85,8 +85,22 @@ Qualtrics.SurveyEngine.addOnload(function () {
 
   var file = { named3: "tie-named-3.txt", named2: "tie-named-2.txt", generic: "tie-generic.txt", placebo: "placebo.txt" }[dv.variant];
   fetch(BASE + "templates/" + file)
-    .then(function (r) { return r.text(); })
-    .then(function (t) { show(t); })
+    .then(function (r) {
+      // fetch() resolves (does not reject) on HTTP 404/500 — without this
+      // check the error page body would flow into show() as the stimulus.
+      if (!r.ok) { throw new Error("HTTP " + r.status); }
+      return r.text();
+    })
+    .then(function (t) {
+      // Defense in depth: an unexpected 200 with HTML (misconfigured host,
+      // captive portal, moved page) or a template missing its placeholder
+      // token is not a usable stimulus either — force the catch/fallback.
+      if (t.indexOf("<") !== -1) { throw new Error("Exp2A: fetched template contains '<'"); }
+      if ((dv.variant === "named3" || dv.variant === "named2") && t.indexOf("[NAME1]") === -1) {
+        throw new Error("Exp2A: fetched template missing [NAME1]");
+      }
+      show(t);
+    })
     .catch(function (e) {
       console.error("Exp2A template fetch failed:", e);
       if (arm === "placebo") { show(FALLBACK_PLACEBO); }
