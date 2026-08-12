@@ -20,6 +20,7 @@ assert.strictEqual(E.normalizeEntry("李伟"), "李伟");            // non-Lati
 assert.strictEqual(E.normalizeEntry('"Maria"'), "Maria");      // surrounding quotes
 assert.strictEqual(E.normalizeEntry("  "), "");
 assert.strictEqual(E.normalizeEntry(undefined), "");
+assert.strictEqual(E.normalizeEntry("A".repeat(200)), ""); // I5: length cap, no legitimate entry is this long
 
 // splitCandidates
 assert.deepStrictEqual(E.splitCandidates("Mom and Dad"), ["Mom", "Dad"]);

@@ -33,6 +33,7 @@ var EXP2A = (function () {
       .replace(/^["'\s]+|["'\s!.?…]+$/g, "")
       .replace(/\s+/g, " ")
       .trim();
+    if (t.length > 120) { return ""; }
     var letters = t.match(/\p{L}/gu);
     if (!letters || letters.length < 2) { return ""; }
     return t;
@@ -369,7 +370,21 @@ var EXP2A = (function () {
       if (LLM_DROP[cat]) { continue; }
       var name = e.name ? sanitize(String(e.name)).split(/\s+/)[0] : null;
       var rel = e.relationship ? sanitize(String(e.relationship)).toLowerCase() : null;
-      if (rel && SPOUSE_WORDS.indexOf(rel) !== -1) { continue; }
+      if (rel) {
+        // LLM relationship strings aren't wordlist-exact ("my husband", not
+        // "husband") — run them through the same rel-phrase resolver the
+        // deterministic parser uses so multi-word spouse phrasing can't slip
+        // past a benign `category`. If it resolves, use the NORMALIZED rel
+        // (strips leading my/our) so clauses read "(your husband)" not
+        // "(your my husband)". If it doesn't resolve (e.g. "ride or die",
+        // "childhood friend" already normalized), keep rel as-is — the LLM
+        // may legitimately return rels outside the wordlist.
+        var relResolved = parseRelPhrase(rel) || leadingRelOf(rel);
+        if (relResolved) {
+          if (relResolved.spouse) { continue; }
+          rel = relResolved.rel;
+        }
+      }
       if (!name && !rel) { continue; }
       // locate the source residue row for domain/index (order fallback)
       var src = null;

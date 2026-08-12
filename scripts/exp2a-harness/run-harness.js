@@ -135,7 +135,10 @@ for (const [label, raw, expectN] of [
   ["spouse padded category", JSON.stringify({entries:[{text:"x", name:"Sam", relationship:"husband", category:"spouse_partner ", usable:true}]}), 1],
   ["spouse missing category", JSON.stringify({entries:[{text:"x", name:"Sam", relationship:"husband", usable:true}]}), 1],
   ["spouse null category", JSON.stringify({entries:[{text:"x", name:"Sam", relationship:"husband", category:null, usable:true}]}), 1],
-  ["spouse rel with benign category", JSON.stringify({entries:[{text:"x", name:"Sam", relationship:"wife", category:"friend", usable:true}]}), 1]
+  ["spouse rel with benign category", JSON.stringify({entries:[{text:"x", name:"Sam", relationship:"wife", category:"friend", usable:true}]}), 1],
+  // I4: multi-word spouse phrasing ("my husband", not the bare wordlist term
+  // "husband") must still be caught even under a benign category.
+  ["multi-word spouse phrase with benign category", JSON.stringify({entries:[{text:"x", name:"Sam", relationship:"my husband", category:"friend", usable:true}]}), 1]
 ]) {
   let m;
   try { m = E.mergeLlm(det, raw, residue); } catch (e) { fail(`mergeLlm ${label}: threw ${e}`); continue; }
@@ -143,6 +146,18 @@ for (const [label, raw, expectN] of [
   for (const p of m) {
     if (/["\\`<>]/.test((p.name || "") + (p.rel || ""))) { fail(`mergeLlm ${label}: unsanitized output`); }
   }
+}
+
+// I4: non-spouse multi-word rel phrasing must be NORMALIZED (leading my/our
+// stripped) so template clauses read "(your sister)", not "(your my sister)".
+{
+  const raw = JSON.stringify({ entries: [
+    { text: "y", name: "Pat", relationship: "my sister", category: "friend", usable: true }
+  ]});
+  const merged = E.mergeLlm(det, raw, residue);
+  const pat = merged.filter(p => p.name === "Pat")[0];
+  if (!pat) { fail("mergeLlm 'my sister': Pat pair missing"); }
+  else if (pat.rel !== "sister") { fail(`mergeLlm 'my sister': expected rel "sister", got ${JSON.stringify(pat.rel)}`); }
 }
 
 if (nBad > 0) { console.error(`\nFAILED: ${nBad} problems`); process.exit(1); }
