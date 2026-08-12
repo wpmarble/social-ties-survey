@@ -235,6 +235,17 @@ empty residue/pairs and route everyone to `generic`.
 - [ ] Test paths, all in full-survey preview: 3+ names, exactly 2 names, all-spouse,
       all-blank, joke input, and — by temporarily breaking the Web Service URL — the
       LLM-failure path.
+- [ ] Test path: a name-generator entry containing a literal `${e://Field/...}` string
+      (a respondent pasting/typing piped-text syntax) — confirm it does not get
+      evaluated as a pipe and flows through `sanitize()`/`normalizeEntry()` like any
+      other free text.
+- [ ] After ANY edit to `exp2a/templates/*.txt`, re-run the full harness battery
+      (`node scripts/exp2a-build.js && node scripts/exp2a-harness/test-core.js &&
+      node scripts/exp2a-harness/run-harness.js && node scripts/exp2a-harness/test-hooks.js`)
+      before redeploying — `test-hooks.js` now enforces byte-identity between the
+      inline `FALLBACK_GENERIC`/`FALLBACK_PLACEBO` literals in `render-hook.js` and the
+      trimmed contents of `tie-generic.txt`/`placebo.txt` (I6d); a template edit without
+      a matching fallback-literal edit will fail that check.
 - [ ] Confirm `exp2a_*` fields land correctly in a test response export (all 18 fields
       from §1).
 - [ ] Confirm the name-gen questions (`QID43`/`QID40`/`QID37`/`QID45`) were **NOT** set
@@ -311,4 +322,10 @@ easy to misread in the exported data:
    `exp2a_parse_source = "llm_failed"` (as opposed to `"det"` when no LLM was needed,
    or `"det+llm"` on a successful merge). `exp2a_parse_source`, not
    `exp2a_llm_status`, is the field to filter on when asking "did the LLM step
-   succeed for this respondent."
+   succeed for this respondent." If the parse hook itself never ran for a
+   respondent (`exp2a_llm_status` empty AND `exp2a_det_pairs` empty — e.g. the
+   respondent never reached/submitted `QID45`'s page), `exp2a_parse_source`
+   still records `"llm_failed"`, identically to a genuine failed Web Service
+   call — treat that specific combination (`exp2a_llm_status` empty and
+   `exp2a_det_pairs` empty) as "no parse ran," not "LLM call failed," in
+   analysis.

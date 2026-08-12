@@ -63,11 +63,7 @@ Qualtrics.SurveyEngine.addOnload(function () {
     var sel = (dv.variant === "named3") ? selected.slice(0, 3)
             : (dv.variant === "named2") ? selected.slice(0, 2) : [];
     var composed = EXP2A.composeStimulus(text.trim(), sel);
-    var names = [];
-    for (var i = 0; i < sel.length; i++) { names.push(sel[i].name || "your " + sel[i].rel); }
-    Qualtrics.SurveyEngine.setEmbeddedData("exp2a_reflect_clause",
-      names.length >= 3 ? names[0] + ", " + names[1] + ", and " + names[2]
-      : names.length === 2 ? names[0] + " and " + names[1] : "");
+    Qualtrics.SurveyEngine.setEmbeddedData("exp2a_reflect_clause", EXP2A.reflectClause(sel));
     Qualtrics.SurveyEngine.setEmbeddedData("exp2a_text", composed);
     if (target) {
       target.innerHTML = composed.split(/\n\s*\n/)

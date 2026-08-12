@@ -411,6 +411,7 @@ var EXP2A = (function () {
     selectPairs: selectPairs,
     displayNameOf: displayNameOf,
     decideVariant: decideVariant,
+    reflectClause: reflectClause,
     composeStimulus: composeStimulus,
     buildResidueString: buildResidueString,
     mergeLlm: mergeLlm,
