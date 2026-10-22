@@ -80,6 +80,13 @@ if (!haveBlocks) process.exit(1);
 
 const SALT = {}, ARMLIST = {}, draws = {}, fns = {};
 const EXPECT_SALT = { exp1: "exp1", exp2b: "exp2b", exp2a: "exp2a" };
+// Golden ARMS arrays, IN ORDER. drawArm indexes into ARMS, so swapping two arms silently reassigns respondents.
+// Changing an arm list or its order is a deliberate design change: update these values in the same commit.
+const EXPECT_ARMS = {
+  exp1: ["anti-baseline", "anti-fiscal", "anti-crowdout", "control-valence"],
+  exp2b: ["threat", "placebo"],
+  exp2a: ["tie", "placebo"]
+};
 for (const k in src) {
   const m = src[k].match(/drawArmWithFallback\(ARMS, "([^"]+)"/);
   SALT[k] = m ? m[1] : null;
@@ -90,6 +97,9 @@ for (const k in src) {
 check("0b. each script's salt and ARMS list extracted and as expected",
   Object.keys(src).every(k => SALT[k] === EXPECT_SALT[k] && ARMLIST[k] && ARMLIST[k].length >= 2),
   JSON.stringify(SALT));
+check("0b2. each script's ARMS array equals the golden list exactly, in order",
+  Object.keys(src).every(k => JSON.stringify(ARMLIST[k]) === JSON.stringify(EXPECT_ARMS[k])),
+  Object.keys(src).filter(k => JSON.stringify(ARMLIST[k]) !== JSON.stringify(EXPECT_ARMS[k])).map(k => k + ": " + JSON.stringify(ARMLIST[k])).join("; "));
 check("0c. salts are pairwise distinct", new Set(Object.values(SALT)).size === 3);
 const real = fns.exp1;
 // Negative control: RNG that ignores the salt, so every experiment gets the same arm index.
