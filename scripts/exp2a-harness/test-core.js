@@ -28,4 +28,16 @@ assert.deepStrictEqual(E.splitCandidates("Maria & James"), ["Maria", "James"]);
 assert.deepStrictEqual(E.splitCandidates("Maria"), ["Maria"]);
 assert.deepStrictEqual(E.splitCandidates("Sandy"), ["Sandy"]); // no false split on "and" inside a word
 
+// webservice-body.json: Haiku 5.5 on anthropic-version 2023-06-01 returns 400 for sampling params,
+// and the response mapping (content.0.input.entries) assumes a forced tool_use block comes first.
+{
+  const fs = require("fs"), path = require("path");
+  const wb = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "..", "exp2a", "webservice-body.json"), "utf8")).body;
+  assert.strictEqual(wb.model, "claude-haiku-5-5", "model changed: re-verify sampling-param and tool_choice rules");
+  for (const k of ["temperature", "top_p", "top_k"]) assert.ok(!(k in wb), "webservice body must not contain " + k);
+  assert.strictEqual(wb.tool_choice && wb.tool_choice.type, "tool");
+  assert.strictEqual(wb.tools[0].strict, true);
+  assert.ok(wb.max_tokens > 0);
+}
+
 console.log("test-core.js: all passed");

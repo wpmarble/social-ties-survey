@@ -180,7 +180,7 @@ from-scratch add, not an edit.
 In a scratch survey, add the same Web Service element (same URL, headers, body from
 `exp2a/webservice-body.json`) and confirm:
 
-**(a)** A valid call maps `content.0.input.entries` into embedded data as a JSON
+**(a)** The call must return HTTP 200 with `content[0].type == "tool_use"` (forced `tool_choice`, so there is no thinking block ahead of it); a 400 here usually means a sampling parameter (`temperature`, `top_p`, `top_k`) crept into the body, which Haiku 5.5 rejects. A valid call maps `content.0.input.entries` into embedded data as a JSON
 string. **If the nested-array mapping fails** — Qualtrics's response-mapping path
 syntax can't reach a nested array inside a tool-use block — change the tool's
 `input_schema` to a single string property, `entries_json`, where the model emits the
