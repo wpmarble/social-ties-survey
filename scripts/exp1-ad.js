@@ -29,10 +29,15 @@ Qualtrics.SurveyEngine.addOnload(function() {
 
   const GLOBE_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18"></path></svg>';
 
+  // Names that need a leading article in running text ("grew up in the District of Columbia").
+  var STATE_NEEDS_THE = { "District of Columbia": 1, "U.S. Virgin Islands": 1, "Northern Mariana Islands": 1 };
+
   // Respondent's state, filled from earlier in the survey. Falls back if empty.
   var respState = "${e://Field/resp_state}".trim();
   if (respState === "" || respState.indexOf("e://Field") !== -1) {
     respState = "your state";
+  } else if (Object.prototype.hasOwnProperty.call(STATE_NEEDS_THE, respState)) {
+    respState = "the " + respState;   // exact match only: "the District of Columbia", not "the Ohio"
   }
 
   // Reuse an existing assignment if present (guards re-randomizing on back/refresh).
