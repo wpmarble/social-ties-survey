@@ -253,6 +253,8 @@ var EXP2A = (function () {
       var p = pairs[i], k = pairKey(p);
       if (!byKey[k]) { byKey[k] = p; order.push(k); continue; }
       var q = byKey[k];
+      if (!Array.isArray(p.domains)) { p.domains = []; }
+      if (!Array.isArray(q.domains)) { q.domains = []; }
       // union domains, earliest mention, richest info wins
       for (var d = 0; d < p.domains.length; d++) {
         if (q.domains.indexOf(p.domains[d]) === -1) { q.domains.push(p.domains[d]); }
@@ -270,7 +272,7 @@ var EXP2A = (function () {
   function selectPairs(pairs, maxN) {
     var n = maxN || 3;
     var sorted = pairs.slice().sort(function (a, b) {
-      var ma = a.domains.length > 1 ? 1 : 0, mb = b.domains.length > 1 ? 1 : 0;
+      var ma = (a.domains && a.domains.length > 1) ? 1 : 0, mb = (b.domains && b.domains.length > 1) ? 1 : 0;
       if (ma !== mb) { return mb - ma; }
       if (CLS_RANK[a.cls] !== CLS_RANK[b.cls]) { return CLS_RANK[b.cls] - CLS_RANK[a.cls]; }
       return a.firstIndex - b.firstIndex;

@@ -1,14 +1,14 @@
 # Exp 2B — wiring into Qualtrics
 
 Survey: `SV_cPhHeZv7u82p9K6` ("Social Ties Survey Summer 2026"). Block: `BL_7Vw8WDh3EL2DNum`
-("PLACEHOLDER - Exp 2B Economic Scenario"), flow position `FL_15`, immediately after the Exp 2A
+("Exp 2B Economic Threat"), flow position `FL_15`, immediately after the Exp 2A
 block (`BL_82I0C2NV9OA6FPo`, `FL_14`).
 
 This covers **Exp 2B (economic threat prime) only**. Exp 2A (tie prime) is a separate block with
 its own build and gets its own wiring doc when it's built.
 
 As of this writing (checked live via the Qualtrics API), `BL_7Vw8WDh3EL2DNum` contains exactly one
-question, `QID54` — a Descriptive Text/Graphic placeholder (`DataExportTag: exp2b_placeholder`)
+question, `QID54` — a Descriptive Text/Graphic placeholder (`DataExportTag: exp2b_stimulus (renamed from exp2b_placeholder in phase2b)`)
 with boilerplate design-doc text and no HTML div. Nothing below is live yet.
 
 One script, `exp2b-threat.js`, does everything: randomizes the arm, looks up the respondent's
@@ -256,3 +256,13 @@ Run this after every rebuild of `exp2_lookup.json`, before pushing.
       this still needs to be turned on, not just assumed.
 - [ ] Run `node scripts/exp2b-verify.js` (§8) — expect a clean exit with no `UNFILLED`/`SPACING`/
       `UNDEF` lines.
+
+
+## Failure handling (phase2b)
+
+Every Exp 2B fetch (lookup JSON and the templates) has an 8 s timeout and an `r.ok` check; fetches run in parallel, so the worst case is one timeout.
+On any failure the script writes embedded data `exp2b_error` (`timeout`, `http_<status>`, `network`, `parse`, or `error`) and renders the inline
+generic stimulus (threat arm) or inline placebo text (placebo arm); `exp2b_frame` is then `generic` / `placebo`. Error bodies are never stored in
+`exp2b_text`. Declare `exp2b_error` in the flow. Tests: `node scripts/test-fetch-failures.js`.
+
+Phase2b adds a Qualtrics Timing question (tag `exp2b_timing`) as the first element of the Exp 2B block.

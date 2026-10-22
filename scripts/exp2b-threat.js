@@ -144,26 +144,55 @@ Qualtrics.SurveyEngine.addOnload(function() {
 
   const EMPTY = { churn_pct: "", decline_pct: "", churn_unit: "", decline_unit: "" };
 
+  // ---- Fetch with timeout + HTTP check ----
+  // fetch() resolves (does not reject) on HTTP 404/500, and can hang forever. getT rejects with err.kind =
+  // "timeout" | "http_<status>" | "network" | "parse" (body not valid JSON). The timeout covers the body read.
+  var FETCH_TIMEOUT_MS = 8000;
+  function getT(url, ms, asJson) {
+    return new Promise(function (resolve, reject) {
+      var done = false;
+      var ctl = (typeof AbortController !== "undefined") ? new AbortController() : null;
+      var timer = null;
+      function fail(kind) { if (done) { return; } done = true; clearTimeout(timer); var e = new Error(kind); e.kind = kind; reject(e); }
+      timer = setTimeout(function () {
+        if (ctl) { try { ctl.abort(); } catch (x) { /* ignore */ } }
+        fail("timeout");
+      }, ms);
+      fetch(url, ctl ? { signal: ctl.signal } : undefined).then(function (r) {
+        if (!r.ok) { fail("http_" + r.status); return; }
+        return r.text().then(function (t) {
+          if (done) { return; }
+          var v = t;
+          if (asJson) { try { v = JSON.parse(t); } catch (x) { fail("parse"); return; } }
+          done = true; clearTimeout(timer); resolve(v);
+        });
+      }).catch(function () { fail("network"); });
+    });
+  }
+
+  // Failure path: record why, and render the inline text (never fetched HTML, never an error body).
+  function reasonOf(e) { return (e && e.kind) ? e.kind : "error"; }
+
   // Placebo needs one file and no lookup.
   if (arm === "placebo") {
-    fetch(BASE + "templates/placebo.txt")
-      .then(r => r.text())
+    getT(BASE + "templates/placebo.txt", FETCH_TIMEOUT_MS, false)
       .then(t => { render(t.trim(), "placebo", EMPTY); })
       .catch(e => {
-        console.error("Exp2B placebo fetch failed:", e);
+        console.error("Exp2B placebo fetch failed:", reasonOf(e), e);
+        Qualtrics.SurveyEngine.setEmbeddedData("exp2b_error", reasonOf(e));
         render("We'd like you to think about how you get to work or run errands. " +
                "Consider your typical commute or grocery run.", "placebo", EMPTY);
       });
     return;
   }
 
-  // Threat arm: lookup + templates together.
+  // Threat arm: lookup + templates together (parallel, so the worst case is one timeout, not five).
   Promise.all([
-    fetch(BASE + "exp2_lookup.json").then(r => r.json()),
-    fetch(BASE + "templates/lede.txt").then(r => r.text()),
-    fetch(BASE + "templates/stat-churn.txt").then(r => r.text()),
-    fetch(BASE + "templates/stat-decline.txt").then(r => r.text()),
-    fetch(BASE + "templates/stat-generic.txt").then(r => r.text())
+    getT(BASE + "exp2_lookup.json", FETCH_TIMEOUT_MS, true),
+    getT(BASE + "templates/lede.txt", FETCH_TIMEOUT_MS, false),
+    getT(BASE + "templates/stat-churn.txt", FETCH_TIMEOUT_MS, false),
+    getT(BASE + "templates/stat-decline.txt", FETCH_TIMEOUT_MS, false),
+    getT(BASE + "templates/stat-generic.txt", FETCH_TIMEOUT_MS, false)
   ]).then(function(res) {
     const lookup = res[0];
     const lede = res[1].trim(), churn = res[2].trim();
@@ -200,7 +229,8 @@ Qualtrics.SurveyEngine.addOnload(function() {
 
     render(text, cell.frame, cell);
   }).catch(function(e) {
-    console.error("Exp2B fetch failed:", e);
+    console.error("Exp2B fetch failed:", reasonOf(e), e);
+    Qualtrics.SurveyEngine.setEmbeddedData("exp2b_error", reasonOf(e));
     // Must match the real "generic" composition exactly (lede + generic
     // sentence, joined by a blank line) so a transient fetch failure doesn't
     // silently hand this respondent a shorter, less authoritative stimulus

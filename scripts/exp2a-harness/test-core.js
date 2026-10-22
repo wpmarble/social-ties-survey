@@ -41,3 +41,12 @@ assert.deepStrictEqual(E.splitCandidates("Sandy"), ["Sandy"]); // no false split
 }
 
 console.log("test-core.js: all passed");
+
+// pairs missing a usable domains array must not throw in selectPairs / dedupePairs
+{
+  const mk = (name, extra) => Object.assign({ name: name, rel: "friend", cls: "named_rel", firstIndex: 0 }, extra);
+  assert.doesNotThrow(() => E.selectPairs([mk("A"), mk("B", { domains: ["job"] }), mk("C", { domains: "x" })], 3));
+  assert.doesNotThrow(() => E.dedupePairs([mk("A"), mk("A", { domains: ["job"] })]));
+  assert.strictEqual(E.selectPairs([mk("A"), mk("B", { domains: ["job", "money"] })], 3)[0].name, "B", "multi-domain still ranks first");
+}
+console.log("test-core.js: missing-domains guard ok");

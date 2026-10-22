@@ -2,18 +2,69 @@
   EXP 2A render hook — paste target: the Exp 2A display question.
   Question HTML must contain:
       <div id="exp2aDisplay"></div>
-      <div id="exp2aData" style="display:none">
-        <span id="exp2a-det">${e://Field/exp2a_det_pairs}</span>
-        <span id="exp2a-llm">${e://Field/exp2a_llm_pairs}</span>
-        <span id="exp2a-llmstatus">${e://Field/exp2a_llm_status}</span>
-      </div>
+      <div id="exp2aData" style="display:none"> holding three spans, whose ids
+      are exp2a-det, exp2a-llm and exp2a-llmstatus, piped from the embedded-data
+      fields exp2a_det_pairs, exp2a_llm_pairs and exp2a_llm_status (exact markup
+      in exp2a-WIRING.md section 3).
   Respondent-derived text reaches this script ONLY via textContent of those
   spans — never via JS literals. exp2a_arm below is our own controlled value.
+  Never put piped-text tokens in a comment: Qualtrics fills them there too, and a
+  value containing the comment terminator would break the script
+  (scripts/test-no-pipes-in-comments.js enforces).
+  Next-question guard: the essay on the same page (QID77) is hidden until the
+  stimulus has rendered or the fallback has been shown (10 s failsafe).
 */
 Qualtrics.SurveyEngine.addOnload(function () {
   var qThis = this;
   var BASE = "https://williammarble.com/social-ties-survey/exp2a/";
   var ARMS = ["tie", "placebo"];
+  var ESSAY_QID = "QID77";          // the essay question on the same page as the stimulus
+  var FETCH_TIMEOUT_MS = 8000;      // template fetch
+  var ESSAY_FAILSAFE_MS = 10000;    // the essay is never hidden longer than this
+
+  // ---- Hide the essay until the stimulus is on screen ----
+  // Found by QID, else as the next .QuestionOuter after this question's own container.
+  function hasClass(el, c) { return !!el && typeof el.className === "string" && (" " + el.className + " ").indexOf(" " + c + " ") !== -1; }
+  function findEssay() {
+    var el = document.getElementById(ESSAY_QID);
+    if (el) { return el; }
+    var node = null;
+    try { node = qThis.getQuestionContainer(); } catch (e) { node = null; }
+    while (node && !hasClass(node, "QuestionOuter")) { node = node.parentNode; }
+    var sib = node ? node.nextElementSibling : null;
+    while (sib && !hasClass(sib, "QuestionOuter")) { sib = sib.nextElementSibling; }
+    return sib || null;
+  }
+  var essayEl = null;
+  try { essayEl = findEssay(); } catch (e) { essayEl = null; }
+  var essayRevealed = false;
+  function revealEssay() {
+    if (essayRevealed) { return; }
+    essayRevealed = true;
+    if (essayEl && essayEl.style) { essayEl.style.display = ""; }
+  }
+  if (essayEl && essayEl.style) { essayEl.style.display = "none"; }
+  else { console.error("Exp2A: essay question not found; nothing hidden."); }
+  setTimeout(revealEssay, ESSAY_FAILSAFE_MS);
+
+  // fetch() resolves (does not reject) on HTTP 404/500 and can hang forever. getText rejects with
+  // err.kind = "timeout" | "http_<status>" | "network". The timeout covers the body read.
+  function getText(url, ms) {
+    return new Promise(function (resolve, reject) {
+      var done = false;
+      var ctl = (typeof AbortController !== "undefined") ? new AbortController() : null;
+      var timer = null;
+      function fail(kind) { if (done) { return; } done = true; clearTimeout(timer); var e = new Error(kind); e.kind = kind; reject(e); }
+      timer = setTimeout(function () {
+        if (ctl) { try { ctl.abort(); } catch (x) { /* ignore */ } }
+        fail("timeout");
+      }, ms);
+      fetch(url, ctl ? { signal: ctl.signal } : undefined).then(function (r) {
+        if (!r.ok) { fail("http_" + r.status); return; }
+        return r.text().then(function (t) { if (!done) { done = true; clearTimeout(timer); resolve(t); } });
+      }).catch(function () { fail("network"); });
+    });
+  }
 
   function nodeText(id) {
     var el = document.getElementById(id);
@@ -86,12 +137,18 @@ Qualtrics.SurveyEngine.addOnload(function () {
   var detPairs = [];
   try { detPairs = JSON.parse(nodeText("exp2a-det") || "[]"); } catch (e) { detPairs = []; }
   if (Object.prototype.toString.call(detPairs) !== "[object Array]") { detPairs = []; }
+  // Defensive: drop non-object entries; entries without a usable domains array get [].
+  detPairs = detPairs.filter(function (p) { return p && typeof p === "object"; }).map(function (p) {
+    if (Object.prototype.toString.call(p.domains) !== "[object Array]") { p.domains = []; }
+    return p;
+  });
   var llmStatus = nodeText("exp2a-llmstatus").trim();
   var needsLlm = llmStatus !== "skipped";
   var pairs = detPairs;
   var source = "det";
   if (needsLlm) {
-    if (llmStatus === "ok") {
+    // "message" is Anthropic's response type on success (the Web Service maps it into exp2a_llm_status); "ok" kept for the old mapping.
+    if (llmStatus === "ok" || llmStatus === "message") {
       pairs = EXP2A.mergeLlm(detPairs, nodeText("exp2a-llm"), []);
       source = "det+llm";
     } else {
@@ -122,12 +179,14 @@ Qualtrics.SurveyEngine.addOnload(function () {
     var composed = EXP2A.composeStimulus(text.trim(), sel);
     Qualtrics.SurveyEngine.setEmbeddedData("exp2a_reflect_clause", EXP2A.reflectClause(sel));
     Qualtrics.SurveyEngine.setEmbeddedData("exp2a_text", composed);
+    try {
     if (target) {
       target.innerHTML = composed.split(/\n\s*\n/)
         .filter(function (p) { return p.trim() !== ""; })
         .map(function (p) { return '<p style="margin:0 0 1em 0;">' + p.trim().replace(/\n/g, " ") + "</p>"; })
         .join("");
     }
+    } finally { revealEssay(); }
     console.log("Exp2A arm:", arm, "variant:", dv.variant, "n:", pairs.length, "source:", source);
   }
 
@@ -137,13 +196,7 @@ Qualtrics.SurveyEngine.addOnload(function () {
   var FALLBACK_PLACEBO = "We'd like you to think about your daily routine. Imagine a typical weekday for you — from when you wake up to when you go to sleep.\n\nNow, imagine that you rearranged your morning routine — say, you started waking up an hour earlier than usual and changed the order in which you do things.\n\nIn a few sentences, how do you think your day would feel different?";
 
   var file = { named3: "tie-named-3.txt", named2: "tie-named-2.txt", generic: "tie-generic.txt", placebo: "placebo.txt" }[dv.variant];
-  fetch(BASE + "templates/" + file)
-    .then(function (r) {
-      // fetch() resolves (does not reject) on HTTP 404/500 — without this
-      // check the error page body would flow into show() as the stimulus.
-      if (!r.ok) { throw new Error("HTTP " + r.status); }
-      return r.text();
-    })
+  getText(BASE + "templates/" + file, FETCH_TIMEOUT_MS)
     .then(function (t) {
       // Defense in depth: an unexpected 200 with HTML (misconfigured host,
       // captive portal, moved page) or a template missing its placeholder
@@ -155,7 +208,9 @@ Qualtrics.SurveyEngine.addOnload(function () {
       show(t);
     })
     .catch(function (e) {
-      console.error("Exp2A template fetch failed:", e);
+      var reason = (e && e.kind) ? e.kind : "error";
+      console.error("Exp2A template fetch failed:", reason, e);
+      Qualtrics.SurveyEngine.setEmbeddedData("exp2a_error", reason);
       if (arm === "placebo") { show(FALLBACK_PLACEBO); }
       else {
         dv = { variant: "generic", lowTie: dv.lowTie };

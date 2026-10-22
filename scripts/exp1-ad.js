@@ -121,9 +121,29 @@ Qualtrics.SurveyEngine.addOnload(function() {
     target.innerHTML = '<p style="text-align:center; color:#888; padding:24px;">Loading…</p>';
   }
 
+  // ---- Fetch with timeout + HTTP check ----
+  // fetch() resolves (does not reject) on HTTP 404/500, and can hang forever. getText rejects with err.kind =
+  // "timeout" | "http_<status>" | "network" so the failure path below can record why. The timeout covers the body read.
+  var FETCH_TIMEOUT_MS = 8000;
+  function getText(url, ms) {
+    return new Promise(function (resolve, reject) {
+      var done = false;
+      var ctl = (typeof AbortController !== "undefined") ? new AbortController() : null;
+      var timer = null;
+      function fail(kind) { if (done) { return; } done = true; clearTimeout(timer); var e = new Error(kind); e.kind = kind; reject(e); }
+      timer = setTimeout(function () {
+        if (ctl) { try { ctl.abort(); } catch (x) { /* ignore */ } }
+        fail("timeout");
+      }, ms);
+      fetch(url, ctl ? { signal: ctl.signal } : undefined).then(function (r) {
+        if (!r.ok) { fail("http_" + r.status); return; }
+        return r.text().then(function (t) { if (!done) { done = true; clearTimeout(timer); resolve(t); } });
+      }).catch(function () { fail("network"); });
+    });
+  }
+
   // ---- Fetch, fill, store, render ----
-  fetch(BASE_URL + arm + ".txt")
-    .then(response => response.text())
+  getText(BASE_URL + arm + ".txt", FETCH_TIMEOUT_MS)
     .then(raw => {
       const filled = raw
         .replace(/\[CANDIDATE NAME\]/gi, CANDIDATE_NAME)
@@ -164,10 +184,12 @@ Qualtrics.SurveyEngine.addOnload(function() {
       setTimeout(() => { qThis.showNextButton(); }, READ_DELAY_MS);
     })
     .catch(error => {
-      console.error("Exp1: failed to load ad text:", error);
-      if (target) {
-        target.innerHTML = '<p style="color:#b00;">Sorry — the ad failed to load. Please refresh the page.</p>';
-      }
+      // Record why; the ad card stays empty and the error body is never stored as treatment text.
+      var reason = (error && error.kind) ? error.kind : "error";
+      console.error("Exp1: failed to load ad text:", reason, error);
+      Qualtrics.SurveyEngine.setEmbeddedData("exp1_error", reason);
+      Qualtrics.SurveyEngine.setEmbeddedData("exp1_treatment_text", "");
+      if (target) { target.innerHTML = ""; }
       qThis.showNextButton();
     });
 

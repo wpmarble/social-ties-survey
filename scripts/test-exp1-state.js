@@ -12,8 +12,8 @@ async function run(respState) {
   const ed = {}; let handler = null;
   const el = () => ({ innerHTML: "", textContent: "", style: {}, appendChild() {}, setAttribute() {}, getAttribute() { return null; } });
   const ctx = {
-    console: { log() {}, error() {}, warn() {} }, Math, JSON, Date, Promise, setTimeout, parseInt, String, isNaN, Object, Array, RegExp,
-    fetch: () => Promise.resolve({ text: () => Promise.resolve(arm) }),
+    console: { log() {}, error() {}, warn() {} }, Math, JSON, Date, Promise, setTimeout, clearTimeout, parseInt, String, isNaN, Object, Array, RegExp,
+    fetch: () => Promise.resolve({ ok: true, status: 200, text: () => Promise.resolve(arm) }),
     document: { getElementById: () => el(), createElement: () => el(), createTextNode: () => ({}), getElementsByTagName: () => [{ appendChild() {} }], querySelectorAll: () => [] },
     Qualtrics: { SurveyEngine: { addOnload: f => { handler = f; }, addOnReady() {}, addOnUnload() {}, addOnPageSubmit() {}, setEmbeddedData: (a, b) => { ed[a] = String(b); } } }
   };

@@ -20,7 +20,7 @@ function run({ existing = "", respId = "R_test", spanAppearsAfter = 0 }) {
       if (id === "exp2bDisplay") return display;
       return null; } },
     fetch: () => Promise.reject(new Error("no network in test")),     // stimulus falls back to inline text; irrelevant here
-    setTimeout: (f) => { timers.push(f); },                           // run manually: no real waiting
+    clearTimeout: () => {}, setTimeout: (f) => { timers.push(f); },                           // run manually: no real waiting
     Qualtrics: { SurveyEngine: { setEmbeddedData: (k, v) => { ed[k] = v; }, addOnload: (f) => { ctx._onload = f; } } },
   };
   const code = SRC.split("${e://Field/exp2b_arm}").join(existing).split("${e://Field/resp_id}").join(respId)

@@ -1,8 +1,7 @@
 # Exp 2A — wiring into Qualtrics
 
 Survey: `SV_cPhHeZv7u82p9K6` ("Social Ties Survey Summer 2026"). Block:
-`BL_82I0C2NV9OA6FPo` ("PLACEHOLDER — Experiment 2, Component A: Social Connection
-Scenario"), flow position `FL_14`, immediately after the Political Views block
+`BL_82I0C2NV9OA6FPo` ("Exp 2A Social Connection Scenario"), flow position `FL_14`, immediately after the Political Views block
 (`BL_0CYW1xfM3PkZSgS`, `FL_12`) and immediately before the Exp 2B block
 (`BL_7Vw8WDh3EL2DNum`, `FL_15`).
 
@@ -13,7 +12,7 @@ rationale: `survey/exp2a-design-spec.md`.
 As of this writing (checked live via the Qualtrics API): `FL_30`'s `EmbeddedData`
 element holds exactly 13 fields (4 `exp1_*` + 9 `exp2b_*`) — **no `exp2a_*` fields
 exist yet**. The Exp 2A block contains exactly one question, `QID51` — a Descriptive
-Text/Graphic placeholder (`DataExportTag: exp2a_placeholder`) with boilerplate design
+Text/Graphic placeholder (`DataExportTag: exp2a_stimulus (renamed from exp2a_placeholder in phase2b)`) with boilerplate design
 text and no HTML div. `QID45` (`names_other`) is a plain 3-slot text-entry question
 with no hidden div and no question JS. No Web Service elements exist anywhere in the
 flow (`list_web_services` returns 0). Nothing below is live yet.
@@ -131,9 +130,10 @@ element inside the branch:
   Do not retype it; copy from the file so the tool schema and system prompt stay
   byte-identical to what the harness's mocked-response tests assume.
 - **Response mapping:** `content.0.input.entries` → `exp2a_llm_pairs`; set
-  `exp2a_llm_status` = the constant string `"ok"` on the success path only. **A failed
-  call must write nothing to `exp2a_llm_status`** — that absence is the failure signal
-  the renderer depends on (see §5's continue-on-fail check, and §9 note 3).
+  `exp2a_llm_status` = the response's top-level `type` field (Anthropic returns
+  `"message"` on success and `"error"` on an API error). The renderer treats
+  `"message"` (and the legacy constant `"ok"`) as success; anything else non-blank,
+  e.g. `"error"`, or blank, is failure (see §5's continue-on-fail check, and §9 note 3).
 
 `list_web_services` currently returns zero elements for this survey — this is a
 from-scratch add, not an edit.
@@ -194,7 +194,7 @@ this change, update `exp2a/webservice-body.json`'s `tools[0].input_schema` and
 
 **(b)** With the URL deliberately broken, the flow **continues** past the element (the
 respondent is not stuck) and the mapped fields (`exp2a_llm_pairs`, `exp2a_llm_status`)
-stay empty. This is what makes the renderer's `llmStatus !== "ok"` → `"llm_failed"`
+stay empty (or, on an API error, `exp2a_llm_status` = `"error"`). This is what makes the renderer's non-success status → `"llm_failed"`
 path reachable in production, not just in the harness's mocked tests.
 
 **(c)** Note the observed timeout (design spec §9: belief that Qualtrics times out
@@ -317,10 +317,11 @@ easy to misread in the exported data:
 3. **`exp2a_llm_status` has exactly two write paths, and a failed call writes
    neither.** The parse hook writes `"skipped"` when there's no residue (no LLM call
    needed) or leaves the field blank when there is residue (awaiting the Web Service).
-   The Web Service element writes the literal constant `"ok"` only on a successful
-   response. **A failed web service call (timeout, network error, broken URL, malformed
-   response) writes nothing** — `exp2a_llm_status` stays blank. The renderer treats
-   "needed the LLM but status isn't `ok`" as failure and records this in
+   The Web Service element maps Anthropic's response `type` into it: `"message"` on a
+   successful response, `"error"` on an API error. **A failed web service call
+   (timeout, network error, broken URL, malformed response) writes nothing** —
+   `exp2a_llm_status` stays blank. The renderer treats "needed the LLM but status
+   isn't `message` (or legacy `ok`)" as failure and records this in
    `exp2a_parse_source = "llm_failed"` (as opposed to `"det"` when no LLM was needed,
    or `"det+llm"` on a successful merge). `exp2a_parse_source`, not
    `exp2a_llm_status`, is the field to filter on when asking "did the LLM step
@@ -331,3 +332,20 @@ easy to misread in the exported data:
    call — treat that specific combination (`exp2a_llm_status` empty and
    `exp2a_det_pairs` empty) as "no parse ran," not "LLM call failed," in
    analysis.
+
+
+## 10. Render-hook failure handling (phase2b)
+
+- **Essay guard.** The render hook hides QID77 (the essay on the same page; found by QID,
+  else the next `.QuestionOuter` after the stimulus question) until the stimulus has
+  rendered or the inline fallback has been shown. A 10 s failsafe always reveals it.
+- **Fetch timeout.** The template fetch has an 8 s timeout (AbortController when
+  available) plus the `r.ok` check. On timeout / HTTP error / network failure the inline
+  fallback is shown (tie arm: `exp2a_variant` = `generic`; placebo arm unchanged) and the
+  reason is written to embedded data `exp2a_error` (`timeout`, `http_<status>`,
+  `network`). The field is absent on success. `exp2a_parse_source` keeps describing the
+  parse (`det`, `det+llm`, `llm_failed`) and is not overwritten by fetch failures.
+- A det-pairs entry without a `domains` array is tolerated (treated as `[]`).
+- Comments in pasted scripts must not contain piped-text tokens (Qualtrics fills them in
+  comments too); `scripts/test-no-pipes-in-comments.js` enforces this.
+- Phase2b adds a Qualtrics Timing question (tag `exp2a_timing`) as the first element of this block, and a page break between `mt_intent` and `mt_house_vote` in the Midterm block.

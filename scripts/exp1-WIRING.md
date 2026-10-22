@@ -80,3 +80,9 @@ Once fixed, expose the state as embedded data named `resp_state` (or update the
 - [ ] Confirm `exp1_tr_arm` and `exp1_treatment_text` show up in the response data.
 - [ ] Confirm `resp_state` fills (or intentionally falls back to "your state").
 - [ ] Confirm the Next button reappears ~7s after the ad loads.
+
+## Failure handling (phase2b)
+
+The ad fetch has an 8 s timeout (AbortController when available) and an `r.ok` check. On any failure the script shows Next immediately,
+leaves the ad card empty, writes embedded data `exp1_error` (`timeout`, `http_<status>`, `network`, or `error`), and leaves
+`exp1_treatment_text` empty (never the error body). Declare `exp1_error` in the flow. Tests: `node scripts/test-fetch-failures.js`.
