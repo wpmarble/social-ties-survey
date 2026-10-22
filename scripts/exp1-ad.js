@@ -38,13 +38,67 @@ Qualtrics.SurveyEngine.addOnload(function() {
   // Reuse an existing assignment if present (guards re-randomizing on back/refresh).
   var existingArm = "${e://Field/exp1_tr_arm}".trim();
 
-  // ---- Choose arm ----
+  // >>> RNG BLOCK BEGIN (must be byte-identical in exp1-ad.js, exp2b-threat.js, exp2a-hooks/render-hook.js; scripts/test-rng.js enforces) >>>
+  // Deterministic arm draw seeded from the respondent's ResponseID (ported from MediaGaza randomizer.js).
+  /* FNV-1a 32-bit. Returns an unsigned 32-bit integer. */
+  function fnv1a(str) {
+    var h = 0x811c9dc5;
+    var i;
+    for (i = 0; i < str.length; i++) {
+      h = h ^ str.charCodeAt(i);
+      /* h * 16777619 without overflowing the float53 mantissa */
+      h = (h + ((h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24))) >>> 0;
+    }
+    return h >>> 0;
+  }
+  var imul = Math.imul || function (a, b) {
+    var aHi = (a >>> 16) & 0xffff, aLo = a & 0xffff;
+    var bHi = (b >>> 16) & 0xffff, bLo = b & 0xffff;
+    return ((aLo * bLo) + (((aHi * bLo + aLo * bHi) << 16) >>> 0)) | 0;
+  };
+  /* mulberry32: small, fast, adequate for treatment assignment. */
+  function mulberry32(seed) {
+    var a = seed >>> 0;
+    return function () {
+      a = (a + 0x6D2B79F5) >>> 0;
+      var t = a;
+      t = imul(t ^ (t >>> 15), t | 1);
+      t = t ^ (t + imul(t ^ (t >>> 7), t | 61));
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  var RAND_VERSION = "1";
+  /* Pure: same (salt, respId) always gives the same arm. First draw only. */
+  function drawArm(arms, salt, respId) {
+    var rng = mulberry32(fnv1a(salt + ":" + respId));
+    return arms[Math.floor(rng() * arms.length)];
+  }
+  /* Empty or unreplaced-pipe ids (start with a dollar sign) fall back to an unseeded seed. */
+  function drawArmWithFallback(arms, salt, rawId) {
+    var id = String(rawId === null || rawId === undefined ? "" : rawId).trim();
+    var fallback = false;
+    if (id === "" || id.charAt(0) === "$") {
+      id = Date.now() + ":" + Math.random();
+      fallback = true;
+    }
+    return { arm: drawArm(arms, salt, id), fallback: fallback };
+  }
+  // <<< RNG BLOCK END <<<
+
+  // ---- Choose arm (seeded from resp_id; salt "exp1") ----
+  var respId = "${e://Field/resp_id}".trim();
   var arm;
   if (existingArm !== "" && ARMS.indexOf(existingArm) !== -1) {
     arm = existingArm;
   } else {
-    arm = ARMS[Math.floor(Math.random() * ARMS.length)];
+    var draw = drawArmWithFallback(ARMS, "exp1", respId);
+    arm = draw.arm;
+    if (draw.fallback) {
+      Qualtrics.SurveyEngine.setEmbeddedData("rng_seed_fallback", "1");
+      console.log("Exp1: resp_id missing/unreplaced; used fallback seed");
+    }
   }
+  Qualtrics.SurveyEngine.setEmbeddedData("rand_version", RAND_VERSION);
   console.log("Exp1 arm:", arm);
 
   // ---- Store assignment + candidate fields ----
