@@ -93,6 +93,33 @@ Qualtrics.SurveyEngine.addOnload(function() {
   Qualtrics.SurveyEngine.setEmbeddedData("exp2b_occ_code", String(occCode));
   console.log("Exp2B arm:", arm, "ind:", indCode, "occ:", occCode);
 
+  // ---- Arm-specific reflection prompt (QID76) -------------------------------
+  // QID76 sits on THIS page, after the stimulus, so a piped embedded-data value would not resolve.
+  // Its question text is <span id="exp2bReflectPrompt">neutral fallback</span>; we overwrite the span's text
+  // for the arm. QID76 may render after this onload fires, so poll for the span (up to 40 x 50 ms = 2 s).
+  // If it never appears the neutral fallback stays and exp2b_reflect_prompt = "fallback".
+  var REFLECT_PROMPTS = {
+    threat: "Take a moment to think about this. In a few sentences, what would be on your mind about your work and your finances if you were in this situation?",
+    placebo: "Take a moment to think about this. In a few sentences, what would be on your mind as you get to work or run errands?"
+  };
+  (function setReflectPrompt(promptText) {
+    var tries = 0;
+    function tick() {
+      var el = document.getElementById("exp2bReflectPrompt");
+      if (el) {
+        el.textContent = promptText;
+        Qualtrics.SurveyEngine.setEmbeddedData("exp2b_reflect_prompt", promptText);
+        console.log("Exp2B reflect prompt set for arm:", arm);
+      } else if (++tries >= 40) {
+        console.error("Exp2B: #exp2bReflectPrompt never appeared; neutral fallback prompt left in place.");
+        Qualtrics.SurveyEngine.setEmbeddedData("exp2b_reflect_prompt", "fallback");
+      } else {
+        setTimeout(tick, 50);
+      }
+    }
+    tick();
+  })(REFLECT_PROMPTS[arm]);
+
   var target = document.getElementById("exp2bDisplay");
   if (target) { target.innerHTML = '<p style="color:#888;">Loading…</p>'; }
   else { console.error("Exp2B: #exp2bDisplay not found in the DOM — embedded data will still be stored, but nothing will render on screen. Check the question HTML."); }

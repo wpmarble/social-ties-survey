@@ -45,6 +45,13 @@ It is deliberately not part of `exp2/templates/` — the design spec (§4) calls
 The block currently has only the one (placeholder) question, so this reflection question does not
 exist yet — it needs to be created, not just repositioned.
 
+**Arm-specific prompt (A2).** QID76 (`exp2b_reflection`, force-response) is on the **same page** as QID54 (no page
+break), so a piped embedded-data value would not resolve. Instead QID76's question text is exactly
+`<span id="exp2bReflectPrompt">Take a moment to think about this. In a few sentences, what is on your mind after reading this?</span>`
+(neutral fallback), and `exp2b-threat.js` overwrites the span's `textContent` with the threat or placebo prompt once the arm is
+known, polling up to 2 s (40 x 50 ms) for the span to exist. It records the text shown in `exp2b_reflect_prompt`
+(`"fallback"` if the span never appeared). Tests: `node scripts/test-exp2b-reflect.js`.
+
 ## 3. Declare embedded data (Survey Flow, above `FL_14`)
 
 **Also declare `resp_id` (= `${e://Field/ResponseID}`, set in the flow), `rand_version` and `rng_seed_fallback` before this script runs.** The arm draw is seeded from `resp_id`; if it is missing the script falls back to an unseeded draw and sets `rng_seed_fallback=1`.
