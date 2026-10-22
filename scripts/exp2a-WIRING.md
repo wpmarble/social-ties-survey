@@ -30,6 +30,8 @@ display question). **Never hand-edit the generated files** — edit `exp2a-core.
 
 ## 1. Embedded data (`FL_30`)
 
+**Also declare `resp_id` (= `${e://Field/ResponseID}`, set in the flow), `rand_version` and `rng_seed_fallback` before this script runs.** The arm draw is seeded from `resp_id`; if it is missing the script falls back to an unseeded draw and sets `rng_seed_fallback=1`.
+
 Add these 18 fields to the existing `FL_30` `EmbeddedData` element (same element that
 already holds `exp1_*`/`exp2b_*` — append, no reordering needed). All are **string
 fields with no default value**:

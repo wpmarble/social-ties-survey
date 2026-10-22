@@ -47,6 +47,8 @@ exist yet — it needs to be created, not just repositioned.
 
 ## 3. Declare embedded data (Survey Flow, above `FL_14`)
 
+**Also declare `resp_id` (= `${e://Field/ResponseID}`, set in the flow), `rand_version` and `rng_seed_fallback` before this script runs.** The arm draw is seeded from `resp_id`; if it is missing the script falls back to an unseeded draw and sets `rng_seed_fallback=1`.
+
 `exp2b-threat.js` writes exactly nine embedded-data fields (verified by reading the script, not
 copied from the design spec without checking — the spec's §6 table also lists `exp2a_*` fields that
 don't apply here, since Exp 2A isn't built):

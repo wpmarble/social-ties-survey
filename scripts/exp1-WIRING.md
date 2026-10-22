@@ -28,6 +28,8 @@ assignment.
 
 ## 2. Declare embedded data (Survey Flow, ABOVE the Exp 1 block)
 
+**Also declare `resp_id` (= `${e://Field/ResponseID}`, set in the flow), `rand_version` and `rng_seed_fallback` before this script runs.** The arm draw is seeded from `resp_id`; if it is missing the script falls back to an unseeded draw and sets `rng_seed_fallback=1`.
+
 Add an Embedded Data element with these fields (leave values blank). Declaring
 them ensures the JS-set values appear in the response export:
 
