@@ -166,14 +166,13 @@ console.log("test-core.js: all passed");
     // three identical entries vs two rows: third has no unused row and counts differ -> dropped
     assert.strictEqual(E.mergeLlmDetailed([], JSON.stringify([mkEntry("mike", "Mike", null), mkEntry("mike", "Mike", null), mkEntry("mike", "Mike", null)]), residue).nLlm, 2);
   }
-  // order fallback: unmatched text filled by order only when counts are equal
+  // no positional fallback (Phase 2e): an entry that matches no row, by text or by a whole-word name, is dropped
   {
     const residue = [row("my ride or die", "money", 6)];
     const raw = JSON.stringify([mkEntry("paraphrased", "Denise", "friend")]);
-    const eq = E.mergeLlmDetailed([], raw, residue);
-    assert.strictEqual(eq.nLlm, 1); assert.strictEqual(eq.pairs[0].domains[0], "money");
+    assert.strictEqual(E.mergeLlmDetailed([], raw, residue).nLlm, 0, "equal counts no longer fill by position");
     const ne = E.mergeLlmDetailed([], JSON.stringify([mkEntry("paraphrased", "Denise", "friend"), mkEntry("other", "Eve", "friend")]), residue);
-    assert.strictEqual(ne.nLlm, 0, "counts differ -> no order fallback");
+    assert.strictEqual(ne.nLlm, 0);
   }
   // nLlm = 0 for malformed / fenced / [] / no matches
   {

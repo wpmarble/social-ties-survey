@@ -56,6 +56,16 @@ exp2a_reflect_clause
 exp2a_text
 ```
 
+**Phase 2e adds two more string fields** (declared by `build.py phase2e`, appended after the Phase 2c error fields):
+
+```
+exp2a_residue_slots
+exp2a_selected_json
+```
+
+`exp2a_residue_slots` is written by the `QID45` parse hook (see section 2); `exp2a_selected_json` by the render hook
+(see section 9, item 4).
+
 Full contents/writer for each field: `exp2a-design-spec.md` §6. This must be live
 *before* `QID45`'s page can be reached in preview — declared here, at `FL_30`, well
 above `FL_13` (name-gen block) — for the same reason 2B's fields had to sit above
@@ -98,8 +108,17 @@ against, so this is not itself the confirmation the spec requires. Re-verify by 
 generated file, not `exp2a-core.js` alone) into `QID45`'s JavaScript editor. It reads
 the nine hidden spans above plus the three live inputs on the page itself (12 slots
 total), runs the deterministic parser, and writes `exp2a_det_pairs`, `exp2a_residue`,
-`exp2a_needs_llm`, and `exp2a_llm_status` (`"skipped"` if no residue, else left blank
-for the Web Service to fill).
+`exp2a_residue_slots`, `exp2a_needs_llm`, and `exp2a_llm_status` (`"skipped"` if no residue, else
+left blank for the Web Service to fill).
+
+`exp2a_residue_slots` (Phase 2e) is a comma-separated list with one absolute slot index (0-11) per residue row, in row
+order, e.g. `2,5,7`; slots are numbered as in a deterministic pair's `firstIndex` (transport 0-2, job 3-5, money 6-8,
+other 9-11). The residue string format (`domain: text ||| ...`) and the Web Service prompt are unchanged. A `|||` inside a
+respondent's text is replaced by a space so rows and slots stay aligned.
+
+`exp2a_det_pairs` is the deterministic pairs plus one marker entry `{"cls":"spouse","name":"Kate",...}` per
+spouse/partner name the parser saw (the pairs themselves already exclude those names). The render hook uses the markers
+to exclude the same names from LLM-rescued pairs.
 
 ---
 
@@ -153,10 +172,11 @@ from-scratch add, not an edit.
     <span id="exp2a-llm">${e://Field/exp2a_llm_pairs}</span>
     <span id="exp2a-llmstatus">${e://Field/exp2a_llm_status}</span>
     <span id="exp2a-residue">${e://Field/exp2a_residue}</span>
+    <span id="exp2a-residue-slots">${e://Field/exp2a_residue_slots}</span>
   </div>
   ```
 
-  Both div IDs (`exp2aDisplay`, `exp2aData`) and all four span IDs are read directly
+  Both div IDs (`exp2aDisplay`, `exp2aData`) and all five span IDs are read directly
   out of `exp2a-render.js` by `getElementById` — don't rename them.
 
 - Paste the full contents of `scripts/exp2a-render.js` into `QID51`'s JavaScript
@@ -300,22 +320,32 @@ easy to misread in the exported data:
    presence/absence of name fields alone — a non-empty `exp2a_name1` does not imply the
    respondent saw a personalized stimulus.
 
-2. **LLM-rescued pairs carry their real domain and slot order, via `exp2a-residue`.**
-   `selectPairs` ranks candidates by (i) mentioned in multiple domains, (ii)
-   classification rank (named+rel > name-only > rel-only), (iii) first-listed order.
-   The render hook parses the `exp2a_residue` span (`domain: text ||| domain: text`,
-   exactly what the QID45 parse hook writes) and passes the rows to `mergeLlm`, which
-   matches each LLM entry to a distinct residue row by its text (domain label stripped;
-   each row used once). The pair takes that row's domain and index = domain base
-   (transport 0, job 3, money 6, other 9) + ordinal among that domain's residue rows.
-   The index is exact across domains and within a domain's residue rows, but the string
-   does not carry the absolute slot number, so against a deterministic pair in the same
-   domain the tie-break is approximate. A rescued pair CAN be multi-domain (same person
-   rescued from two domains is merged and ranks first); a same-domain duplicate is not
-   promoted. LLM entries that match no unused residue row are dropped (invented), except
-   that when the LLM returned exactly one entry per residue row an unmatched entry is
-   filled by position. LLM rescue never affects arm assignment or the named/generic
-   threshold beyond adding pairs.
+2. **LLM-rescued pairs carry their real domain and slot index, via `exp2a-residue` and
+   `exp2a-residue-slots`.** `selectPairs` ranks candidates by (i) mentioned in multiple domains (merged on a
+   matching NAME only; two relationship-only pairs such as "my friend" in two domains stay separate people),
+   (ii) classification rank (named+rel > name-only > rel-only), (iii) first-listed order. The render hook parses the
+   `exp2a_residue` span and the `exp2a_residue_slots` span into residue rows (domain, text, absolute slot index; when
+   the slots span is missing or inconsistent the index falls back to domain base + ordinal) and passes them to
+   `mergeLlm`. Matching is by normalised key (`lowerKey`: case, whitespace and punctuation stripped, applied to both
+   sides): an LLM entry takes a residue row if (a) its text (domain label stripped) equals the row text, else (b) its
+   cleaned `name` occurs as a whole word in the row text. A row may be taken by several entries with different names
+   ("my neighbors Bob and Sue" gives Bob and Sue), never twice by the same name. There is no positional fallback: an
+   entry that matches no row is invented and dropped. The pair takes the row's domain and exact slot index. A
+   rescued pair CAN be multi-domain (same name rescued from two domains); a same-domain duplicate is not promoted.
+   LLM rescue never affects arm assignment or the named/generic threshold beyond adding pairs.
+
+   LLM output is sanitised before use. `name` must be a string; it is reduced to letters, hyphen and apostrophe, cut to
+   its first token, capitalised, and rejected if empty, over 20 characters, markup (`<`, `>`, `&`), a stoplist word
+   (null, none, n/a, na, unknown, undefined, nobody, no one, me, myself) or a relationship/spouse word. `relationship`
+   must be a string; a leading your/my/our is stripped; it is rejected if empty, over 30 characters, markup or a
+   stoplist word. Non-strings count as absent.
+
+   **Spouse/partner names are excluded everywhere.** Whenever any entry (deterministic or LLM, by category
+   `spouse_partner` or by relationship wording) resolves as spouse/partner and carries a name, that name goes into a
+   spouse-name set and every pair with a matching name (case-insensitive, any domain) is dropped: "my wife Kate" plus
+   "Kate" in another domain leaves no Kate. Wordlist classification (unchanged in Phase 2e): boyfriend, girlfriend,
+   fiance/fiancé/fiancée, bf, gf are spouse; "my love" and "bae" are NOT in the wordlist and go to the LLM as residue.
+   "work partner", "business partner" and "lab partner" are not spouse (the modifier makes them non-romantic).
 
 3. **`exp2a_llm_status` has exactly two write paths, and a failed call writes
    neither.** The parse hook writes `"skipped"` when there's no residue (no LLM call
@@ -337,6 +367,11 @@ easy to misread in the exported data:
    call — treat that specific combination (`exp2a_llm_status` empty and
    `exp2a_det_pairs` empty) as "no parse ran," not "LLM call failed," in
    analysis.
+
+4. **`exp2a_selected_json` reconstructs what was primed.** A JSON array of the pairs used in the stimulus (as in
+   `exp2a_name1`-`3`), each `{name, rel, domains, firstIndex, origin, match}`: `origin` is `det` or `llm` (the first
+   source of a merged pair, det wins), `match` is `exact` or `name` for an LLM pair (how its residue row was found) and
+   `null` for a deterministic one. `[]` for the generic and placebo variants.
 
 
 ## 10. Render-hook failure handling (phase2b)

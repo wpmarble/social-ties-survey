@@ -4,9 +4,9 @@
       <div id="exp2aDisplay"></div>
       <div id="exp2aData" style="display:none"> holding spans, whose ids
       are exp2a-det, exp2a-llm and exp2a-llmstatus, piped from the embedded-data
-      fields exp2a_det_pairs, exp2a_llm_pairs and exp2a_llm_status, plus a fourth span exp2a-residue
-      piped from exp2a_residue (exact markup
-      in exp2a-WIRING.md section 3).
+      fields exp2a_det_pairs, exp2a_llm_pairs and exp2a_llm_status, plus exp2a-residue
+      and exp2a-residue-slots, piped from exp2a_residue and exp2a_residue_slots (exact markup
+      in exp2a-WIRING.md section 4).
   Respondent-derived text reaches this script ONLY via textContent of those
   spans — never via JS literals. exp2a_arm below is our own controlled value.
   Never put piped-text tokens in a comment: Qualtrics fills them there too, and a
@@ -145,13 +145,13 @@ Qualtrics.SurveyEngine.addOnload(function () {
   });
   var llmStatus = nodeText("exp2a-llmstatus").trim();
   var needsLlm = llmStatus !== "skipped";
-  var pairs = detPairs;
+  var pairs = EXP2A.excludeSpouse(detPairs).pairs;   // spouse marker entries split off; spouse names excluded
   var source = "det";
   if (needsLlm) {
     // "message" is Anthropic's response type on success (the Web Service maps it into exp2a_llm_status); "ok" kept for the old mapping.
     if (llmStatus === "ok" || llmStatus === "message") {
       // residue rows give each LLM pair its real domain/index; entries not in the residue are dropped
-      var merged = EXP2A.mergeLlmDetailed(detPairs, nodeText("exp2a-llm"), EXP2A.parseResidueString(nodeText("exp2a-residue")));
+      var merged = EXP2A.mergeLlmDetailed(detPairs, nodeText("exp2a-llm"), EXP2A.parseResidueString(nodeText("exp2a-residue"), nodeText("exp2a-residue-slots")));
       pairs = merged.pairs;
       // det+llm only if at least one LLM pair was actually merged; success with nothing usable is llm_empty
       source = merged.nLlm > 0 ? "det+llm" : "llm_empty";
@@ -166,12 +166,16 @@ Qualtrics.SurveyEngine.addOnload(function () {
   Qualtrics.SurveyEngine.setEmbeddedData("exp2a_n_names", String(pairs.length));
   Qualtrics.SurveyEngine.setEmbeddedData("exp2a_low_tie_flag", String(dv.lowTie));
   Qualtrics.SurveyEngine.setEmbeddedData("exp2a_parse_source", source);
+  var usedPairs = [];
   for (var k = 0; k < 3; k++) {
     var used = (dv.variant === "named3" && k < 3) || (dv.variant === "named2" && k < 2);
     var p = used ? selected[k] : null;
+    if (p) { usedPairs.push(p); }
     Qualtrics.SurveyEngine.setEmbeddedData("exp2a_name" + (k + 1), p ? (p.name || "your " + p.rel) : "");
     Qualtrics.SurveyEngine.setEmbeddedData("exp2a_rel" + (k + 1), p ? (p.rel || "") : "");
   }
+  // analyst reconstruction: the pairs used, with origin (det/llm) and how an LLM pair was matched to its residue row
+  Qualtrics.SurveyEngine.setEmbeddedData("exp2a_selected_json", JSON.stringify(EXP2A.selectedRecords(usedPairs)));
 
   var target = document.getElementById("exp2aDisplay");
   if (target) { target.innerHTML = '<p style="color:#888;">Loading…</p>'; }

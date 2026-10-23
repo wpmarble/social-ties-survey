@@ -24,8 +24,11 @@ Qualtrics.SurveyEngine.addOnload(function () {
       slots.push({ text: inputs[j].value, domain: "other" });
     }
     var out = EXP2A.processSlots(slots);
-    Qualtrics.SurveyEngine.setEmbeddedData("exp2a_det_pairs", JSON.stringify(out.pairs));
+    // det pairs plus one marker entry per spouse/partner name seen (the render hook excludes those names everywhere)
+    Qualtrics.SurveyEngine.setEmbeddedData("exp2a_det_pairs", JSON.stringify(EXP2A.packDetPairs(out)));
     Qualtrics.SurveyEngine.setEmbeddedData("exp2a_residue", EXP2A.buildResidueString(out.residue));
+    // absolute slot index (0-11) of each residue row, same numbering as a det pair's firstIndex
+    Qualtrics.SurveyEngine.setEmbeddedData("exp2a_residue_slots", EXP2A.buildResidueSlotsString(out.residue));
     Qualtrics.SurveyEngine.setEmbeddedData("exp2a_needs_llm", out.needsLlm ? "1" : "0");
     Qualtrics.SurveyEngine.setEmbeddedData("exp2a_llm_status", out.needsLlm ? "" : "skipped");
     console.log("Exp2A parse:", out.pairs.length, "pairs,", out.residue.length, "residue, spouse:", out.nSpouse);
