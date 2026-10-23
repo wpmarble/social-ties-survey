@@ -128,12 +128,12 @@ spouseCase("Kate, my wife's sister + Kate (over-exclusion accepted)", "Kate, my 
 spouseCase("KATE, my wife + kate", "KATE, my wife", "kate");
 
 T("LLM spouse_partner entry with paraphrased text matching no row -> name excluded everywhere", async () => {
-  const s = { transport: ["the missus K8 lol"], job: ["Kate"], money: ["Bob, my brother"], other: ["Ann"] };
-  const ed = await sc(s, rows => rows.map(r => /K8/.test(r) ? En("the missus Kate", "Kate", "wife", "spouse_partner", false) : En(strip(r), null, null, "unusable", false)));
+  const s = { transport: ["the K8 lol"], job: ["Kate"], money: ["Bob, my brother"], other: ["Ann"] };
+  const ed = await sc(s, rows => rows.map(r => /K8/.test(r) ? En("the K8 lol Kate", "Kate", "wife", "spouse_partner", false) : En(strip(r), null, null, "unusable", false)));
   assert.deepStrictEqual(primed(ed), ["Bob", "Ann"]);
 });
 T("LLM relationship resolving to spouse (benign category, paraphrased text) excludes the name", async () => {
-  const s = { transport: ["the missus K8 lol"], job: ["Kate"], money: ["Bob, my brother"], other: ["Ann"] };
+  const s = { transport: ["the K8 lol"], job: ["Kate"], money: ["Bob, my brother"], other: ["Ann"] };
   const ed = await sc(s, () => [En("something else entirely", "Kate", "my hubby", "other", true)]);
   assert.deepStrictEqual(primed(ed), ["Bob", "Ann"]);
 });
@@ -182,7 +182,7 @@ T("LLM relationships 'true' / 'a' / 'the your friend' cannot reach the stimulus"
 
 // ---- endearments: flag false (current) vs true ---------------------------------------------------------------------------
 T("ENDEARMENT_TERMS constant and flag default", () => {
-  assert.deepStrictEqual(E.ENDEARMENT_TERMS, ["love", "bae", "sweetheart", "sweetie", "honey", "babe", "darling", "sweetpea"]);
+  for (const w of ["love", "bae", "sweetheart", "sweetie", "honey", "babe", "darling", "sweetpea", "boo", "baby", "\u2764", "\u{1F495}", "\u{1F496}", "\u{1F60D}"]) { assert.ok(E.ENDEARMENT_TERMS.indexOf(w) !== -1, w); }
   assert.ok(PARSE.indexOf(FLAG_LINE) !== -1, "EXCLUDE_ENDEARMENTS ships false");
 });
 for (const w of ["my love", "bae", "sweetheart", "sweetie", "honey", "babe", "darling", "sweetpea"]) {
@@ -242,6 +242,117 @@ T("regression: my neighbors Bob and Sue still yields both; honorifics and plain 
 T("regression: an entry mentioning another person next to a spouse term is excluded whole (documented over-exclusion), neighbours elsewhere untouched", async () => {
   const ed = await sc({ transport: ["Kate and my husband Tom"], job: ["Tom"], money: ["Bob, my brother"], other: ["Ann"] });
   assert.deepStrictEqual(primed(ed), ["Bob", "Ann"]);
+});
+
+
+// ---- Phase 2g ------------------------------------------------------------------------------------------------------------
+spouseCase("Hubs Mike + Mike", "Hubs Mike", "Mike");
+spouseCase("Mike Hubs + Mike", "Mike Hubs", "Mike");
+spouseCase("Esposa Maria + Maria", "Esposa Maria", "Maria");
+spouseCase("Kate Esposa + Kate", "Kate Esposa", "Kate");
+spouseCase("Missus Kate + Kate", "Missus Kate", "Kate");
+spouseCase("Old Lady Kate + Kate", "Old Lady Kate", "Kate");
+spouseCase("Better Half Kate + Kate", "Better Half Kate", "Kate");
+spouseCase("SO Kate + Kate", "SO Kate", "Kate");
+spouseCase("Wfie Kate + Kate", "Wfie Kate", "Kate");
+spouseCase("Girlfreind Kate + Kate", "Girlfreind Kate", "Kate");
+spouseCase("Kate 💍 + Kate", "Kate \u{1F48D}", "Kate");
+spouseCase("Kate 💑 + Kate", "Kate \u{1F491}", "Kate");
+spouseCase("fullwidth Ｗｉｆｅ Kate + Kate", "Ｗｉｆｅ Kate", "Kate");
+spouseCase("zero-width wi​fe Kate + Kate", "wi​fe Kate", "Kate");
+spouseCase("soft-hyphen wi­fe Kate + Kate", "wi­fe Kate", "Kate");
+T("every new spouse word / misspelling / emoji is detected (whole word, case-insensitive)", () => {
+  const words = ["hubs", "missus", "old lady", "old man", "better half", "other half", "significant other", "wives", "husbands", "wifes",
+    "partners", "girlfriends", "boyfriends", "esposa", "esposo", "marido", "mujer", "novia", "novio", "husbando", "waifu", "bride", "groom",
+    "lover", "wfie", "wif", "husban", "husbnd", "hubbie", "girlfreind", "girlfrend", "boyfreind", "boyfrend", "fiance", "fiancé", "fiancee",
+    "fiancée", "fience", "fiacee"];
+  for (const w of words) {
+    for (const t of ["Kate, my " + w, w.toUpperCase() + " Kate", "Kate " + w[0].toUpperCase() + w.slice(1)]) { assert.strictEqual(E.scanSpouse(t).spouse, true, t); }
+    assert.ok(E.scanSpouse("Kate, my " + w).names.indexOf("kate") !== -1, w);
+  }
+  for (const e of ["\u{1F48D}", "\u{1F491}", "\u{1F48F}", "\u{1F492}", "\u{1F470}", "\u{1F935}", "\u{1F469}‍❤️‍\u{1F468}", "\u{1F469}‍❤️‍\u{1F469}",
+    "\u{1F468}‍❤️‍\u{1F468}", "\u{1F469}‍❤️‍\u{1F48B}‍\u{1F468}", "\u{1F491}\u{1F3FD}"]) {
+    assert.deepStrictEqual(E.scanSpouse("Kate " + e), { spouse: true, names: ["kate"] }, JSON.stringify(e));
+  }
+  assert.strictEqual(E.scanSpouse("Ann, so helpful").spouse, false);
+  assert.strictEqual(E.scanSpouse("so Kate").spouse, false);
+  assert.strictEqual(E.scanSpouse("Ann is a bridesmaid").spouse, false);
+  assert.strictEqual(E.scanSpouse("Kate ❤️").spouse, false, "hearts are endearments (flag false)");
+  assert.strictEqual(E.scanSpouse("Kate baby").spouse, false);
+});
+T("hearts / babe / bae / boo / baby are endearments: excluded only with the flag", async () => {
+  for (const a of ["Joe ❤️", "Joe \u{1F495}", "Joe \u{1F60D}", "Joe baby", "Joe boo", "Joe bae"]) {
+    const ed = await sc({ transport: [a], job: ["Joe"], other: ["Ann", "Bo"] }, rows => rows.map(r => En(strip(r), "Joe", null, "other")), { endear: true });
+    assert.deepStrictEqual(primed(ed), ["Ann", "Bo"], a);
+  }
+  assert.ok(PARSE.indexOf(FLAG_LINE) !== -1);
+});
+T("non-spouse partner modifiers (carpool / running / workout / gym / ... / at work / at the firm)", async () => {
+  for (const m of ["carpool", "running", "workout", "gym", "tennis", "climbing", "hiking", "study", "dance", "debate", "work", "business", "lab", "law"]) {
+    assert.strictEqual(E.scanSpouse("Jen, my " + m + " partner").spouse, false, m);
+    assert.strictEqual(E.scanSpouse("Jen, " + m + " partner").spouse, false, m);
+  }
+  for (const t of ["Jen, partner at work", "Jen, my partner at the firm", "Jen, partner in a law firm", "Jen, partner at the law firm", "Jen, law firm partner", "Jen, partner at my firm"]) {
+    assert.strictEqual(E.scanSpouse(t).spouse, false, t);
+  }
+  for (const m of ["carpool", "running", "workout"]) {
+    const ed = await sc({ transport: ["Jen, my " + m + " partner"], other: ["Ann"] });
+    assert.deepStrictEqual(primed(ed), ["Jen", "Ann"], m);
+    assert.strictEqual(ed.exp2a_rel1, m + " partner", m);
+  }
+  const ed2 = await sc({ transport: ["Jen, partner at work"], other: ["Ann"] });
+  assert.ok(primed(ed2).indexOf("Jen") !== -1, JSON.stringify(primed(ed2)));
+  assert.strictEqual(E.scanSpouse("Jen, my partner").spouse, true);
+});
+T("hyphenated spouse names: whole name and each part are candidates", async () => {
+  assert.deepStrictEqual(E.scanSpouse("my wife Mary-Kate").names.sort(), ["kate", "mary", "mary-kate"]);
+  const a = await sc({ transport: ["my wife Mary-Kate"], job: ["Mary"], other: ["Ann", "Bo"] });
+  assert.deepStrictEqual(primed(a), ["Ann", "Bo"]);
+  const b = await sc({ transport: ["my wife Mary-Kate"], job: ["Mary Kate"], other: ["Ann", "Bo"] });
+  assert.deepStrictEqual(primed(b), ["Ann", "Bo"]);
+  const c = await sc({ transport: ["my wife Mary-Kate"], job: ["Kate"], other: ["Ann", "Bo"] });
+  assert.deepStrictEqual(primed(c), ["Ann", "Bo"]);
+});
+for (const cat of ["spouse", "partner", "spouse/partner", "romantic partner"]) {
+  T("LLM category '" + cat + "' + relationship 'missus' excludes the name everywhere", async () => {
+    const s = { transport: ["the K8 lol"], job: ["Kate"], money: ["Bob, my brother"], other: ["Ann"] };
+    const ed = await sc(s, rows => rows.map(r => /K8/.test(r) ? En("the K8 lol Kate", "Kate", "missus", cat, true) : En(strip(r), null, null, "unusable", false)));
+    assert.deepStrictEqual(primed(ed), ["Bob", "Ann"]);
+    const out = E.mergeLlm([], JSON.stringify([En("the K8 lol Kate", "Kate", "missus", cat, true)]), [{ text: "the K8 lol Kate", domain: "job", index: 3 }]);
+    assert.strictEqual(out.length, 0, "LLM pair not primed");
+  });
+  T("LLM category '" + cat + "' alone (benign relationship) excludes the name", () => {
+    const out = E.mergeLlm([{ name: "Kate", rel: null, cls: "name_only", domains: ["job"], firstIndex: 3, origin: "det" }],
+      JSON.stringify([En("the K8 lol Kate", "Kate", "friend", cat, true)]), [{ text: "the K8 lol Kate", domain: "job", index: 4 }]);
+    assert.strictEqual(out.length, 0);
+  });
+}
+T("fenced / prose-wrapped LLM JSON parses; a spouse inside excludes the name", () => {
+  const arr = [En("my neighbor Bob", "Bob", "neighbor", "neighbor"), En("the K8 lol Kate", "Kate", "wife", "spouse_partner", false)];
+  const rows = [{ text: "my neighbor Bob", domain: "job", index: 3 }, { text: "the K8 lol Kate", domain: "job", index: 4 }];
+  const det = [{ name: "Kate", rel: null, cls: "name_only", domains: ["money"], firstIndex: 6, origin: "det" }];
+  for (const raw of ["```json\n" + JSON.stringify(arr) + "\n```", "```\n" + JSON.stringify(arr) + "\n```", "Here you go:\n" + JSON.stringify(arr) + "\nHope that helps!", JSON.stringify(arr)]) {
+    const out = E.mergeLlm(det, raw, rows);
+    assert.deepStrictEqual(out.map(p => p.name), ["Bob"], raw.slice(0, 20));
+  }
+  assert.deepStrictEqual(E.mergeLlm([], "```json\n" + JSON.stringify([arr[0]]) + "\n```", rows).map(p => p.name), ["Bob"]);
+  assert.deepStrictEqual(E.mergeLlm([], "not json at all", rows), []);
+});
+T("regression 2g: neighbors / work partner / Pastor / Mom Linda / Kate Smith / 'so' adverb / Mrs. Alvarez the neighbor", async () => {
+  assert.strictEqual(E.scanSpouse("Mrs. Alvarez the neighbor").spouse, false);
+  const alv = await sc({ transport: ["Mrs. Alvarez the neighbor"], other: ["Ann"] }, rows => rows.map(r => En(strip(r), "Alvarez", "neighbor", "neighbor")));
+  assert.ok(primed(alv).indexOf("Alvarez") !== -1, JSON.stringify(primed(alv)));
+  assert.strictEqual(E.scanSpouse("Missus Alvarez the neighbor").spouse, true);
+  assert.strictEqual(E.classifyEntry("Kate Smith").cls, "name_only");
+  const ks = await sc({ transport: ["Kate Smith"], other: ["Ann"] });
+  assert.ok(primed(ks).indexOf("Kate") !== -1, JSON.stringify(primed(ks)));
+  const ml = await sc({ transport: ["Mom Linda"], other: ["Ann"] });
+  assert.ok(primed(ml).indexOf("Linda") !== -1);
+  const ann = await sc({ transport: ["Ann, so helpful"], job: ["Ann"], other: ["Bo"] });
+  assert.ok(primed(ann).indexOf("Ann") !== -1, JSON.stringify(primed(ann)));
+  assert.strictEqual(E.classifyEntry("Pastor Williams").name, "Pastor Williams");
+  const dan = await sc({ transport: ["Dan, work partner"], job: ["Dan"], other: ["Ann"] });
+  assert.ok(primed(dan).indexOf("Dan") !== -1);
 });
 
 (async () => {
