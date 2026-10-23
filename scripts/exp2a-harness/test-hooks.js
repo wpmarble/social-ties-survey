@@ -140,16 +140,16 @@ async function main() {
     { name: "Maria", rel: "sister", cls: "named_rel", domains: ["transport"], firstIndex: 0 },
     { name: "James", rel: "neighbor", cls: "named_rel", domains: ["money"], firstIndex: 6 }
   ]);
-  const RES = "job: my ride or die";
+  const RES = "job: my ride or die Denise";
   const llm = JSON.stringify({ entries: [
-    { text: "my ride or die", name: "Denise", relationship: "best friend", category: "friend", usable: true }
+    { text: "my ride or die Denise", name: "Denise", relationship: "best friend", category: "friend", usable: true }
   ]});
 
   // ---- 2. render hook, tie arm with LLM rescue -----------------------------
   {
     const { ed, displayDiv } = runRender({
       exp2a_det_pairs: det, exp2a_llm_pairs: llm, exp2a_residue: RES, exp2a_llm_status: "ok",
-      exp2a_needs_llm: "1", exp2a_residue: "job: my ride or die"
+      exp2a_needs_llm: "1", exp2a_residue: "job: my ride or die Denise"
     }, "tie");
     await wait(20); // let the fetch .then chain settle
     assert.strictEqual(ed.exp2a_arm, "tie");
@@ -165,7 +165,7 @@ async function main() {
   {
     const r2 = runRender({
       exp2a_det_pairs: det, exp2a_llm_pairs: "", exp2a_llm_status: "",
-      exp2a_needs_llm: "1", exp2a_residue: "job: my ride or die"
+      exp2a_needs_llm: "1", exp2a_residue: "job: my ride or die Denise"
     }, "tie");
     await wait(20);
     assert.strictEqual(r2.ed.exp2a_variant, "named2", "2 det pairs -> named2");

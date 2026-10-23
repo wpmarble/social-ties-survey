@@ -226,7 +226,7 @@ T("3. a respondent entry containing the row separator cannot desynchronise rows 
 });
 
 // ---- Fix 4: sanitise LLM output ----------------------------------------------------------------------------------------
-const BAD_TOKENS = [/\bnull\b/, /N\/A/, /undefined/, /\[object/, /your your/, /\btrue\b/, /\(\s*\)/, /[ \t]{2,}/];
+const BAD_TOKENS = [/\bnull\b/i, /N\/A/i, /undefined/i, /\[object/i, /your your/i, /\btrue\b/i, /\bfalse\b/i, /\bnan\b/i, /\(\s*\)/, /[ \t]{2,}/];
 function checkStimulus(label, text) {
   for (const re of BAD_TOKENS) { assert.ok(!re.test(text), `${label}: stimulus matches ${re}: ${text.slice(0, 200)}`); }
   assert.ok(!/\[[A-Z_0-9]+\]/.test(text), `${label}: unfilled token`);
@@ -242,7 +242,7 @@ T("4. non-string name/relationship ({} true [..] 5) treated as absent", async ()
     rows => [En(strip(rows[0]), ["Bob"], 5, "friend"), En(strip(rows[1]), { a: 1 }, null, "friend"), En(strip(rows[2]), true, "", "friend")]);
   assert.deepStrictEqual(primed(ed), []);
   checkStimulus("R6", ed.exp2a_text);
-  const out = E.mergeLlm([], JSON.stringify([En("xyz", "Bob", 5, "friend")]), [{ text: "xyz", domain: "job", index: 3 }]);
+  const out = E.mergeLlm([], JSON.stringify([En("xyz Bob", "Bob", 5, "friend")]), [{ text: "xyz Bob", domain: "job", index: 3 }]);
   assert.strictEqual(out.length, 1); assert.strictEqual(out[0].name, "Bob"); assert.strictEqual(out[0].rel, null);
 });
 T("4. relationship 'your best friend' -> 'best friend' (no 'your your')", async () => {
@@ -252,8 +252,7 @@ T("4. relationship 'your best friend' -> 'best friend' (no 'your your')", async 
   checkStimulus("K", ed.exp2a_text);
 });
 T("4. name cleanup: capitalise, strip emoji/markup, length, rel words", () => {
-  const rows = [{ text: "xyz", domain: "job", index: 3 }];
-  const one = (name, rel) => E.mergeLlm([], JSON.stringify([En("xyz", name, rel, "friend")]), rows);
+  const one = (name, rel) => { const tx = "xyz " + (typeof name === "string" ? name : ""); return E.mergeLlm([], JSON.stringify([En(tx, name, rel, "friend")]), [{ text: tx, domain: "job", index: 3 }]); };
   assert.strictEqual(one("kevin", "neighbor")[0].name, "Kevin");
   assert.strictEqual(one("Bob😀", null)[0].name, "Bob");
   assert.strictEqual(one("Ann-Marie O'Neil", null)[0].name, "Ann-Marie");

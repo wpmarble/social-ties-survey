@@ -57,6 +57,11 @@ var EXP2A = (function () {
     "fiancé", "fiancée", "boyfriend", "girlfriend", "bf", "gf", "hubby", "wifey",
     "significant other", "my other half", "life partner"];
 
+  // Endearments are ambiguous (spouse? a friendly "love"?). The PI has not decided whether they mark a spouse entry:
+  // flip this ONE flag to true to make the spouse-word scan treat them like spouse terms (exp2a-WIRING section 9).
+  var ENDEARMENT_TERMS = ["love", "bae", "sweetheart", "sweetie", "honey", "babe", "darling", "sweetpea"];
+  var EXCLUDE_ENDEARMENTS = false;
+
   // relationship word -> coarse category (category used for diagnostics only)
   var REL_WORDS = {};
   (function () {
@@ -87,14 +92,89 @@ var EXP2A = (function () {
   // "work partner", "business partner", "lab partner": the modifier makes "partner" non-romantic, so it is NOT a spouse.
   var NONSPOUSE_PARTNER_MODS = ["work", "business", "lab"];
 
-  var UNUSABLE_EXACT = ["nobody", "no one", "noone", "none", "n a", "na",
+  // Placeholder-looking strings are never a name (respondent-typed or LLM), compared case/diacritic-insensitively via lowerKey.
+  var NAME_STOPLIST = ["null", "undefined", "true", "false", "nan", "none", "n a", "unknown"];
+
+  var UNUSABLE_EXACT = ["null", "undefined", "true", "false", "nan", "nobody", "no one", "noone", "none", "n a", "na",
     "nothing", "nope", "no", "idk", "i dont know", "dont know", "not sure",
     "myself", "me", "self", "same", "same as above", "see above", "x", "xx",
     "unknown", "not applicable", "no idea"];
 
   // --- classification helpers ----------------------------------------------
+  // Lower-case with diacritics folded (NFD, combining marks stripped); unchanged diacritics if normalize is unavailable.
+  function foldKey(s) {
+    var t = String(s === null || s === undefined ? "" : s);
+    try { if (t.normalize) { t = t.normalize("NFD"); } } catch (e) { /* keep as is */ }
+    return t.toLowerCase().replace(/\p{M}/gu, "");
+  }
+
   function lowerKey(s) {
-    return s.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, " ").replace(/\s+/g, " ").trim();
+    return foldKey(s).replace(/[^\p{L}\p{N}\s]/gu, " ").replace(/\s+/g, " ").trim();
+  }
+
+  function isStopName(n) { return NAME_STOPLIST.indexOf(lowerKey(n)) !== -1; }
+
+  // --- spouse-word scan (deterministic safety net; independent of the LLM and of phrasing) ----------------------
+  var SCAN_STOPWORDS = ["my", "our", "your", "his", "her", "their", "the", "a", "an", "and", "or", "of", "for", "in", "on",
+    "at", "to", "with", "is", "was", "are", "be", "been", "from", "we", "us", "me", "i", "it", "that", "this", "who", "as",
+    "by", "s", "years", "year", "yrs", "yr", "married", "ex", "late", "soon", "future", "new", "now", "lol", "law", "crime",
+    "together", "engaged", "dating", "lives", "live", "living", "named", "name", "called", "is", "mine"];
+  var SCAN_STOP_MAP = null;
+  function scanStopMap() {
+    if (SCAN_STOP_MAP) { return SCAN_STOP_MAP; }
+    var m = {}, i, j, w;
+    function add(x) { m[x] = true; }
+    for (i = 0; i < SCAN_STOPWORDS.length; i++) { add(SCAN_STOPWORDS[i]); }
+    for (w in REL_WORDS) { if (Object.prototype.hasOwnProperty.call(REL_WORDS, w)) { var rp = lowerKey(w).split(" "); for (j = 0; j < rp.length; j++) { add(rp[j]); } } }
+    for (i = 0; i < SPOUSE_WORDS.length; i++) { var sp = lowerKey(SPOUSE_WORDS[i]).split(" "); for (j = 0; j < sp.length; j++) { add(sp[j]); } }
+    for (i = 0; i < ENDEARMENT_TERMS.length; i++) { add(ENDEARMENT_TERMS[i]); }
+    for (i = 0; i < REL_MODIFIERS.length; i++) { add(REL_MODIFIERS[i]); }
+    for (i = 0; i < NAME_STOPLIST.length; i++) { var np = NAME_STOPLIST[i].split(" "); for (j = 0; j < np.length; j++) { add(np[j]); } }
+    SCAN_STOP_MAP = m;
+    return m;
+  }
+
+  // Does the text contain a spouse/partner term as a whole word (case/diacritic-insensitive)? "work/business/lab partner"
+  // and "partner in crime" do not count. Endearments count only when EXCLUDE_ENDEARMENTS is true.
+  function hasSpouseTerm(raw) {
+    var toks = lowerKey(raw).split(" ");
+    var terms = SPOUSE_WORDS.concat(EXCLUDE_ENDEARMENTS ? ENDEARMENT_TERMS : []);
+    for (var i = 0; i < toks.length; i++) {
+      for (var t = 0; t < terms.length; t++) {
+        var tw = lowerKey(terms[t]).split(" "), ok = true, k;
+        for (k = 0; k < tw.length; k++) { if (toks[i + k] !== tw[k]) { ok = false; break; } }
+        if (!ok) { continue; }
+        if (tw.length === 1 && tw[0] === "partner") {
+          if (i > 0 && NONSPOUSE_PARTNER_MODS.indexOf(toks[i - 1]) !== -1) { continue; }
+          if (toks[i + 1] === "in" && toks[i + 2] === "crime") { continue; }
+        }
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // Candidate name tokens of a spouse entry: every token that is not a relationship/spouse/stop word (over-exclusion is
+  // acceptable). Folded and lower-case; hyphenated tokens stay whole ("kate-lynn") unless a part is a stop word.
+  function candidateNames(raw) {
+    var stop = scanStopMap();
+    var t = foldKey(raw).replace(/['\u2019]s\b/g, " ").replace(/[^\p{L}'\u2019\- ]/gu, " ");
+    var parts = t.split(/\s+/), out = [];
+    for (var i = 0; i < parts.length; i++) {
+      var tok = parts[i].replace(/^[-'\u2019]+|[-'\u2019]+$/g, "");
+      if (tok.length < 2) { continue; }
+      var sub = tok.split("-"), allOk = true, j;
+      for (j = 0; j < sub.length; j++) { if (sub[j].length < 2 || stop[sub[j]] === true) { allOk = false; } }
+      if (allOk) { out.push(tok); continue; }
+      if (sub.length > 1) { for (j = 0; j < sub.length; j++) { if (sub[j].length >= 2 && stop[sub[j]] !== true) { out.push(sub[j]); } } }
+    }
+    return out;
+  }
+
+  // { spouse: bool, names: [candidate tokens] }
+  function scanSpouse(raw) {
+    if (!hasSpouseTerm(raw)) { return { spouse: false, names: [] }; }
+    return { spouse: true, names: candidateNames(raw) };
   }
 
   function hasNonSpouseMod(words) {
@@ -136,11 +216,17 @@ var EXP2A = (function () {
   }
 
   var NAME_TOKEN_RE = /^\p{Lu}[\p{L}'.\u2019-]*$/u;      // capitalized token
+  function isRelOrSpouseWord(tok) {
+    var k = lowerKey(tok);
+    return k !== "" && (Object.prototype.hasOwnProperty.call(REL_WORDS, k) || SPOUSE_WORDS.indexOf(k) !== -1);
+  }
   function isNameLike(s) {
     var toks = s.trim().split(/\s+/);
     if (toks.length < 1 || toks.length > 3) { return false; }
+    var honorific = HONORIFIC_RE.test(s.trim());
     for (var i = 0; i < toks.length; i++) {
       if (!NAME_TOKEN_RE.test(toks[i])) { return false; }
+      if (isRelOrSpouseWord(toks[i]) && !(honorific && i === 0)) { return false; }   // "Wife Kate", "Mom": not a name
     }
     return parseRelPhrase(s) === null;
   }
@@ -215,6 +301,12 @@ var EXP2A = (function () {
     //    the "(your ...)" clause is naturally suppressed.
     if (HONORIFIC_RE.test(text)) { return { cls: "name_only", name: text, rel: null }; }
 
+    // 5b. "<rel word> <Name>" ("Mom Linda", "Aunt Jo"): the name is the second token, never the relationship word
+    m = text.match(/^(\p{L}[\p{L}'\u2019]*)\s+(\p{Lu}[\p{L}'.\u2019-]*)$/u);
+    if (m && Object.prototype.hasOwnProperty.call(REL_WORDS, lowerKey(m[1])) && !isRelOrSpouseWord(m[2])) {
+      return { cls: "named_rel", name: m[2], rel: lowerKey(m[1]) };
+    }
+
     // 6. capitalized name(s): keep first token of a multi-token full name.
     // A capitalized determiner as the first token ("The Church Ladies", "My
     // Homie") is not a name — no legitimate rel phrase resolved above, so
@@ -260,7 +352,7 @@ var EXP2A = (function () {
 
   var CLS_RANK = { named_rel: 3, name_only: 2, rel_only: 1 };
 
-  function nameKey(n) { return String(n === null || n === undefined ? "" : n).toLowerCase().replace(/[^\p{L}]/gu, ""); }
+  function nameKey(n) { return foldKey(n).replace(/[^\p{L}]/gu, ""); }
 
   // Pairs merge across domains ONLY on a matching name. Two relationship-only pairs ("my friend" twice) may be different
   // people, so each keeps its own key (relationship + slot).
@@ -306,6 +398,13 @@ var EXP2A = (function () {
   function processSlots(slots) {
     var pairs = [], residue = [], nSpouse = 0, spouseNames = [];
     for (var i = 0; i < slots.length; i++) {
+      // Safety net, before any classification: an entry with a spouse/partner term is a spouse entry, whatever else it says.
+      var scan = scanSpouse(slots[i].text);
+      if (scan.spouse) {
+        nSpouse++;
+        for (var sn = 0; sn < scan.names.length; sn++) { spouseNames.push(scan.names[sn]); }
+        continue;
+      }
       var cleaned = normalizeEntry(slots[i].text);
       if (cleaned === "") { continue; }
       var cands = splitCandidates(cleaned);
@@ -329,10 +428,13 @@ var EXP2A = (function () {
           residue.push({ text: rtext, domain: slots[i].domain, index: i });
           continue;
         }
+        var pname = res.name ? sanitize(res.name) : null;
+        if (pname && isStopName(pname)) { pname = null; }
+        var prel = res.rel ? sanitize(res.rel) : null;
+        if (!pname && !prel) { continue; }
         pairs.push({
-          name: res.name ? sanitize(res.name) : null,
-          rel: res.rel ? sanitize(res.rel) : null,
-          cls: res.cls, domains: [slots[i].domain], firstIndex: i
+          name: pname, rel: prel,
+          cls: pname ? res.cls : "rel_only", domains: [slots[i].domain], firstIndex: i
         });
       }
     }
@@ -475,7 +577,8 @@ var EXP2A = (function () {
     NAME_STRIP_RE = /[^A-Za-zÀ-ɏ'’\- ]/g;
     REL_STRIP_RE = NAME_STRIP_RE;
   }
-  var LLM_STOP = ["null", "none", "n a", "na", "unknown", "undefined", "nobody", "no one", "me", "myself"];
+  var LLM_STOP = ["null", "none", "n a", "na", "unknown", "undefined", "true", "false", "nan", "nobody", "no one", "me", "myself"];
+  var REL_NOT_RELS = ["true", "false", "a", "an", "the", "your", "my", "our"];
   var NAME_NOT_NAMES = ["my", "our", "your", "the", "a"];
 
   // Returns a clean first name or null. Non-strings, markup, stoplist words, relationship words, > 20 chars: null.
@@ -498,8 +601,8 @@ var EXP2A = (function () {
     if (typeof v !== "string" || /[<>&]/.test(v)) { return null; }
     var raw = v.normalize ? v.normalize("NFC") : v;
     var t = raw.toLowerCase().replace(REL_STRIP_RE, " ").replace(/\s+/g, " ").trim();
-    while (/^(?:your|my|our)(?:\s+|$)/.test(t)) { t = t.replace(/^(?:your|my|our)\s*/, ""); }
-    if (t === "" || t.length > 30) { return null; }
+    while (/^(?:your|my|our|the|an|a)(?:\s+|$)/.test(t)) { t = t.replace(/^(?:your|my|our|the|an|a)\s*/, ""); }
+    if (t === "" || t.length > 30 || REL_NOT_RELS.indexOf(t) !== -1) { return null; }
     if (LLM_STOP.indexOf(t) !== -1 || LLM_STOP.indexOf(lowerKey(raw)) !== -1) { return null; }
     return t;
   }
@@ -520,12 +623,27 @@ var EXP2A = (function () {
     if (!entries) { return { pairs: detPairs, nLlm: 0 }; }
     residue = Object.prototype.toString.call(residue) === "[object Array]" ? residue : [];
 
+
     // Match each entry to a residue row. Both sides go through lowerKey (case, whitespace, punctuation stripped).
     // (a) normalised text equal to a row not yet claimed by an exact match (domain prefix stripped; as-is as a second
     // try), else (b) the entry's cleaned name occurs as a whole word in the row. A row may be matched by several entries
     // with different names ("my neighbors Bob and Sue"), never twice by the same name. No positional fallback: an entry
     // that matches no row is invented and dropped.
-    var rowKeys = [], exactClaimed = [], rowNames = [], i, j;
+    // Spouse names first, from EVERY entry (before any row matching or drop): an entry whose category is spouse_partner, or
+    // whose relationship resolves to a spouse (wordlist or spouse-word scan), excludes its name from every pair.
+    var i, j;
+    for (i = 0; i < entries.length; i++) {
+      var se = entries[i];
+      if (!se || typeof se !== "object") { continue; }
+      var scat = typeof se.category === "string" ? sanitize(se.category).toLowerCase() : "";
+      var srel = cleanLlmRel(se.relationship);
+      var sres = srel ? (parseRelPhrase(srel) || leadingRelOf(srel)) : null;
+      if (scat === "spouse_partner" || (sres && sres.spouse) || (srel && hasSpouseTerm(srel))) {
+        var sname = cleanLlmName(se.name);
+        if (sname) { spouseNames.push(sname); }
+      }
+    }
+    var rowKeys = [], exactClaimed = [], rowNames = [];
     for (j = 0; j < residue.length; j++) { rowKeys.push(lowerKey(String(residue[j].text === null || residue[j].text === undefined ? "" : residue[j].text))); exactClaimed.push(false); rowNames.push([]); }
     var llmPairs = [];
     for (i = 0; i < entries.length; i++) {
@@ -551,13 +669,15 @@ var EXP2A = (function () {
         }
       }
       if (row < 0) { continue; }
+      // provenance: the name must literally occur (whole word, normalised) in the residue row it was matched to
+      if (name && !wholeWordIn(lowerKey(name), rowKeys[row])) { if (how === "exact") { exactClaimed[row] = false; } continue; }
       if (nk) { rowNames[row].push(nk); }
 
       var cat = typeof e.category === "string" ? sanitize(e.category).toLowerCase() : "";
       var rel = cleanLlmRel(e.relationship);
       var relResolved = rel ? (parseRelPhrase(rel) || leadingRelOf(rel)) : null;
       // a spouse/partner by category OR by relationship wording, even when flagged unusable: its name is excluded everywhere
-      if (cat === "spouse_partner" || (relResolved && relResolved.spouse)) { if (name) { spouseNames.push(name); } continue; }
+      if (cat === "spouse_partner" || (relResolved && relResolved.spouse) || (rel && hasSpouseTerm(rel))) { continue; }
       if (e.usable !== true || LLM_DROP[cat]) { continue; }
       // Normalise wordlist-resolvable relationships (strips modifiers like "my"); keep others as-is (the LLM may
       // legitimately return rels outside the wordlist).
@@ -600,6 +720,9 @@ var EXP2A = (function () {
     mergeLlm: mergeLlm,
     mergeLlmDetailed: mergeLlmDetailed,
     parseResidueString: parseResidueString,
+    nameKey: nameKey,
+    scanSpouse: scanSpouse,
+    ENDEARMENT_TERMS: ENDEARMENT_TERMS,
     CLS_RANK: CLS_RANK
   };
 })();

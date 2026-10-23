@@ -340,12 +340,29 @@ easy to misread in the exported data:
    must be a string; a leading your/my/our is stripped; it is rejected if empty, over 30 characters, markup or a
    stoplist word. Non-strings count as absent.
 
-   **Spouse/partner names are excluded everywhere.** Whenever any entry (deterministic or LLM, by category
-   `spouse_partner` or by relationship wording) resolves as spouse/partner and carries a name, that name goes into a
-   spouse-name set and every pair with a matching name (case-insensitive, any domain) is dropped: "my wife Kate" plus
-   "Kate" in another domain leaves no Kate. Wordlist classification (unchanged in Phase 2e): boyfriend, girlfriend,
-   fiance/fiancé/fiancée, bf, gf are spouse; "my love" and "bae" are NOT in the wordlist and go to the LLM as residue.
-   "work partner", "business partner" and "lab partner" are not spouse (the modifier makes them non-romantic).
+   **Spouse/partner names are excluded everywhere (Phase 2f safety net, independent of the LLM and of phrasing).**
+   Before any classification, every name-generator entry (raw text) is scanned for a spouse/partner term as a whole word,
+   case- and diacritic-insensitive (wife, husband, spouse, partner, boyfriend, girlfriend, fiance/fiancé/fiancée, bf, gf,
+   hubby, wifey, significant other, my other half, life partner). A hit makes the WHOLE entry a spouse entry: it never
+   yields a pair, and every token in it that is not a relationship, spouse or stop word joins the spouse-name set
+   ("Kate, my wife's sister" excludes Kate: over-exclusion is accepted). "work/business/lab partner" and "partner in
+   crime" do not trigger. The set is built from all entries (deterministic and residue) before any LLM merge, then
+   extended with every LLM entry whose category is `spouse_partner` or whose relationship resolves to a spouse, before
+   any row matching or drop. Every pair, deterministic or LLM, whose name matches the set (`nameKey`: case and
+   diacritics folded, so José, Jose and NFD José match) is dropped.
+
+   **Endearments.** `ENDEARMENT_TERMS` (love, bae, sweetheart, sweetie, honey, babe, darling, sweetpea) are NOT treated
+   as spouse terms at present: `EXCLUDE_ENDEARMENTS = false` in `exp2a-core.js` (PI decision pending). "Joe my love" is
+   then residue for the LLM. To make them spouse terms, change that one line to `true`, run
+   `node scripts/exp2a-build.js` and re-paste QID45 and QID51; no other change is needed. Note that "love" is a common
+   word ("I love my neighbor Tom" would exclude Tom).
+
+   **Names are never relationship words or placeholders.** Capitalised relationship/spouse words are not accepted as
+   names ("Wife Kate" is a spouse entry; "Mom Linda" parses as Linda, mother; never name "Mom"). Respondent-typed and
+   LLM names are rejected case-insensitively when they are null, undefined, true, false, nan, none, n/a or unknown. An
+   LLM `name` must also occur as a whole word (normalised) in the residue row it was matched to, even on an exact text
+   match; otherwise the entry is dropped ("the guy at the store" cannot yield "Steve"). LLM relationships have leading
+   articles/your/my/our stripped and are rejected if true, false, a, an, the or empty.
 
 3. **`exp2a_llm_status` has exactly two write paths, and a failed call writes
    neither.** The parse hook writes `"skipped"` when there's no residue (no LLM call
