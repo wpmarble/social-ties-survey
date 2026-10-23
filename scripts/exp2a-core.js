@@ -352,6 +352,10 @@ var EXP2A = (function () {
     return parts.join(" ||| ");
   }
 
+  // The residue string sent to the LLM is "domain: text"; the model may echo that prefix back despite the prompt.
+  var DOMAIN_PREFIX_RE = new RegExp("^\\s*(" + DOMAINS.join("|") + ")\\s*:\\s*", "i");
+  function stripDomainPrefix(t) { return String(t).replace(DOMAIN_PREFIX_RE, ""); }
+
   var LLM_DROP = { spouse_partner: 1, group: 1, unusable: 1 };
 
   function mergeLlm(detPairs, llmRaw, residue) {
@@ -390,7 +394,7 @@ var EXP2A = (function () {
       // locate the source residue row for domain/index (order fallback)
       var src = null;
       for (var j = 0; j < residue.length; j++) {
-        if (sanitize(String(e.text || "")) === residue[j].text) { src = residue[j]; break; }
+        if (stripDomainPrefix(sanitize(String(e.text || ""))) === residue[j].text) { src = residue[j]; break; }
       }
       if (!src) { src = residue[Math.min(i, residue.length - 1)] || { domain: "other", index: 99 }; }
       llmPairs.push({

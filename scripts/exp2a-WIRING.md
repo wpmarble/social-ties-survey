@@ -129,7 +129,7 @@ element inside the branch:
   the `${e://Field/exp2a_residue}` pipe embedded in the `messages[0].content` string.
   Do not retype it; copy from the file so the tool schema and system prompt stay
   byte-identical to what the harness's mocked-response tests assume.
-- **Response mapping:** `content.0.input.entries` → `exp2a_llm_pairs`; set
+- **Response mapping:** `content.0.input.entries_json` → `exp2a_llm_pairs` (a nested array path maps to empty; the tool emits the array as one JSON string, which `mergeLlm` parses); also `error.type` → `exp2a_llm_err_type`, `error.message` → `exp2a_llm_err_msg`; set
   `exp2a_llm_status` = the response's top-level `type` field (Anthropic returns
   `"message"` on success and `"error"` on an API error). The renderer treats
   `"message"` (and the legacy constant `"ok"`) as success; anything else non-blank,
