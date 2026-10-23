@@ -306,7 +306,7 @@ rather than 404s that fall back to the inline generic/placebo strings.
 
 ## 9. Notes for analysis / known behaviors
 
-Three behaviors, surfaced during build-time review (Task 6), that are intentional but
+Four behaviors (1-3 surfaced during build-time review, 4 in Phase 2e), that are intentional but
 easy to misread in the exported data:
 
 1. **`exp2a_variant = "generic"` after a template-fetch failure does not mean the name
