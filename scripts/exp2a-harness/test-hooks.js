@@ -72,7 +72,8 @@ function runRender(edSeed, forceArm, extra) {
     QID77: extra.noEssayById ? null : essay,
     "exp2a-det": { textContent: det },
     "exp2a-llm": { textContent: llm },
-    "exp2a-llmstatus": { textContent: status }
+    "exp2a-llmstatus": { textContent: status },
+    "exp2a-residue": { textContent: edSeed.exp2a_residue || "" }
   };
   const { ctx, ed, loadHandlers, timers } = makeCtx({
     embeddedData: edSeed,
@@ -139,6 +140,7 @@ async function main() {
     { name: "Maria", rel: "sister", cls: "named_rel", domains: ["transport"], firstIndex: 0 },
     { name: "James", rel: "neighbor", cls: "named_rel", domains: ["money"], firstIndex: 6 }
   ]);
+  const RES = "job: my ride or die";
   const llm = JSON.stringify({ entries: [
     { text: "my ride or die", name: "Denise", relationship: "best friend", category: "friend", usable: true }
   ]});
@@ -146,7 +148,7 @@ async function main() {
   // ---- 2. render hook, tie arm with LLM rescue -----------------------------
   {
     const { ed, displayDiv } = runRender({
-      exp2a_det_pairs: det, exp2a_llm_pairs: llm, exp2a_llm_status: "ok",
+      exp2a_det_pairs: det, exp2a_llm_pairs: llm, exp2a_residue: RES, exp2a_llm_status: "ok",
       exp2a_needs_llm: "1", exp2a_residue: "job: my ride or die"
     }, "tie");
     await wait(20); // let the fetch .then chain settle
@@ -183,7 +185,7 @@ async function main() {
   // ---- 5. I6(a): fetch REJECTS -> inline fallback, forced to generic -------
   {
     const r4 = runRender({
-      exp2a_det_pairs: det, exp2a_llm_pairs: llm, exp2a_llm_status: "ok", exp2a_needs_llm: "1"
+      exp2a_det_pairs: det, exp2a_llm_pairs: llm, exp2a_residue: RES, exp2a_llm_status: "ok", exp2a_needs_llm: "1"
     }, "tie", { fetchMode: "reject" });
     await wait(20);
     assert.strictEqual(r4.ed.exp2a_variant, "generic", "fetch reject -> forced to generic (tie arm)");
@@ -196,7 +198,7 @@ async function main() {
   // ---- 6. I6(b): fetch resolves ok:false -> same fallback outcome (C1) -----
   {
     const r5 = runRender({
-      exp2a_det_pairs: det, exp2a_llm_pairs: llm, exp2a_llm_status: "ok", exp2a_needs_llm: "1"
+      exp2a_det_pairs: det, exp2a_llm_pairs: llm, exp2a_residue: RES, exp2a_llm_status: "ok", exp2a_needs_llm: "1"
     }, "tie", { fetchMode: "notok" });
     await wait(20);
     assert.strictEqual(r5.ed.exp2a_variant, "generic", "fetch !ok -> forced to generic (tie arm)");
@@ -240,17 +242,17 @@ async function main() {
 
   // ---- 9. (a) essay (QID77) hidden until stimulus rendered; never hidden > 10 s ----
   {
-    const r = runRender({ exp2a_det_pairs: det, exp2a_llm_pairs: llm, exp2a_llm_status: "ok", exp2a_needs_llm: "1" }, "tie");
+    const r = runRender({ exp2a_det_pairs: det, exp2a_llm_pairs: llm, exp2a_residue: RES, exp2a_llm_status: "ok", exp2a_needs_llm: "1" }, "tie");
     assert.strictEqual(r.essayAtLoad, "none", "essay hidden right after onload (stimulus not yet rendered)");
     await wait(20);
     assert.strictEqual(r.essay.style.display, "", "essay shown after the stimulus rendered");
     // fallback path shows it too
-    const rf = runRender({ exp2a_det_pairs: det, exp2a_llm_pairs: llm, exp2a_llm_status: "ok", exp2a_needs_llm: "1" }, "tie", { fetchMode: "reject" });
+    const rf = runRender({ exp2a_det_pairs: det, exp2a_llm_pairs: llm, exp2a_residue: RES, exp2a_llm_status: "ok", exp2a_needs_llm: "1" }, "tie", { fetchMode: "reject" });
     assert.strictEqual(rf.essayAtLoad, "none");
     await wait(20);
     assert.strictEqual(rf.essay.style.display, "", "essay shown after fallback rendered");
     // fetch hangs: the failsafe timer (<= 10 s) reveals the essay; the 8 s fetch timeout renders the fallback
-    const rh = runRender({ exp2a_det_pairs: det, exp2a_llm_pairs: llm, exp2a_llm_status: "ok", exp2a_needs_llm: "1" }, "tie", { fetchMode: "hang", fakeTimers: true });
+    const rh = runRender({ exp2a_det_pairs: det, exp2a_llm_pairs: llm, exp2a_residue: RES, exp2a_llm_status: "ok", exp2a_needs_llm: "1" }, "tie", { fetchMode: "hang", fakeTimers: true });
     assert.strictEqual(rh.essayAtLoad, "none");
     const ms = rh.timers.map(t => t.ms);
     assert.ok(ms.some(m => m <= 10000), "a reveal timer <= 10 s is armed: " + ms);
@@ -270,7 +272,7 @@ async function main() {
   // ---- 10. (b) fetch timeout (8 s) -> generic/placebo inline fallback, error recorded ----
   {
     for (const arm of ["tie", "placebo"]) {
-      const rt = runRender({ exp2a_det_pairs: det, exp2a_llm_pairs: llm, exp2a_llm_status: "ok", exp2a_needs_llm: "1" }, arm, { fetchMode: "hang", fakeTimers: true });
+      const rt = runRender({ exp2a_det_pairs: det, exp2a_llm_pairs: llm, exp2a_residue: RES, exp2a_llm_status: "ok", exp2a_needs_llm: "1" }, arm, { fetchMode: "hang", fakeTimers: true });
       await wait(5);
       assert.strictEqual(rt.ed.exp2a_text, undefined, "nothing rendered before the timeout");
       const to = rt.timers.filter(t => t.live && t.ms === 8000);
@@ -287,25 +289,58 @@ async function main() {
       }
       assert.strictEqual(rt.essay.style.display, "");
     }
-    const r404 = runRender({ exp2a_det_pairs: det, exp2a_llm_status: "ok", exp2a_llm_pairs: llm }, "tie", { fetchMode: "notok" });
+    const r404 = runRender({ exp2a_det_pairs: det, exp2a_llm_status: "ok", exp2a_llm_pairs: llm, exp2a_residue: RES }, "tie", { fetchMode: "notok" });
     await wait(20);
     assert.strictEqual(r404.ed.exp2a_error, "http_500");
-    const rrej = runRender({ exp2a_det_pairs: det, exp2a_llm_status: "ok", exp2a_llm_pairs: llm }, "tie", { fetchMode: "reject" });
+    const rrej = runRender({ exp2a_det_pairs: det, exp2a_llm_status: "ok", exp2a_llm_pairs: llm, exp2a_residue: RES }, "tie", { fetchMode: "reject" });
     await wait(20);
     assert.strictEqual(rrej.ed.exp2a_error, "network");
-    const rok = runRender({ exp2a_det_pairs: det, exp2a_llm_status: "ok", exp2a_llm_pairs: llm }, "tie");
+    const rok = runRender({ exp2a_det_pairs: det, exp2a_llm_status: "ok", exp2a_llm_pairs: llm, exp2a_residue: RES }, "tie");
     await wait(20);
     assert.ok(!("exp2a_error" in rok.ed), "no error on success");
     console.log("render hook (fetch timeout / error recording): ok");
   }
 
+  // ---- 11b. exp2a_parse_source: det+llm only if an LLM pair actually merged ----
+  {
+    const cases = [
+      ["malformed", "not json", RES], ["fenced", "```json\n[]\n```", RES], ["empty array", "[]", RES],
+      ["no matches", JSON.stringify([{ text: "zzz", name: "Q", relationship: "friend", category: "friend", usable: true },
+        { text: "yyy", name: "R", relationship: "friend", category: "friend", usable: true }]), RES],
+      ["invented, no residue", llm, ""]
+    ];
+    for (const [label, raw, res] of cases) {
+      const r = runRender({ exp2a_det_pairs: det, exp2a_llm_pairs: raw, exp2a_residue: res, exp2a_llm_status: "message", exp2a_needs_llm: "1" }, "tie");
+      await wait(20);
+      assert.strictEqual(r.ed.exp2a_parse_source, "llm_empty", label);
+    }
+    const g = runRender({ exp2a_det_pairs: det, exp2a_llm_pairs: llm, exp2a_residue: RES, exp2a_llm_status: "message", exp2a_needs_llm: "1" }, "tie");
+    await wait(20);
+    assert.strictEqual(g.ed.exp2a_parse_source, "det+llm");
+    console.log("render hook (llm_empty vs det+llm): ok");
+  }
+
+  // ---- 11c. residue span drives priority: rescued transport name is primed first over 3 'other' names ----
+  {
+    const d3 = JSON.stringify([
+      { name: "Bob", rel: null, cls: "name_only", domains: ["other"], firstIndex: 9 },
+      { name: "Carl", rel: null, cls: "name_only", domains: ["other"], firstIndex: 10 },
+      { name: "Dee", rel: null, cls: "name_only", domains: ["other"], firstIndex: 11 }]);
+    const l3 = JSON.stringify([{ text: "maria sister", name: "Maria", relationship: "sister", category: "family", usable: true }]);
+    const r = runRender({ exp2a_det_pairs: d3, exp2a_llm_pairs: l3, exp2a_residue: "transport: maria sister", exp2a_llm_status: "message", exp2a_needs_llm: "1" }, "tie");
+    await wait(20);
+    assert.strictEqual(r.ed.exp2a_name1, "Maria");
+    assert.strictEqual(r.ed.exp2a_parse_source, "det+llm");
+    console.log("render hook (residue span -> Maria first): ok");
+  }
+
   // ---- 11. (c) llm status "message" (Anthropic response type) counts as success ----
   {
-    const rm = runRender({ exp2a_det_pairs: det, exp2a_llm_pairs: llm, exp2a_llm_status: "message", exp2a_needs_llm: "1" }, "tie");
+    const rm = runRender({ exp2a_det_pairs: det, exp2a_llm_pairs: llm, exp2a_residue: RES, exp2a_llm_status: "message", exp2a_needs_llm: "1" }, "tie");
     await wait(20);
     assert.strictEqual(rm.ed.exp2a_parse_source, "det+llm", "status message -> det+llm");
     assert.strictEqual(rm.ed.exp2a_variant, "named3");
-    const re = runRender({ exp2a_det_pairs: det, exp2a_llm_pairs: llm, exp2a_llm_status: "error", exp2a_needs_llm: "1" }, "tie");
+    const re = runRender({ exp2a_det_pairs: det, exp2a_llm_pairs: llm, exp2a_residue: RES, exp2a_llm_status: "error", exp2a_needs_llm: "1" }, "tie");
     await wait(20);
     assert.strictEqual(re.ed.exp2a_parse_source, "llm_failed", "status error -> llm_failed");
     console.log("render hook (llm status message/error): ok");
@@ -320,7 +355,7 @@ async function main() {
       null, "junk"
     ]);
     let rd, threw = null;
-    try { rd = runRender({ exp2a_det_pairs: bad, exp2a_llm_pairs: llm, exp2a_llm_status: "ok", exp2a_needs_llm: "1" }, "tie"); } catch (e) { threw = e; }
+    try { rd = runRender({ exp2a_det_pairs: bad, exp2a_llm_pairs: llm, exp2a_residue: RES, exp2a_llm_status: "ok", exp2a_needs_llm: "1" }, "tie"); } catch (e) { threw = e; }
     assert.strictEqual(threw, null, "missing/invalid domains must not throw: " + (threw && threw.message));
     await wait(20);
     assert.strictEqual(rd.ed.exp2a_variant, "named3");

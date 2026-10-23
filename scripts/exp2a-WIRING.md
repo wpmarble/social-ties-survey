@@ -152,10 +152,11 @@ from-scratch add, not an edit.
     <span id="exp2a-det">${e://Field/exp2a_det_pairs}</span>
     <span id="exp2a-llm">${e://Field/exp2a_llm_pairs}</span>
     <span id="exp2a-llmstatus">${e://Field/exp2a_llm_status}</span>
+    <span id="exp2a-residue">${e://Field/exp2a_residue}</span>
   </div>
   ```
 
-  Both div IDs (`exp2aDisplay`, `exp2aData`) and all three span IDs are read directly
+  Both div IDs (`exp2aDisplay`, `exp2aData`) and all four span IDs are read directly
   out of `exp2a-render.js` by `getElementById` — don't rename them.
 
 - Paste the full contents of `scripts/exp2a-render.js` into `QID51`'s JavaScript
@@ -299,20 +300,22 @@ easy to misread in the exported data:
    presence/absence of name fields alone — a non-empty `exp2a_name1` does not imply the
    respondent saw a personalized stimulus.
 
-2. **When a respondent has more than 3 usable people, deterministically-parsed pairs
-   are preferred over LLM-rescued pairs at equal selection priority.** `selectPairs`
-   ranks candidates by (i) mentioned in multiple domains, (ii) classification rank
-   (named+rel > name-only > rel-only), (iii) first-listed order. LLM-rescued pairs are
-   merged in via `mergeLlm(detPairs, llmRaw, [])` — the render hook always passes an
-   *empty* residue array as the third argument, so LLM pairs can't be matched back to
-   their originating domain/index and fall through to the placeholder `{domain:
-   "other", index: 99}`. In practice this means an LLM-rescued pair is never
-   "mentioned in multiple domains" and always sorts last within its classification
-   tier when there are more than 3 usable candidates to choose from. This was a
-   deliberate choice (Task 6 review) favoring high-confidence deterministic
-   extractions for respondent-facing text over the LLM's residue-derived guesses; it
-   has no effect on arm assignment or the named/generic threshold, only on *which*
-   names get shown when more than 3 are available.
+2. **LLM-rescued pairs carry their real domain and slot order, via `exp2a-residue`.**
+   `selectPairs` ranks candidates by (i) mentioned in multiple domains, (ii)
+   classification rank (named+rel > name-only > rel-only), (iii) first-listed order.
+   The render hook parses the `exp2a_residue` span (`domain: text ||| domain: text`,
+   exactly what the QID45 parse hook writes) and passes the rows to `mergeLlm`, which
+   matches each LLM entry to a distinct residue row by its text (domain label stripped;
+   each row used once). The pair takes that row's domain and index = domain base
+   (transport 0, job 3, money 6, other 9) + ordinal among that domain's residue rows.
+   The index is exact across domains and within a domain's residue rows, but the string
+   does not carry the absolute slot number, so against a deterministic pair in the same
+   domain the tie-break is approximate. A rescued pair CAN be multi-domain (same person
+   rescued from two domains is merged and ranks first); a same-domain duplicate is not
+   promoted. LLM entries that match no unused residue row are dropped (invented), except
+   that when the LLM returned exactly one entry per residue row an unmatched entry is
+   filled by position. LLM rescue never affects arm assignment or the named/generic
+   threshold beyond adding pairs.
 
 3. **`exp2a_llm_status` has exactly two write paths, and a failed call writes
    neither.** The parse hook writes `"skipped"` when there's no residue (no LLM call
@@ -323,7 +326,9 @@ easy to misread in the exported data:
    `exp2a_llm_status` stays blank. The renderer treats "needed the LLM but status
    isn't `message` (or legacy `ok`)" as failure and records this in
    `exp2a_parse_source = "llm_failed"` (as opposed to `"det"` when no LLM was needed,
-   or `"det+llm"` on a successful merge). `exp2a_parse_source`, not
+   `"det+llm"` when at least one LLM pair was actually merged, or `"llm_empty"` when the
+   call succeeded but nothing merged: malformed or fenced JSON, `[]`, or no entry
+   matching a residue row). `exp2a_parse_source`, not
    `exp2a_llm_status`, is the field to filter on when asking "did the LLM step
    succeed for this respondent." If the parse hook itself never ran for a
    respondent (`exp2a_llm_status` empty AND `exp2a_det_pairs` empty — e.g. the

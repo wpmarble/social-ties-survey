@@ -2,9 +2,10 @@
   EXP 2A render hook — paste target: the Exp 2A display question.
   Question HTML must contain:
       <div id="exp2aDisplay"></div>
-      <div id="exp2aData" style="display:none"> holding three spans, whose ids
+      <div id="exp2aData" style="display:none"> holding spans, whose ids
       are exp2a-det, exp2a-llm and exp2a-llmstatus, piped from the embedded-data
-      fields exp2a_det_pairs, exp2a_llm_pairs and exp2a_llm_status (exact markup
+      fields exp2a_det_pairs, exp2a_llm_pairs and exp2a_llm_status, plus a fourth span exp2a-residue
+      piped from exp2a_residue (exact markup
       in exp2a-WIRING.md section 3).
   Respondent-derived text reaches this script ONLY via textContent of those
   spans — never via JS literals. exp2a_arm below is our own controlled value.
@@ -149,8 +150,11 @@ Qualtrics.SurveyEngine.addOnload(function () {
   if (needsLlm) {
     // "message" is Anthropic's response type on success (the Web Service maps it into exp2a_llm_status); "ok" kept for the old mapping.
     if (llmStatus === "ok" || llmStatus === "message") {
-      pairs = EXP2A.mergeLlm(detPairs, nodeText("exp2a-llm"), []);
-      source = "det+llm";
+      // residue rows give each LLM pair its real domain/index; entries not in the residue are dropped
+      var merged = EXP2A.mergeLlmDetailed(detPairs, nodeText("exp2a-llm"), EXP2A.parseResidueString(nodeText("exp2a-residue")));
+      pairs = merged.pairs;
+      // det+llm only if at least one LLM pair was actually merged; success with nothing usable is llm_empty
+      source = merged.nLlm > 0 ? "det+llm" : "llm_empty";
     } else {
       source = "llm_failed";
     }

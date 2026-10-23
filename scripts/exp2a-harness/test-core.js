@@ -44,7 +44,9 @@ assert.deepStrictEqual(E.splitCandidates("Sandy"), ["Sandy"]); // no false split
   assert.ok(!("entries" in props), "nested entries array cannot be mapped by Qualtrics");
   assert.strictEqual(props.entries_json.type, "string");
   assert.deepStrictEqual(wb.tools[0].input_schema.required, ["entries_json"]);
-  assert.ok(/WITHOUT the leading domain prefix/.test(wb.system), "prompt must tell the model to drop the domain prefix");
+  assert.ok(/Echo each entry's text back exactly as given, excluding the leading domain label/.test(wb.system), "prompt: echo exactly, excluding the domain label");
+  assert.ok(!/WITHOUT the leading domain prefix/.test(wb.system), "prompt must not carry the contradictory second echo sentence");
+  assert.strictEqual((wb.system.match(/Echo each entry/g) || []).length, 1, "exactly one echo instruction");
   const wf = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "..", "exp2a", "webservice-body.json"), "utf8"));
   assert.ok(/content\.0\.input\.entries_json/.test(wf.response_mapping.exp2a_llm_pairs), "response mapping must be content.0.input.entries_json");
 }
@@ -89,6 +91,99 @@ assert.deepStrictEqual(E.splitCandidates("Sandy"), ["Sandy"]); // no false split
 }
 
 console.log("test-core.js: all passed");
+
+// ---- Phase 2d: residue-aware mergeLlm ----
+{
+  const mkEntry = (text, name, rel, extra) => Object.assign({ text, name, relationship: rel, category: "family", usable: true }, extra || {});
+  const det = (name, domain, idx, rel) => ({ name, rel: rel || null, cls: rel ? "named_rel" : "name_only", domains: [domain], firstIndex: idx });
+  const row = (text, domain, index) => ({ text, domain, index });
+  const names = (arr) => arr.map(p => p.name);
+
+  // parseResidueString: exact buildResidueString format; index = domain base + ordinal within domain
+  {
+    const rs = E.buildResidueString([{ domain: "transport", text: "maria sister" }, { domain: "money", text: "mike bro" }, { domain: "transport", text: "x y" }, { domain: "other", text: "my ride: or die" }]);
+    assert.deepStrictEqual(E.parseResidueString(rs), [
+      { text: "maria sister", domain: "transport", index: 0 }, { text: "mike bro", domain: "money", index: 6 },
+      { text: "x y", domain: "transport", index: 1 }, { text: "my ride: or die", domain: "other", index: 9 }]);
+    assert.deepStrictEqual(E.parseResidueString(""), []);
+    assert.deepStrictEqual(E.parseResidueString("garbage ||| job: ok"), [{ text: "ok", domain: "job", index: 3 }]);
+  }
+
+  // C1: rescued person in transport must be primed ahead of three "other" deterministic names
+  {
+    const residue = E.parseResidueString("transport: maria sister");
+    const d = [det("Bob", "other", 9), det("Carl", "other", 10), det("Dee", "other", 11)];
+    const raw = JSON.stringify([mkEntry("transport: maria sister", "Maria", "sister")]);
+    const sel = E.selectPairs(E.mergeLlm(d, raw, residue), 3);
+    assert.strictEqual(sel[0].name, "Maria", "C1: Maria primed first");
+    assert.strictEqual(sel[0].domains[0], "transport");
+  }
+  // C2: mike in transport (rescued) and "mike bro" in money (rescued): cross-domain priority
+  {
+    const residue = E.parseResidueString("transport: mike ||| money: mike bro");
+    const d = [det("Ann", "job", 3, "boss"), det("Bea", "job", 4, "friend"), det("Cy", "other", 9, "pal")];
+    const raw = JSON.stringify([mkEntry("transport: mike", "Mike", null), mkEntry("money: mike bro", "Mike", "brother")]);
+    const merged = E.mergeLlm(d, raw, residue);
+    const mike = merged.filter(p => p.name === "Mike");
+    assert.strictEqual(mike.length, 1, "C2: Mike deduped");
+    assert.deepStrictEqual(mike[0].domains.slice().sort(), ["money", "transport"]);
+    assert.strictEqual(E.selectPairs(merged, 3)[0].name, "Mike", "C2: Mike primed first via cross-domain priority");
+  }
+  // D: a rescued person sorts by real slot, not last
+  {
+    const residue = E.parseResidueString("transport: zed pal");
+    const d = [det("Ann", "job", 3, "boss"), det("Bea", "job", 4, "boss"), det("Cy", "money", 6, "boss")];
+    const merged = E.mergeLlm(d, JSON.stringify([mkEntry("zed pal", "Zed", "pal")]), residue);
+    assert.strictEqual(E.selectPairs(merged, 3)[0].name, "Zed", "D: rescued transport person sorts first among equal class");
+    assert.strictEqual(merged.filter(p => p.name === "Zed")[0].firstIndex, 0);
+  }
+  // F: a same-domain duplicate must not be promoted to multi-domain
+  {
+    const residue = E.parseResidueString("transport: mike");
+    const d = [det("Mike", "transport", 0), det("Ann", "job", 3, "boss"), det("Bea", "job", 4, "boss"), det("Cy", "money", 6, "boss")];
+    const merged = E.mergeLlm(d, JSON.stringify([mkEntry("mike", "Mike", null)]), residue);
+    const mike = merged.filter(p => p.name === "Mike");
+    assert.strictEqual(mike.length, 1);
+    assert.deepStrictEqual(mike[0].domains, ["transport"], "F: no promotion");
+    // and Ann (named_rel) outranks name-only Mike, as it would with no LLM at all
+    assert.strictEqual(E.selectPairs(merged, 3).map(p => p.name).join(","), E.selectPairs(d, 3).map(p => p.name).join(","));
+  }
+  // Invented: an LLM entry not in the residue is not counted (counts differ, so no order fallback)
+  {
+    const residue = E.parseResidueString("job: dana boss");
+    const raw = JSON.stringify([mkEntry("job: dana boss", "Dana", "boss"), mkEntry("job: Invented Person", "Invented", "friend")]);
+    const r = E.mergeLlmDetailed([], raw, residue);
+    assert.deepStrictEqual(names(r.pairs), ["Dana"]);
+    assert.strictEqual(r.nLlm, 1);
+    assert.strictEqual(E.mergeLlmDetailed([], JSON.stringify([mkEntry("x", "Ghost", "friend")]), []).nLlm, 0, "no residue -> nothing counted");
+  }
+  // identical texts map to distinct rows (each row used once)
+  {
+    const residue = [row("mike", "transport", 0), row("mike", "money", 6)];
+    const raw = JSON.stringify([mkEntry("mike", "Mike", null), mkEntry("mike", "Mike", null)]);
+    const merged = E.mergeLlm([], raw, residue);
+    assert.deepStrictEqual(merged[0].domains.slice().sort(), ["money", "transport"], "both rows consumed");
+    // three identical entries vs two rows: third has no unused row and counts differ -> dropped
+    assert.strictEqual(E.mergeLlmDetailed([], JSON.stringify([mkEntry("mike", "Mike", null), mkEntry("mike", "Mike", null), mkEntry("mike", "Mike", null)]), residue).nLlm, 2);
+  }
+  // order fallback: unmatched text filled by order only when counts are equal
+  {
+    const residue = [row("my ride or die", "money", 6)];
+    const raw = JSON.stringify([mkEntry("paraphrased", "Denise", "friend")]);
+    const eq = E.mergeLlmDetailed([], raw, residue);
+    assert.strictEqual(eq.nLlm, 1); assert.strictEqual(eq.pairs[0].domains[0], "money");
+    const ne = E.mergeLlmDetailed([], JSON.stringify([mkEntry("paraphrased", "Denise", "friend"), mkEntry("other", "Eve", "friend")]), residue);
+    assert.strictEqual(ne.nLlm, 0, "counts differ -> no order fallback");
+  }
+  // nLlm = 0 for malformed / fenced / [] / no matches
+  {
+    const residue = [row("a b", "job", 3)];
+    for (const raw of ["", "```json\n[]\n```", "[]", "not json", JSON.stringify([mkEntry("zzz", "Q", "friend"), mkEntry("yyy", "R", "friend")])]) {
+      assert.strictEqual(E.mergeLlmDetailed([], raw, residue).nLlm, 0, JSON.stringify(raw));
+    }
+  }
+}
+console.log("test-core.js: phase2d residue cases ok");
 
 // pairs missing a usable domains array must not throw in selectPairs / dedupePairs
 {

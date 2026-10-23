@@ -359,19 +359,63 @@ var EXP2A = (function () {
 
   var LLM_DROP = { spouse_partner: 1, group: 1, unusable: 1 };
 
-  function mergeLlm(detPairs, llmRaw, residue) {
+  // Parse the exp2a_residue string ("domain: text ||| domain: text ...", exactly what buildResidueString writes) into
+  // residue rows. Only (domain, text) survive the string, so index = domain base + ordinal among that domain's residue
+  // rows: exact across domains and in-domain order, but not the absolute slot number.
+  var DOMAIN_BASE = { transport: 0, job: 3, money: 6, other: 9 };
+  var RESIDUE_PART_RE = /^(transport|job|money|other):\s*(.*)$/;
+  function parseResidueString(str) {
+    var rows = [], seen = { transport: 0, job: 0, money: 0, other: 0 };
+    var parts = String(str === null || str === undefined ? "" : str).split(" ||| ");
+    for (var i = 0; i < parts.length; i++) {
+      var m = RESIDUE_PART_RE.exec(parts[i].trim());
+      if (!m) { continue; }
+      rows.push({ text: m[2].trim(), domain: m[1], index: DOMAIN_BASE[m[1]] + seen[m[1]] });
+      seen[m[1]]++;
+    }
+    return rows;
+  }
+
+  function residueKey(t) { return sanitize(String(t === null || t === undefined ? "" : t)).toLowerCase(); }
+
+  // Returns { pairs, nLlm }: nLlm = LLM pairs accepted (matched to a residue row and usable) before dedupe.
+  function mergeLlmDetailed(detPairs, llmRaw, residue) {
     var entries = null;
     try {
       var parsed = JSON.parse(llmRaw);
       if (Object.prototype.toString.call(parsed) === "[object Array]") { entries = parsed; }
       else if (parsed && Object.prototype.toString.call(parsed.entries) === "[object Array]") { entries = parsed.entries; }
     } catch (e) { entries = null; }
-    if (!entries) { return detPairs; }
+    if (!entries) { return { pairs: detPairs, nLlm: 0 }; }
+    residue = Object.prototype.toString.call(residue) === "[object Array]" ? residue : [];
+
+    // Match every entry to a distinct residue row. Pass 1: text (domain prefix stripped; as-is as a second try), each row
+    // used once so identical texts map to distinct rows. Pass 2: an unmatched entry takes the row at its own position, but
+    // only when the model returned exactly one entry per row; otherwise the entry is invented and is dropped.
+    var used = [], src = [], i, j;
+    for (j = 0; j < residue.length; j++) { used.push(false); }
+    for (i = 0; i < entries.length; i++) {
+      src.push(null);
+      var e0 = entries[i];
+      if (!e0) { continue; }
+      var full = residueKey(e0.text), stripped = residueKey(stripDomainPrefix(sanitize(String(e0.text === null || e0.text === undefined ? "" : e0.text))));
+      var cands = [stripped, full];
+      for (var c = 0; c < cands.length && src[i] === null; c++) {
+        for (j = 0; j < residue.length; j++) {
+          if (!used[j] && residueKey(residue[j].text) === cands[c]) { used[j] = true; src[i] = residue[j]; break; }
+        }
+      }
+    }
+    if (entries.length === residue.length) {
+      for (i = 0; i < entries.length; i++) {
+        if (src[i] === null && entries[i] && !used[i]) { used[i] = true; src[i] = residue[i]; }
+      }
+    }
 
     var llmPairs = [];
-    for (var i = 0; i < entries.length; i++) {
+    for (i = 0; i < entries.length; i++) {
       var e = entries[i];
-      if (!e || e.usable !== true) { continue; }
+      if (!e || e.usable !== true || src[i] === null) { continue; }
       var cat = e.category ? sanitize(String(e.category)).toLowerCase() : "";
       if (LLM_DROP[cat]) { continue; }
       var name = e.name ? sanitize(String(e.name)).split(/\s+/)[0] : null;
@@ -392,20 +436,16 @@ var EXP2A = (function () {
         }
       }
       if (!name && !rel) { continue; }
-      // locate the source residue row for domain/index (order fallback)
-      var src = null;
-      for (var j = 0; j < residue.length; j++) {
-        if (stripDomainPrefix(sanitize(String(e.text || ""))) === residue[j].text) { src = residue[j]; break; }
-      }
-      if (!src) { src = residue[Math.min(i, residue.length - 1)] || { domain: "other", index: 99 }; }
       llmPairs.push({
         name: name, rel: rel,
         cls: name ? (rel ? "named_rel" : "name_only") : "rel_only",
-        domains: [src.domain], firstIndex: src.index
+        domains: [src[i].domain], firstIndex: src[i].index
       });
     }
-    return dedupePairs(detPairs.concat(llmPairs));
+    return { pairs: dedupePairs(detPairs.concat(llmPairs)), nLlm: llmPairs.length };
   }
+
+  function mergeLlm(detPairs, llmRaw, residue) { return mergeLlmDetailed(detPairs, llmRaw, residue).pairs; }
 
   return {
     DOMAINS: DOMAINS,
@@ -422,6 +462,8 @@ var EXP2A = (function () {
     composeStimulus: composeStimulus,
     buildResidueString: buildResidueString,
     mergeLlm: mergeLlm,
+    mergeLlmDetailed: mergeLlmDetailed,
+    parseResidueString: parseResidueString,
     CLS_RANK: CLS_RANK
   };
 })();
@@ -432,9 +474,10 @@ if (typeof module !== "undefined" && module.exports) { module.exports = EXP2A; }
   EXP 2A render hook — paste target: the Exp 2A display question.
   Question HTML must contain:
       <div id="exp2aDisplay"></div>
-      <div id="exp2aData" style="display:none"> holding three spans, whose ids
+      <div id="exp2aData" style="display:none"> holding spans, whose ids
       are exp2a-det, exp2a-llm and exp2a-llmstatus, piped from the embedded-data
-      fields exp2a_det_pairs, exp2a_llm_pairs and exp2a_llm_status (exact markup
+      fields exp2a_det_pairs, exp2a_llm_pairs and exp2a_llm_status, plus a fourth span exp2a-residue
+      piped from exp2a_residue (exact markup
       in exp2a-WIRING.md section 3).
   Respondent-derived text reaches this script ONLY via textContent of those
   spans — never via JS literals. exp2a_arm below is our own controlled value.
@@ -579,8 +622,11 @@ Qualtrics.SurveyEngine.addOnload(function () {
   if (needsLlm) {
     // "message" is Anthropic's response type on success (the Web Service maps it into exp2a_llm_status); "ok" kept for the old mapping.
     if (llmStatus === "ok" || llmStatus === "message") {
-      pairs = EXP2A.mergeLlm(detPairs, nodeText("exp2a-llm"), []);
-      source = "det+llm";
+      // residue rows give each LLM pair its real domain/index; entries not in the residue are dropped
+      var merged = EXP2A.mergeLlmDetailed(detPairs, nodeText("exp2a-llm"), EXP2A.parseResidueString(nodeText("exp2a-residue")));
+      pairs = merged.pairs;
+      // det+llm only if at least one LLM pair was actually merged; success with nothing usable is llm_empty
+      source = merged.nLlm > 0 ? "det+llm" : "llm_empty";
     } else {
       source = "llm_failed";
     }
