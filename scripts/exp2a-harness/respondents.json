@@ -18,7 +18,7 @@
      "slots": ["maria", "my ride or die", "", "Maria — sister", "", "", "the church ladies", "", "", "", "", ""],
      "expectUsable": 1, "expectNeedsLlm": true},
     {"label": "generous trigger: 3 clean names AND one unresolved entry still calls LLM",
-     "slots": ["Maria — sister", "James, neighbor", "Tara — friend", "my wife's friend Karen", "", "", "", "", "", "", "", ""],
+     "slots": ["Maria — sister", "James, neighbor", "Tara — friend", "my coworker's friend Karen", "", "", "", "", "", "", "", ""],
      "expectUsable": 3, "expectNeedsLlm": true},
     {"label": "multi-person split",
      "slots": ["Mom and Dad", "", "", "", "", "", "", "", "", "", "", ""],

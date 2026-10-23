@@ -104,19 +104,19 @@ const det = [
   { name: "Maria", rel: "sister", cls: "named_rel", domains: ["transport"], firstIndex: 0 }
 ];
 const residue = [
-  { text: "my ride or die", domain: "job", index: 3 },
+  { text: "my ride or die Denise Pat Eve Sam", domain: "job", index: 3 },
   { text: "karen my wifes friend", domain: "money", index: 6 },
   { text: "the church ladies", domain: "other", index: 9 }
 ];
 const rs = E.buildResidueString(residue);
-if (rs !== "job: my ride or die ||| money: karen my wifes friend ||| other: the church ladies") {
+if (rs !== "job: my ride or die Denise Pat Eve Sam ||| money: karen my wifes friend ||| other: the church ladies") {
   fail("buildResidueString: got " + rs);
 }
 if (/["\\`<>\n]/.test(rs)) { fail("residue string contains unsafe chars"); }
 
 // valid mock: rescues 2 entries, one is a group (dropped), one echoes Maria (deduped)
 const okMock = JSON.stringify({ entries: [
-  { text: "my ride or die", name: "Denise", relationship: "best friend", category: "friend", usable: true },
+  { text: "my ride or die Denise Pat Eve Sam", name: "Denise", relationship: "best friend", category: "friend", usable: true },
   { text: "karen my wifes friend", name: "Karen", relationship: "friend", category: "friend", usable: true },
   { text: "the church ladies", name: null, relationship: null, category: "group", usable: false }
 ]});
@@ -128,17 +128,17 @@ if (merged.map(p => p.name).join(",") !== "Maria,Denise,Karen") { fail("mergeLlm
 for (const [label, raw, expectN] of [
   ["malformed JSON", "{oops", 1],
   ["empty string", "", 1],
-  ["spouse smuggled", JSON.stringify({entries:[{text:"my ride or die", name:"Sam", relationship:"husband", category:"spouse_partner", usable:true}]}), 1],
-  ["quote injection", JSON.stringify({entries:[{text:"my ride or die", name:'Eve"<script>', relationship:"friend", category:"friend", usable:true}]}), 2],
-  ["bare array form", JSON.stringify([{text:"my ride or die", name:"Denise", relationship:"friend", category:"friend", usable:true}]), 2],
-  ["spouse mis-cased", JSON.stringify({entries:[{text:"my ride or die", name:"Sam", relationship:"husband", category:"Spouse_Partner", usable:true}]}), 1],
-  ["spouse padded category", JSON.stringify({entries:[{text:"my ride or die", name:"Sam", relationship:"husband", category:"spouse_partner ", usable:true}]}), 1],
-  ["spouse missing category", JSON.stringify({entries:[{text:"my ride or die", name:"Sam", relationship:"husband", usable:true}]}), 1],
-  ["spouse null category", JSON.stringify({entries:[{text:"my ride or die", name:"Sam", relationship:"husband", category:null, usable:true}]}), 1],
-  ["spouse rel with benign category", JSON.stringify({entries:[{text:"my ride or die", name:"Sam", relationship:"wife", category:"friend", usable:true}]}), 1],
+  ["spouse smuggled", JSON.stringify({entries:[{text:"my ride or die Denise Pat Eve Sam", name:"Sam", relationship:"husband", category:"spouse_partner", usable:true}]}), 1],
+  ["quote injection", JSON.stringify({entries:[{text:"my ride or die Denise Pat Eve Sam", name:'Eve"<script>', relationship:"friend", category:"friend", usable:true}]}), 2],
+  ["bare array form", JSON.stringify([{text:"my ride or die Denise Pat Eve Sam", name:"Denise", relationship:"friend", category:"friend", usable:true}]), 2],
+  ["spouse mis-cased", JSON.stringify({entries:[{text:"my ride or die Denise Pat Eve Sam", name:"Sam", relationship:"husband", category:"Spouse_Partner", usable:true}]}), 1],
+  ["spouse padded category", JSON.stringify({entries:[{text:"my ride or die Denise Pat Eve Sam", name:"Sam", relationship:"husband", category:"spouse_partner ", usable:true}]}), 1],
+  ["spouse missing category", JSON.stringify({entries:[{text:"my ride or die Denise Pat Eve Sam", name:"Sam", relationship:"husband", usable:true}]}), 1],
+  ["spouse null category", JSON.stringify({entries:[{text:"my ride or die Denise Pat Eve Sam", name:"Sam", relationship:"husband", category:null, usable:true}]}), 1],
+  ["spouse rel with benign category", JSON.stringify({entries:[{text:"my ride or die Denise Pat Eve Sam", name:"Sam", relationship:"wife", category:"friend", usable:true}]}), 1],
   // I4: multi-word spouse phrasing ("my husband", not the bare wordlist term
   // "husband") must still be caught even under a benign category.
-  ["multi-word spouse phrase with benign category", JSON.stringify({entries:[{text:"my ride or die", name:"Sam", relationship:"my husband", category:"friend", usable:true}]}), 1]
+  ["multi-word spouse phrase with benign category", JSON.stringify({entries:[{text:"my ride or die Denise Pat Eve Sam", name:"Sam", relationship:"my husband", category:"friend", usable:true}]}), 1]
 ]) {
   let m;
   try { m = E.mergeLlm(det, raw, residue); } catch (e) { fail(`mergeLlm ${label}: threw ${e}`); continue; }
@@ -152,7 +152,7 @@ for (const [label, raw, expectN] of [
 // stripped) so template clauses read "(your sister)", not "(your my sister)".
 {
   const raw = JSON.stringify({ entries: [
-    { text: "my ride or die", name: "Pat", relationship: "my sister", category: "friend", usable: true }
+    { text: "my ride or die Denise Pat Eve Sam", name: "Pat", relationship: "my sister", category: "friend", usable: true }
   ]});
   const merged = E.mergeLlm(det, raw, residue);
   const pat = merged.filter(p => p.name === "Pat")[0];
